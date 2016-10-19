@@ -23,14 +23,14 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/pkg/errors"
 
-	"github.com/netflix/chaosmonkey"
-	"github.com/netflix/chaosmonkey/cal"
-	"github.com/netflix/chaosmonkey/config"
-	"github.com/netflix/chaosmonkey/config/param"
-	"github.com/netflix/chaosmonkey/deps"
-	"github.com/netflix/chaosmonkey/grp"
-	"github.com/netflix/chaosmonkey/schedstore"
-	"github.com/netflix/chaosmonkey/schedule"
+	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/cal"
+	"github.com/Netflix/chaosmonkey/config"
+	"github.com/Netflix/chaosmonkey/config/param"
+	"github.com/Netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/schedstore"
+	"github.com/Netflix/chaosmonkey/schedule"
 )
 
 // MySQL represents a MySQL-backed store for schedules and terminations

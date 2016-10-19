@@ -14,7 +14,7 @@
 
 package mock
 
-import D "github.com/netflix/chaosmonkey/deploy"
+import D "github.com/Netflix/chaosmonkey/deploy"
 
 // Deployment returns a mock implementation of deploy.Deployment
 // Deployment has 4 apps: foo, bar, baz, quux

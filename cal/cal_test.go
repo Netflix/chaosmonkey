@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/netflix/chaosmonkey/cal"
+	"github.com/Netflix/chaosmonkey/cal"
 )
 
 var weekdayTests = []struct {

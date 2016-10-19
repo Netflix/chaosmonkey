@@ -15,9 +15,9 @@
 package decryptor
 
 import (
-	"github.com/netflix/chaosmonkey"
-	"github.com/netflix/chaosmonkey/config"
-	"github.com/netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/config"
+	"github.com/Netflix/chaosmonkey/deps"
 	"github.com/pkg/errors"
 )
 

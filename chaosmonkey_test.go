@@ -17,7 +17,7 @@ package chaosmonkey_test
 import (
 	"testing"
 
-	"github.com/netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey"
 )
 
 func TestExceptionMatches(t *testing.T) {

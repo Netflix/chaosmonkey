@@ -17,8 +17,8 @@ package command
 import (
 	"log"
 
-	"github.com/netflix/chaosmonkey/deps"
-	"github.com/netflix/chaosmonkey/term"
+	"github.com/Netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey/term"
 )
 
 // Terminate executes the "terminate" command. This selects an instance

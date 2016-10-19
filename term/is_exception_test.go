@@ -17,8 +17,8 @@ package term
 import (
 	"testing"
 
-	"github.com/netflix/chaosmonkey"
-	D "github.com/netflix/chaosmonkey/deploy"
+	"github.com/Netflix/chaosmonkey"
+	D "github.com/Netflix/chaosmonkey/deploy"
 )
 
 // mockASG creates a mock ASG
