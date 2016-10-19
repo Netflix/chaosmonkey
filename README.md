@@ -4,6 +4,11 @@ Chaos Monkey randomly terminates virtual machine instances and containers that
 run inside of your production environment. Exposing engineers to
 failures more frequently incentivizes them to build resilient services.
 
+Chaos Monkey is an example of a tool that follows the
+[Principles of Chaos Engineering][PoC].
+
+[PoC]: http://principlesofchaos.org/
+
 ### Requirements
 
 This version of Chaos Monkey is fully integrated with [Spinnaker], the
