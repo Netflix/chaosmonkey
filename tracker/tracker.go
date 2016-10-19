@@ -26,8 +26,6 @@ func init() {
 	deps.GetTrackers = getTrackers
 }
 
-// No trackers have been implemented yet
-
 // getTrackers returns a list of trackers specified in the configuration
 func getTrackers(cfg *config.Monkey) ([]chaosmonkey.Tracker, error) {
 	var result []chaosmonkey.Tracker
@@ -48,9 +46,9 @@ func getTrackers(cfg *config.Monkey) ([]chaosmonkey.Tracker, error) {
 }
 
 // getTracker returns a tracker by name
+// No trackers have been implemented yet
 func getTracker(kind string, cfg *config.Monkey) (chaosmonkey.Tracker, error) {
 	switch kind {
-	// Currently, no trackers have been implemented.
 	// As trackers are contributed to the open source project, they should
 	// be instantiated here
 	default:
