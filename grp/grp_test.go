@@ -17,7 +17,7 @@ package grp_test
 import (
 	"testing"
 
-	"github.com/netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/grp"
 )
 
 func TestNewAppWithRegion(t *testing.T) {

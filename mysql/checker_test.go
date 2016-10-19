@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	c "github.com/netflix/chaosmonkey"
-	"github.com/netflix/chaosmonkey/mock"
-	"github.com/netflix/chaosmonkey/mysql"
+	c "github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/mock"
+	"github.com/Netflix/chaosmonkey/mysql"
 )
 
 var endHour = 15 // 3PM

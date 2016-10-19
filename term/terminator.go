@@ -17,7 +17,7 @@ package term
 import (
 	"fmt"
 
-	"github.com/netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey"
 )
 
 // fake is a fake implementation of a terminator that just prints termination info but does nothing

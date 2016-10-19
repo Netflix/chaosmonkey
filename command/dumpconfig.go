@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Netflix/chaosmonkey"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/netflix/chaosmonkey"
 )
 
 // DumpConfig dumps the config for an app to stdout
