@@ -23,23 +23,37 @@ import (
 )
 
 func init() {
-	deps.GetTrackers = noSupportedTrackers
+	deps.GetTrackers = getTrackers
 }
 
 // No trackers have been implemented yet
 
-// noSupportedTrackers will return an error unless cfg.Trackers() is empty
-// It is a placeholder function until the open-source version implements other
-// trackers
-func noSupportedTrackers(cfg *config.Monkey) ([]chaosmonkey.Tracker, error) {
+// getTrackers returns a list of trackers specified in the configuration
+func getTrackers(cfg *config.Monkey) ([]chaosmonkey.Tracker, error) {
+	var result []chaosmonkey.Tracker
+
 	kinds, err := cfg.Trackers()
 	if err != nil {
 		return nil, err
 	}
 
-	for _, tracker := range kinds {
-		return nil, errors.Errorf("unsupported tracker: %s", tracker)
+	for _, kind := range kinds {
+		tr, err := getTracker(kind, cfg)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, tr)
 	}
+	return result, nil
+}
 
-	return nil, nil
+// getTracker returns a tracker by name
+func getTracker(kind string, cfg *config.Monkey) (chaosmonkey.Tracker, error) {
+	switch kind {
+	// Currently, no trackers have been implemented.
+	// As trackers are contributed to the open source project, they should
+	// be instantiated here
+	default:
+		return nil, errors.Errorf("unsupported tracker: %s", kind)
+	}
 }
