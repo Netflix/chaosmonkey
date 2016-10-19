@@ -157,7 +157,7 @@ func (s Spinnaker) AccountID(name string) (id string, err error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to read body from url %s")
+		return "", errors.Wrapf(err, "failed to read body from url %s", url)
 	}
 
 	var info struct {
