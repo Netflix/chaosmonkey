@@ -1,9 +1,8 @@
 ![logo](logo.png "logo")
 
 Chaos Monkey randomly terminates virtual machine instances and containers that
-run inside of your production environment. By exposing engineers to these
-failures more often, this helps enusre that they will implement their services
-to be resilient.
+run inside of your production environment. Exposing engineers to
+failures more frequently incentivizes them to build more resilient services.
 
 This version of Chaos Monkey is fully integrated with [Spinnaker], the
 continuous delivery platform that we use at Netflix. You must be managing your
