@@ -26,3 +26,7 @@ go install github.com/netflix/chaosmonkey/bin/chaosmonkey
 See the [wiki](https://github.com/Netflix/chaosmonkey/wiki) for instructions on how to configure and deploy Chaos Monkey.
 
 [Spinnaker]: http://www.spinnaker.io/
+
+### Support
+
+[Simian Army Google group](http://groups.google.com/group/simianarmy-users).
