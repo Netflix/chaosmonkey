@@ -19,7 +19,7 @@ import "fmt"
 import "time"
 
 // IsWorkday returns true if the date associated with t is a work day
-// Uses the location associated with t to amke this calculation
+// Uses the location associated with t to make this calculation
 func IsWorkday(t time.Time) bool {
 	return isWeekday(t)
 }
