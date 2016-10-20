@@ -118,7 +118,7 @@ func NewFromConfig(cfg *config.Monkey) (Spinnaker, error) {
 }
 
 // New returns a Spinnaker using a .p12 cert at certPath encrypted with
-// password. The user argument identifies the email address of the user whcih is
+// password. The user argument identifies the email address of the user which is
 // sent in the payload of the terminateInstances task API call
 func New(endpoint string, certPath string, password string, user string) (Spinnaker, error) {
 	var client *http.Client
