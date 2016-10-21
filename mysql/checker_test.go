@@ -153,6 +153,7 @@ func TestCheckLeashed(t *testing.T) {
 	}
 }
 
+// Check that only termination is permitted on concurrent attempts
 func TestConcurrentChecks(t *testing.T) {
 	err := initDB()
 	if err != nil {
@@ -172,6 +173,9 @@ func TestConcurrentChecks(t *testing.T) {
 	ch := make(chan error, 2)
 
 	go func() {
+		// We use the "MySQL.CheckWithDelay" method which adds a delay between reading
+		// from the database and writing to it, to increase the likelihood that
+		// the two requests overlap
 		ch <- m.CheckWithDelay(trm, appCfg, endHour, loc, 1*time.Second)
 	}()
 
@@ -181,6 +185,7 @@ func TestConcurrentChecks(t *testing.T) {
 
 	var success int
 	var txDeadlock int
+	var violatesMinTime int
 	for i := 0; i < 2; i++ {
 		err := <-ch
 		switch {
@@ -188,6 +193,8 @@ func TestConcurrentChecks(t *testing.T) {
 			success++
 		case mysql.TxDeadlock(err):
 			txDeadlock++
+		case mysql.ViolatesMinTime(err):
+			violatesMinTime++
 		default:
 			t.Fatalf("Unexpected error: %+v", err)
 		}

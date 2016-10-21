@@ -1,10 +1,14 @@
 ![logo](logo.png "logo")
 
 
-[![Build Status][badge]][travis]
+[![Build Status][travis-badge]][travis] [![GoDoc][godoc-badge]][godoc] [![GoReportCard][report-badge]][report]
 
-[badge]: https://travis-ci.org/Netflix/chaosmonkey.svg?branch=master
+[travis-badge]: https://travis-ci.org/Netflix/chaosmonkey.svg?branch=master
 [travis]: https://travis-ci.org/Netflix/chaosmonkey
+[godoc-badge]: https://godoc.org/github.com/Netflix/chaosmonkey?status.svg
+[godoc]: https://godoc.org/github.com/Netflix/chaosmonkey
+[report-badge]: https://goreportcard.com/badge/github.com/Netflix/chaosmonkey
+[report]: https://goreportcard.com/report/github.com/Netflix/chaosmonkey
 
 Chaos Monkey randomly terminates virtual machine instances and containers that
 run inside of your production environment. Exposing engineers to

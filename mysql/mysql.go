@@ -50,6 +50,13 @@ func TxDeadlock(err error) bool {
 	}
 }
 
+// ViolatesMinTime returns true if the error violates min time between
+// terminations
+func ViolatesMinTime(err error) bool {
+	_, ok := errors.Cause(err).(chaosmonkey.ErrViolatesMinTime)
+	return ok
+}
+
 // NewFromConfig creates a new MySQL taking config parameters from cfg
 func NewFromConfig(cfg *config.Monkey) (MySQL, error) {
 

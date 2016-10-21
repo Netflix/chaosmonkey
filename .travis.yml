@@ -6,13 +6,20 @@ language: go
 services:
     - docker
 
-before_install:
-    docker pull mysql:5.6
+install:
+    - docker pull mysql:5.6
+    - go get github.com/golang/lint/golint
+    - go get github.com/kisielk/errcheck
 
 
 # With the "docker" tag enabled,
 # the mysql:5.6 docker container will be started
 # and the mysql tests will connect to this container
-script: go test -v -tags docker  ./...
-
+#
+script:
+    - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -v /vendor/`)
+    - go list ./... | grep -v /vendor/ | xargs -L1 golint
+    - go vet `go list ./... | grep -v /vendor/`
+    - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
+    - go test -v -tags docker  ./...
 
