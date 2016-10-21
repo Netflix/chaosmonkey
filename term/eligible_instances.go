@@ -20,6 +20,8 @@ import (
 	"github.com/Netflix/chaosmonkey"
 	"github.com/Netflix/chaosmonkey/deploy"
 	"github.com/Netflix/chaosmonkey/grp"
+
+	jww "github.com/spf13/jwalterweatherman"
 )
 
 // EligibleInstances returns a list of instances that belong to group that are eligible for termination
@@ -71,6 +73,7 @@ func emit(app *deploy.App, dst chan<- *deploy.ASG) {
 	for _, account := range app.Accounts() {
 		for _, cluster := range account.Clusters() {
 			for _, asg := range cluster.ASGs() {
+				jww.DEBUG.Printf("found server group: {%s}", asg)
 				dst <- asg
 			}
 		}
@@ -86,6 +89,8 @@ func filterWhitelist(src <-chan *deploy.ASG, dst chan<- *deploy.ASG, pwl *[]chao
 	for asg := range src {
 		if isWhitelisted(pwl, asg) {
 			dst <- asg
+		} else {
+			jww.DEBUG.Printf("{%s} filtered out: not on whitelist", asg)
 		}
 	}
 }
@@ -106,6 +111,7 @@ func filterExceptions(src <-chan *deploy.ASG, dst chan<- *deploy.ASG, exs []chao
 
 	for asg := range src {
 		if isException(exs, asg) {
+			jww.DEBUG.Printf("{%s} filtered out: matches exception", asg)
 			continue
 		}
 
@@ -120,6 +126,7 @@ func filterCanaries(src <-chan *deploy.ASG, dst chan<- *deploy.ASG) {
 
 	for asg := range src {
 		if isCanary(asg) {
+			jww.DEBUG.Printf("{%s} filtered out: is canary", asg)
 			continue
 		}
 
@@ -154,6 +161,8 @@ func filterGroup(src <-chan *deploy.ASG, dst chan<- *deploy.ASG, group grp.Insta
 	for asg := range src {
 		if contains(group, asg) {
 			dst <- asg
+		} else {
+			jww.DEBUG.Printf("{%s} filtered out: asg not in chaos monkey group {%s}", asg, group)
 		}
 	}
 }
@@ -168,6 +177,7 @@ func toInstances(src <-chan *deploy.ASG, dst chan<- *deploy.Instance) {
 	defer close(dst)
 
 	for asg := range src {
+		jww.DEBUG.Printf("{%s} instances are eligible for termination", asg)
 		for _, instance := range asg.Instances() {
 			dst <- instance
 		}
