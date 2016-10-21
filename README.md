@@ -1,5 +1,11 @@
 ![logo](logo.png "logo")
 
+
+[![Build Status][badge]][travis]
+
+[badge]: https://travis-ci.org/Netflix/chaosmonkey.svg?branch=master
+[travis]: https://travis-ci.org/Netflix/chaosmonkey
+
 Chaos Monkey randomly terminates virtual machine instances and containers that
 run inside of your production environment. Exposing engineers to
 failures more frequently incentivizes them to build resilient services.
