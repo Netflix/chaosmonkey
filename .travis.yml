@@ -17,7 +17,7 @@ install:
 # and the mysql tests will connect to this container
 #
 script:
-    - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -v /vendor/`)
+    - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -Ev '/vendor/|/migration'`)
     - go list ./... | grep -Ev '/vendor/|/migration' | xargs -L1 golint
     - go vet `go list ./... | grep -v /vendor/`
     - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`

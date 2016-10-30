@@ -15,8 +15,8 @@
 package command
 
 import (
-	"github.com/Netflix/chaosmonkey/mysql"
 	"fmt"
+	"github.com/Netflix/chaosmonkey/mysql"
 	"os"
 )
 

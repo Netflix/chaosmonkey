@@ -37,8 +37,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pkg/errors"
 	"github.com/Netflix/chaosmonkey/mysql"
+	"github.com/pkg/errors"
 )
 
 var (

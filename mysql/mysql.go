@@ -29,10 +29,10 @@ import (
 	"github.com/Netflix/chaosmonkey/config/param"
 	"github.com/Netflix/chaosmonkey/deps"
 	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/migration"
 	"github.com/Netflix/chaosmonkey/schedstore"
 	"github.com/Netflix/chaosmonkey/schedule"
 	"github.com/rubenv/sql-migrate"
-	"github.com/Netflix/chaosmonkey/migration"
 	"log"
 )
 
