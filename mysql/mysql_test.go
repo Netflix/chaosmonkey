@@ -29,7 +29,6 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"os"
 	"os/exec"
@@ -39,6 +38,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/Netflix/chaosmonkey/mysql"
 )
 
 var (
@@ -170,35 +170,17 @@ func initDB() error {
 		return errors.Wrap(err, "create database failed")
 	}
 
-	_, err = db.Exec("USE " + dbName)
-	if err != nil {
-		return errors.Wrap(err, "use database failed")
+	mysqlDb, dbErr := mysql.New("127.0.0.1", port, "root", password, dbName)
+	if dbErr != nil {
+		return errors.Wrap(err, "mysql.New failed")
 	}
+	defer mysqlDb.Close()
 
 	// Get the "terminations" schema
-	b, err := ioutil.ReadFile(schemaDir + "terminations.sql")
-	if err != nil {
-		return err
-	}
 
-	_, err = db.Exec(string(b))
+	err = mysql.Migrate(mysqlDb)
 	if err != nil {
-		return errors.Wrap(err, "create terminations table failed")
-	}
-
-	buf, err := ioutil.ReadFile(schemaDir + "schedules.sql")
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec(string(buf))
-	if err != nil {
-		return errors.Wrap(err, "create terminations table failed")
-	}
-
-	_, err = db.Exec(string(buf))
-	if err != nil {
-		return errors.Wrap(err, "create schedules table failed")
+		return errors.Wrap(err, "database migration failed")
 	}
 
 	return nil

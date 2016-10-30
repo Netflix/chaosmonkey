@@ -57,8 +57,12 @@ Chaos Monkey
 Usage:
 	chaosmonkey <command> ...
 
-command: schedule | terminate | fetch-schedule | outage | config  | email | eligible | intest
+command: migrate | schedule | terminate | fetch-schedule | outage | config  | email | eligible | intest
 
+
+migrate
+-------
+Applies database migration to the database defined in the configuraton file.
 
 schedule [--max-apps=<N>] [--apps=foo,bar,baz] [--no-record-schedule]
 --------------------------------------------------------------------
@@ -216,6 +220,8 @@ func Execute() {
 	}()
 
 	switch cmd {
+	case "migrate":
+		Migrate(sql)
 	case "schedule":
 		log.Println("chaosmonkey schedule starting")
 		defer log.Println("chaosmonkey schedule done")
