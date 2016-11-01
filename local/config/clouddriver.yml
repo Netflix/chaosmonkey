@@ -1,5 +1,85 @@
+server:
+  port: ${services.clouddriver.port:7002}
+  address: ${services.clouddriver.host:localhost}
+
+redis:
+  connection: ${services.redis.connection:redis://localhost:6379}
+
+udf:
+  # Controls whether UserDataProviders are used to populate user data of new
+  # server groups. If false, user data is copied over from ancestor server
+  # groups on both CopyLastAsgAtomicOperation and
+  # ModifyAsgLaunchConfigurationOperation (only if no user data is provided
+  # on the given request).
+  enabled: ${services.clouddriver.aws.udf.enabled:true}
+
+default:
+  account:
+    env: ${providers.aws.primaryCredentials.name}
+
+aws:
+  # AWS Credentials are passed either as environment variables or through
+  # a standard AWS file $HOME/.aws/credentials
+  # See providers.aws.primaryCredentials in spinnaker.yml for more
+  # info on setting environment variables.
+  enabled: ${providers.aws.enabled:false}
+  defaults:
+    iamRole: ${providers.aws.defaultIAMRole:BaseIAMRole}
+  defaultRegions:
+    - name: ${providers.aws.defaultRegion:us-east-1}
+  defaultFront50Template: ${services.front50.baseUrl}
+  defaultKeyPairTemplate: ${providers.aws.defaultKeyPairTemplate}
+
+azure:
+  enabled: ${providers.azure.enabled:false}
+
+  accounts:
+    - name: ${providers.azure.primaryCredentials.name}
+      clientId: ${providers.azure.primaryCredentials.clientId}
+      appKey: ${providers.azure.primaryCredentials.appKey}
+      tenantId: ${providers.azure.primaryCredentials.tenantId}
+      subscriptionId: ${providers.azure.primaryCredentials.subscriptionId}
+
+google:
+  enabled: ${providers.google.enabled:false}
+
+  accounts:
+    - name: ${providers.google.primaryCredentials.name}
+      project: ${providers.google.primaryCredentials.project}
+      jsonPath: ${providers.google.primaryCredentials.jsonPath}
+      consul:
+        enabled: ${providers.google.primaryCredentials.consul.enabled:false}
+
+cf:
+  enabled: ${providers.cf.enabled:false}
+
+  accounts:
+    - name: ${providers.cf.primaryCredentials.name}
+      api: ${providers.cf.primaryCredentials.api}
+      console: ${providers.cf.primaryCredentials.console}
+      org: ${providers.cf.defaultOrg}
+      space: ${providers.cf.defaultSpace}
+      username: ${providers.cf.account.name:}
+      password: ${providers.cf.account.password:}
+
 kubernetes:
+  enabled: true
+  accounts:
+      - name: kube-solo
+        kubeconfigFile: /opt/spinnaker/config/kubeconfig
+        dockerRegistries:
+            - accountName: local-registry
+
+  # primaryCredentials:
+  #     name: kube-solo
+  #     dockerRegistryAccount: docker-hub
+
+dockerRegistry:
     enabled: true
     accounts:
-        - name: kube-solo
-          kubeconfigFile: /opt/spinnaker/config/kubeconfig
+        - name: local-registry
+          address: http://registry:5000
+
+credentials:
+  primaryAccountTypes: ${providers.aws.primaryCredentials.name}, ${providers.google.primaryCredentials.name}, ${providers.cf.primaryCredentials.name}, ${providers.azure.primaryCredentials.name}
+  challengeDestructiveActionsEnvironments: ${providers.aws.primaryCredentials.name}, ${providers.google.primaryCredentials.name}, ${providers.cf.primaryCredentials.name}, ${providers.azure.primaryCredentials.name}
