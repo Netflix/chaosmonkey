@@ -37,7 +37,7 @@ import (
 )
 
 // Version is the version number
-const Version = "2.0.0"
+const Version = "2.0.1"
 
 func printVersion() {
 	fmt.Printf("%s\n", Version)
