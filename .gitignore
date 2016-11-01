@@ -1,2 +1,3 @@
 local/chaosmonkey
 local/config/kubeconfig
+local/registry-data
