@@ -1,0 +1,5 @@
+kubernetes:
+    enabled: true
+    accounts:
+        - name: kube-solo
+          kubeconfigFile: /opt/spinnaker/config/kubeconfig
