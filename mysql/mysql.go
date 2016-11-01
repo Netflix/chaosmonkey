@@ -29,8 +29,11 @@ import (
 	"github.com/Netflix/chaosmonkey/config/param"
 	"github.com/Netflix/chaosmonkey/deps"
 	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/migration"
 	"github.com/Netflix/chaosmonkey/schedstore"
 	"github.com/Netflix/chaosmonkey/schedule"
+	"github.com/rubenv/sql-migrate"
+	"log"
 )
 
 // MySQL represents a MySQL-backed store for schedules and terminations
@@ -79,7 +82,7 @@ func NewFromConfig(cfg *config.Monkey) (MySQL, error) {
 	return New(cfg.DatabaseHost(), cfg.DatabasePort(), cfg.DatabaseUser(), password, cfg.DatabaseName())
 }
 
-// New createa a new MySQL
+// New creates a new MySQL
 func New(host string, port int, user string, password string, dbname string) (MySQL, error) {
 	db, err := sql.Open("mysql", dsn(host, port, user, password, dbname))
 	if err != nil {
@@ -433,4 +436,24 @@ func recordTermination(tx *sql.Tx, term chaosmonkey.Termination, loc *time.Locat
 		i.AppName(), i.AccountName(), i.StackName(), i.ClusterName(), i.RegionName(), i.ASGName(), i.ID(), term.Time.In(time.UTC), term.Leashed)
 
 	return err
+}
+
+var migrationSource = &migrate.AssetMigrationSource{
+	Asset:    migration.Asset,
+	AssetDir: migration.AssetDir,
+	Dir:      "migration/mysql",
+}
+
+var databaseDialect = "mysql"
+
+// Migrate upgrades a database to the latest database schema version.
+func Migrate(mysqlDb MySQL) error {
+	migrationCount, err := migrate.Exec(mysqlDb.db, databaseDialect, migrationSource, migrate.Up)
+	if err != nil {
+		return errors.Wrap(err, "database migration failed")
+	} else {
+		log.Println("Successfully applied database migrations. Number of migrations applied: ", migrationCount)
+	}
+
+	return nil
 }
