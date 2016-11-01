@@ -1,8 +1,137 @@
 version: '2'
 services:
+    # Used by chaos monkey, not spinnaker
     mysql:
         image: "mysql:5.6"
         ports:
             - "3306:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=password
+
+    # used by spinnaker
+    redis:
+        command: "redis-server --appendonly yes"
+        container_name: redis
+        expose:
+            - "6379"
+        image: redis
+
+    # fronts k8s
+    clouddriver:
+        container_name: clouddriver
+        env_file: ./compose.env
+        environment:
+            - AWS_ACCESS_KEY_ID
+            - AWS_SECRET_ACCESS_KEY
+            - "SERVICES_FRONT50_BASEURL=http://$DOCKER_IP:8080"
+        image: quay.io/spinnaker/clouddriver
+        links:
+            - redis
+        ports:
+            - "7002:7002"
+
+    # spinnaker web ui
+    deck:
+        container_name: deck
+        environment:
+            - "API_HOST=http://$DOCKER_IP:8084"
+            - DECK_HOST=0.0.0.0
+            - DECK_PORT=9000
+            - PROTOCOL=http
+            - AUTH_ENABLED=false
+            - "AUTH_ENDPOINT=http://$DOCKER_IP:8084/auth/user"
+        image: quay.io/spinnaker/deck
+        ports:
+            - "9000:9000"
+
+    # spinnaker event router
+    echo:
+        container_name: echo
+        env_file: ./compose.env
+        environment:
+            - "FRONT50_BASEURL=http://$DOCKER_IP:8080"
+            - "ORCA_BASEURL=http://$DOCKER_IP:8083"
+            - "JAVA_OPTS=-javaagent:/opt/echo/lib/jamm-0.2.5.jar"
+        image: quay.io/spinnaker/echo
+        ports:
+            - "8089:8089"
+
+    # spinnaker front for persistent storage
+    front50:
+        container_name: front50
+        env_file: ./compose.env
+        environment:
+            - "JAVA_OPTS=-javaagent:/opt/front50/lib/jamm-0.2.5.jar"
+        image: quay.io/spinnaker/front50
+        ports:
+            - "8080:8080"
+
+    # spinnaker rest api
+    gate:
+        container_name: gate
+        env_file: ./compose.env
+        environment:
+            - SERVICES_CLOUDDRIVER_HOST=clouddriver
+            - SERVICES_ECHO_HOST=echo
+            - SERVICES_FRONT50_HOST=front50
+            - SERVICES_IGOR_HOST=igor
+            - SERVICES_ORCA_HOST=orca
+        image: quay.io/spinnaker/gate
+        links:
+            - redis
+            - clouddriver
+            - echo
+            - front50
+            - igor
+            - orca
+        ports:
+            - "8084:8084"
+
+    # spinnaker auth
+    fiat:
+        container_name: fiat
+        env_file: ./compose.env
+        environment:
+            - SERVICES_CLOUDDRIVER_HOST=clouddriver
+            - SERVICES_FRONT50_HOST=front50
+        image: quay.io/spinnaker/fiat
+        links:
+            - redis
+            - clouddriver
+            - front50
+        ports:
+            - "7003:7003"
+
+    # spinnaker orchestration engine
+    orca:
+        container_name: orca
+        env_file: ./compose.env
+        environment:
+            - SERVICES_CLOUDDRIVER_HOST=clouddriver
+            - SERVICES_ECHO_HOST=echo
+            - SERVICES_FRONT50_HOST=front50
+            - SERVICES_IGOR_HOST=igor
+        image: quay.io/spinnaker/orca
+        links:
+            - redis
+            - clouddriver
+            - echo
+            - front50
+            - igor
+        ports:
+            - "8083:8083"
+
+    # spinnaker integration service for travis, jenkins, git
+    igor:
+        container_name: igor
+        env_file: ./compose.env
+        environment:
+            - SERVICES_ECHO_HOST=echo
+            - SERVICES_CLOUDDRIVER_HOST=clouddriver
+        image: quay.io/spinnaker/igor
+        links:
+            - redis
+            - clouddriver
+            - echo
+        ports:
+            - "8088:8088"
