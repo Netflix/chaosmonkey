@@ -46,6 +46,8 @@ services:
         image: quay.io/spinnaker/deck
         ports:
             - "9000:9000"
+        volumes:
+            - "./config/settings.js:/deck/settings.js"
 
     # spinnaker event router
     echo:
@@ -58,6 +60,8 @@ services:
         image: quay.io/spinnaker/echo
         ports:
             - "8089:8089"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker front for persistent storage
     front50:
@@ -68,6 +72,8 @@ services:
         image: quay.io/spinnaker/front50
         ports:
             - "8080:8080"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker rest api
     gate:
@@ -89,6 +95,8 @@ services:
             - orca
         ports:
             - "8084:8084"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker auth
     fiat:
@@ -104,6 +112,8 @@ services:
             - front50
         ports:
             - "7003:7003"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker orchestration engine
     orca:
@@ -123,6 +133,8 @@ services:
             - igor
         ports:
             - "8083:8083"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker integration service for travis, jenkins, git
     igor:
@@ -138,3 +150,5 @@ services:
             - echo
         ports:
             - "8088:8088"
+        volumes:
+            - "./config:/opt/spinnaker/config"
