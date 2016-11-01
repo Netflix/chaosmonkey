@@ -42,10 +42,9 @@ import (
 )
 
 var (
-	dbName    string = "chaosmonkey"
-	password  string = "password"
-	port      int    = 3306
-	schemaDir string = "../mysql_schema/"
+	dbName   string = "chaosmonkey"
+	password string = "password"
+	port     int    = 3306
 )
 
 // inUse returns true if port accepts connections on localhsot
