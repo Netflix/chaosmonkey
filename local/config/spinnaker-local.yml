@@ -1,0 +1,14 @@
+
+# This file is intended to serve as a master configuration for a Spinnaker
+# This file is intended to override the default configuration in the
+# spinnaker.yml file while providing guidance on the mostly likely
+# configuration parameters to be changed.
+#
+# In order for Spinnaker to discover it, it must be copied to a file named
+# "spinnaker-local.yml" and placed in the $HOME/.spinnaker directory.
+
+
+global:
+  spinnaker:
+    timezone: 'America/Los_Angeles'
+

@@ -1,0 +1,25 @@
+server:
+  port: ${services.gate.port:8084}
+  address: ${services.gate.host:localhost}
+
+# Circular references since we're already using 'services'
+# services:
+#   clouddriver:
+#     baseUrl: ${services.clouddriver.baseUrl:localhost:7002}
+#   orca:
+#     baseUrl: ${services.orca.baseUrl:localhost:8083}
+#   front50:
+#     baseUrl: ${services.front50.baseUrl:localhost:8080}
+# #optional services:
+#   echo:
+#     enabled: ${services.echo.enabled:true}
+#     baseUrl: ${services.echo.baseUrl:8089}
+#   flapjack:
+#     enabled: ${services.flapjack.enabled:false}
+#   igor:
+#     enabled: ${services.igor.enabled:false}
+#     baseUrl: ${services.igor.baseUrl:8088}
+
+redis:
+  connection: ${services.redis.connection}
+

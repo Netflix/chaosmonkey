@@ -1,0 +1,42 @@
+server:
+  port: ${services.front50.port:8080}
+  address: ${services.front50.host:localhost}
+
+hystrix:
+  command:
+    default.execution.isolation.thread.timeoutInMilliseconds: 15000
+
+cassandra:
+  enabled: ${services.front50.cassandra.enabled:true}
+  embedded: ${services.cassandra.embedded:false}
+  host: ${services.cassandra.host:localhost}
+
+aws:
+  simpleDBEnabled: ${providers.aws.simpleDBEnabled:false}
+  defaultSimpleDBDomain: ${providers.aws.defaultSimpleDBDomain}
+
+spinnaker:
+  cassandra:
+    enabled: ${services.front50.cassandra.enabled:true}
+    host: ${services.cassandra.host:localhost}
+    port: ${services.cassandra.port:9042}
+    cluster: ${services.cassandra.cluster:CASS_SPINNAKER}
+    keyspace: front50
+    name: global
+
+  redis:
+    enabled: ${services.front50.redis.enabled:false}
+
+  gcs:
+    enabled: ${services.front50.gcs.enabled:false}
+    bucket: ${services.front50.storage_bucket:}
+    # See https://cloud.google.com/storage/docs/managing-buckets#manage-class-location
+    bucketLocation: ${services.front50.bucket_location:}
+    rootFolder: ${services.front50.bucket_root:front50}
+    project: ${providers.google.primaryCredentials.project}
+    jsonPath: ${providers.google.primaryCredentials.jsonPath}
+
+  s3:
+    enabled: ${services.front50.s3.enabled:false}
+    bucket: ${services.front50.storage_bucket:}
+    rootFolder: ${services.front50.bucket_root:front50}

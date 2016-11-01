@@ -1,0 +1,58 @@
+server:
+  port: ${services.echo.port:8089}
+  address: ${services.echo.host:localhost}
+
+cassandra:
+  enabled: ${services.echo.cassandra.enabled:true}
+  embedded: ${services.cassandra.embedded:false}
+  host: ${services.cassandra.host:localhost}
+
+spinnaker:
+  baseUrl: ${services.deck.baseUrl}
+  cassandra:
+     enabled: ${services.echo.cassandra.enabled:true}
+  inMemory:
+     enabled: ${services.echo.inMemory.enabled:false}
+
+front50:
+  baseUrl: ${services.front50.baseUrl:http://localhost:8080}
+
+orca:
+  baseUrl: ${services.orca.baseUrl:http://localhost:8083}
+
+endpoints.health.sensitive: false
+
+slack:
+  enabled: ${services.echo.notifications.slack.enabled:false}
+  token: ${services.echo.notifications.slack.token}
+
+spring:
+  mail:
+    host: ${mail.host}
+
+mail:
+  enabled: ${services.echo.notifications.mail.enabled:false}
+  host: ${services.echo.notifications.mail.host}
+  from: ${services.echo.notifications.mail.fromAddress}
+
+hipchat:
+  enabled: ${services.echo.notifications.hipchat.enabled:false}
+  baseUrl: ${services.echo.notifications.hipchat.url}
+  token: ${services.echo.notifications.hipchat.token}
+
+twilio:
+  enabled: ${services.echo.notifications.sms.enabled:false}
+  baseUrl: ${services.echo.notifications.sms.url:https://api.twilio.com/}
+  account: ${services.echo.notifications.sms.account}
+  token: ${services.echo.notifications.sms.token}
+  from: ${services.echo.notifications.sms.from}
+
+scheduler:
+  enabled: ${services.echo.cron.enabled:true}
+  threadPoolSize: 20
+  triggeringEnabled: true
+  pipelineConfigsPoller:
+    enabled: true
+    pollingIntervalMs: 30000
+  cron:
+    timezone: ${services.echo.cron.timezone}

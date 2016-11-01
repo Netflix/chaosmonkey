@@ -1,0 +1,27 @@
+server:
+  port: ${services.rosco.port:8087}
+  address: ${services.rosco.host:localhost}
+
+redis:
+  connection: ${services.redis.connection:redis://localhost:6379}
+
+aws:
+  enabled: ${providers.aws.enabled:false}
+
+docker:
+  enabled: ${services.docker.enabled:false}
+  bakeryDefaults:
+    targetRepository: ${services.docker.targetRepository}
+
+google:
+  enabled: ${providers.google.enabled:false}
+  accounts:
+    - name: ${providers.google.primaryCredentials.name}
+      project: ${providers.google.primaryCredentials.project}
+      jsonPath: ${providers.google.primaryCredentials.jsonPath}
+  gce:
+    bakeryDefaults:
+      zone: ${providers.google.defaultZone}
+
+rosco:
+  configDir: ${services.rosco.configDir}

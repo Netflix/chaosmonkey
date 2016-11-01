@@ -1,0 +1,6 @@
+server:
+  port: ${services.fiat.port:7003}
+  address: ${services.fiat.host:localhost}
+
+redis:
+  connection: ${services.redis.connection:redis://localhost:6379}

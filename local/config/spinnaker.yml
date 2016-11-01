@@ -1,0 +1,296 @@
+
+# This file is intended to serve as a master configuration for a Spinnaker
+# deployment. Customizations to the deployment should be made in another file
+# named "spinnaker-local.yml". The distribution has a prototype called
+# "default-spinnaker-local.yml" which calls out the subset of attributes of
+# general interest. It can be copied into a "spinnaker-local.yml" to start
+# with. The prototype does not change any of the default values here, it just
+# surfaces the more critical attributes.
+
+global:
+  spinnaker:
+    environment: test
+    timezone: 'America/Los_Angeles'
+
+services:
+  default:
+    # These defaults can be modified to change all the spinnaker subsystems
+    # (clouddriver, gate, etc) at once, but not external systems (jenkins, etc).
+    # Individual systems can still be overridden using their own section entry
+    # directly under 'services'.
+    host: localhost
+    protocol: http
+    primaryAccountName: service-default-primaryAccountName-not-defined
+
+  clouddriver:
+    host: ${services.default.host}
+    port: 7002
+    baseUrl: ${services.default.protocol}://${services.clouddriver.host}:${services.clouddriver.port}
+    aws:
+      udf:
+        # Controls whether UserDataProviders are used to populate user data of
+        # new server groups. If false, user data is copied over from ancestor
+        # server groups on both CopyLastAsgAtomicOperation and
+        # ModifyAsgLaunchConfigurationOperation (only if no user data is
+        # provided on the given request).
+        enabled: true
+
+  echo:
+    enabled: true
+    host: ${services.default.host}
+    port: 8089
+    baseUrl: ${services.default.protocol}://${services.echo.host}:${services.echo.port}
+
+    # Persistence mechanism to use
+    cassandra:
+      enabled: true
+    inMemory:
+      enabled: false
+
+    cron:
+      # Allow pipeline triggers to run periodically via cron expressions.
+      enabled: true
+      timezone: ${global.spinnaker.timezone}
+
+    notifications:
+      # The following blocks can enable Spinnaker to send notifications
+      # using the corresponding mechanism.
+      # See http://www.spinnaker.io/docs/notifications-and-events-guide
+      # for more information.
+      mail:
+        enabled: false
+        host: # the smtp host
+        fromAddress: # the address for which emails are sent from
+      hipchat:
+        enabled: false
+        url: # the hipchat server to connect to
+        token: # the hipchat auth token
+        botName: # the username of the bot
+      sms:
+        enabled: false
+        account: # twilio account id
+        token: # twilio auth token
+        from: # phone number by which sms messages are sent
+      slack:
+        enabled: false
+        token: # the API token for the bot
+        botName: # the username of the bot
+
+  deck:
+    host: ${services.default.host}
+    port: 9000
+    baseUrl: ${services.default.protocol}://${services.deck.host}:${services.deck.port}
+    gateUrl: ${services.gate.baseUrl}
+    bakeryUrl: ${services.bakery.baseUrl}
+    timezone: ${global.spinnaker.timezone}
+    auth:
+      enabled: false
+
+  fiat:
+    enabled: false
+    host: ${services.default.host}
+    port: 7003
+    baseUrl: ${services.default.protocol}://${services.fiat.host}:${services.fiat.port}
+
+  front50:
+    host: ${services.default.host}
+    port: 8080
+    baseUrl: ${services.default.protocol}://${services.front50.host}:${services.front50.port}
+
+    # If using storage bucket persistence (gcs or s3), specify the bucket here
+    # disable cassandra and enable the storage service below.
+    storage_bucket:
+    # (GCS Only) Location for bucket.
+    bucket_location:
+    bucket_root: front50
+
+    cassandra:
+      enabled: true
+    redis:
+      enabled: false
+    gcs:
+      enabled: false
+    s3:
+      enabled: false
+
+  gate:
+    host: ${services.default.host}
+    port: 8084
+    baseUrl: ${services.default.protocol}://${services.gate.host}:${services.gate.port}
+
+  igor:
+    # If you are integrating Jenkins then you must also enable Spinnaker's
+    # "igor" subsystem.
+    enabled: false
+    host: ${services.default.host}
+    port: 8088
+    baseUrl: ${services.default.protocol}://${services.igor.host}:${services.igor.port}
+
+  kato:
+    host: ${services.clouddriver.host}
+    port: ${services.clouddriver.port}
+    baseUrl: ${services.clouddriver.baseUrl}
+
+  mort:
+    host: ${services.clouddriver.host}
+    port: ${services.clouddriver.port}
+    baseUrl: ${services.clouddriver.baseUrl}
+
+  orca:
+    host: ${services.default.host}
+    port: 8083
+    baseUrl: ${services.default.protocol}://${services.orca.host}:${services.orca.port}
+    timezone: ${global.spinnaker.timezone}
+    enabled: true
+
+  oort:
+    host: ${services.clouddriver.host}
+    port: ${services.clouddriver.port}
+    baseUrl: ${services.clouddriver.baseUrl}
+
+  rosco:
+    host: ${services.default.host}
+    port: 8087
+    baseUrl: ${services.default.protocol}://${services.rosco.host}:${services.rosco.port}
+    # You need to provide the fully-qualified path to the directory containing the packer templates.
+    # They typically live in rosco's config/packer directory.
+    configDir: /opt/rosco/config/packer
+
+  bakery:
+    host: ${services.rosco.host}
+    port: ${services.rosco.port}
+    baseUrl: ${services.rosco.baseUrl}
+    extractBuildDetails: true
+    allowMissingPackageInstallation: false
+
+  docker:
+    # This target repository is used by the bakery to publish baked docker images.
+    # Do not include http://.
+    targetRepository: # Optional, but expected in spinnaker-local.yml if specified.
+
+  jenkins:
+    # The "name" entry is used for the display name when selecting
+    # this server. You must set `enabled` to true when enabling igor.
+    #
+    # If you have multiple jenkins servers, you will need to list
+    # them in an igor-local.yml. See jenkins.masters in config/igor.yml.
+    #
+    # Note that jenkins is not installed with Spinnaker so you must obtain this
+    # on your own if you are interested.
+    enabled: ${services.igor.enabled:false}
+    defaultMaster:
+      name: Jenkins
+      baseUrl:   # Expected in spinnaker-local.yml
+      username:  # Expected in spinnaker-local.yml
+      password:  # Expected in spinnaker-local.yml
+
+  redis:
+    host: ${services.default.host}
+    port: 6379
+    connection: redis://${services.redis.host}:${services.redis.port}
+
+  cassandra:
+    # cassandra.enabled is no longer used
+    # cassandra is enabled or disabled on a per-service basis
+    # where the alternative persistence mechanism for that service
+    # can be enabled.
+    host: ${services.default.host}
+    port: 9042
+    embedded: false
+    cluster: CASS_SPINNAKER
+
+providers:
+  aws:
+    # For more information on configuring Amazon Web Services (aws), see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-amazon-web-services-setup
+
+    enabled: false
+    simpleDBEnabled: false
+    defaultRegion: us-east-1
+    defaultSimpleDBDomain: CLOUD_APPLICATIONS
+    primaryCredentials:
+      name: default
+      # The actual credentials are set using a standard AWS client library mechanism
+      # http://docs.aws.amazon.com/AWSSdkDocsJava/latest/DeveloperGuide/credentials.html
+      # Typically this is a $HOME/.aws/credentials file (remember, a standard
+      # spinnaker installation runs as user "spinnaker" whose $HOME is
+      # /home/spinnaker). The primaryCredentials.name will identify which profile
+      # to use (for .aws/credentials).
+
+    # {{name}} will be interpolated with the aws account name (e.g. "my-aws-account-keypair").
+    defaultKeyPairTemplate: "{{name}}-keypair"
+
+  google:
+    # For more information on configuring Google Cloud Platform (google), see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-google-cloud-platform-setup
+
+    enabled: false
+    defaultRegion: us-central1
+    defaultZone: us-central1-f
+    primaryCredentials:
+      name: my-account-name
+      # The project is the Google Project ID for the project to manage with
+      # Spinnaker. The jsonPath is a path to the JSON service credentials
+      # downloaded from the Google Developer's Console.
+      project:
+      jsonPath:
+      consul:
+        enabled: false
+
+  cf:
+    # For more information on configuring Cloud Foundry (cf) support, see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-cloud-foundry-platform-setup
+
+    enabled: false
+    defaultOrg: spinnaker-cf-org
+    defaultSpace: spinnaker-cf-space
+    primaryCredentials:
+      name: my-cf-account
+      api: my-cf-api-uri
+      console: my-cf-console-base-url
+      # You must also supply cf.account.username and cf.account.password through env properties
+
+  azure:
+    # For more information on configuring Microsoft Azure (azure), see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-azure-cloud-platform-setup
+
+    enabled: false
+    defaultRegion: westus
+    primaryCredentials:
+      name: my-azure-account
+
+      # To set Azure credentials, enter your Azure supscription values for:
+      # clientId, appKey, tenantId, and subscriptionId.
+      clientId:
+      appKey:
+      tenantId:
+      subscriptionId:
+
+  titan:
+    # If you want to deploy some services to titan,
+    # set enabled and provide primary credentials for deploying.
+    # Enabling titan is independent of other providers.
+    enabled: false
+    defaultRegion: us-east-1
+    primaryCredentials:
+      name: my-titan-account
+
+  kubernetes:
+    # For more information on configuring Kubernetes clusters (kubernetes), see
+    # http://www.spinnaker.io/v1.0/docs/target-deployment-setup#section-kubernetes-cluster-setup
+
+    # NOTE: enabling kubernetes also requires enabling dockerRegistry.
+    enabled: false
+    primaryCredentials:
+      name: my-kubernetes-account
+      namespace: default
+      dockerRegistryAccount: ${providers.dockerRegistry.primaryCredentials.name}
+
+  dockerRegistry:
+    # If you want to use a container based provider, you need to configure and
+    # enable this provider to cache images.
+    enabled: false
+    primaryCredentials:
+      name: my-docker-registry-account
+      address: https://index.docker.io/
+      repository: library/nginx

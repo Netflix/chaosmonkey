@@ -1,0 +1,40 @@
+server:
+    port: ${services.orca.port:8083}
+    address: ${services.orca.host:localhost}
+
+oort:
+    baseUrl: ${services.oort.baseUrl:localhost:7002}
+front50:
+    baseUrl: ${services.front50.baseUrl:localhost:8080}
+mort:
+    baseUrl: ${services.mort.baseUrl:localhost:7002}
+kato:
+    baseUrl: ${services.kato.baseUrl:localhost:7002}
+bakery:
+    baseUrl: ${services.bakery.baseUrl:localhost:8087}
+    extractBuildDetails: ${services.bakery.extractBuildDetails:true}
+    allowMissingPackageInstallation: ${services.bakery.allowMissingPackageInstallation:false}
+echo:
+    enabled: ${services.echo.enabled:false}
+    baseUrl: ${services.echo.baseUrl:8089}
+
+igor:
+    baseUrl: ${services.igor.baseUrl:8088}
+
+# TODO(duftler): Remove this once flex is conditionally-enabled in orca.
+flex:
+  baseUrl: http://not-a-host
+
+default:
+  bake:
+    account: ${providers.aws.primaryCredentials.name}
+  securityGroups:
+  vpc:
+    securityGroups:
+
+redis:
+  connection: ${services.redis.connection}
+
+tasks:
+  executionWindow:
+    timezone: ${services.orca.timezone}

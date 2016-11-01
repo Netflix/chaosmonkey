@@ -1,0 +1,33 @@
+server:
+  port: ${services.igor.port:8088}
+  address: ${services.igor.host:localhost}
+
+jenkins:
+  enabled: ${services.jenkins.enabled:false}
+  masters:
+    - name: ${services.jenkins.defaultMaster.name}
+      address: ${services.jenkins.defaultMaster.baseUrl}
+      username: ${services.jenkins.defaultMaster.username}
+      password: ${services.jenkins.defaultMaster.password}
+
+travis:
+  enabled: ${services.travis.enabled:false}
+  masters:
+    - name: ${services.travis.defaultMaster.name}
+      baseUrl: ${services.travis.defaultMaster.baseUrl}
+      address: ${services.travis.defaultMaster.address}
+      githubToken: ${services.travis.defaultMaster.githubToken}
+
+dockerRegistry:
+  enabled: ${SPINNAKER_KUBERNETES_ENABLED:false}
+
+redis:
+  connection: ${services.redis.connection:redis://localhost:6379}
+
+# Igor depends on Clouddriver and Echo. These are normally configured
+# in spinnaker[-local].yml (if present), otherwise, uncomment this.
+# services:
+#   clouddriver:
+#     baseUrl: ${services.clouddriver.baseUrl}
+#   echo:
+#     baseUrl: ${services.echo.baseUrl}
