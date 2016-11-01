@@ -29,6 +29,8 @@ services:
             - redis
         ports:
             - "7002:7002"
+        volumes:
+            - "./config:/opt/spinnaker/config"
 
     # spinnaker web ui
     deck:
