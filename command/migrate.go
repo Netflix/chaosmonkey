@@ -16,8 +16,9 @@ package command
 
 import (
 	"fmt"
-	"github.com/Netflix/chaosmonkey/mysql"
 	"os"
+
+	"github.com/Netflix/chaosmonkey/mysql"
 )
 
 // Migrate executes database migration
@@ -25,7 +26,7 @@ func Migrate(db mysql.MySQL) {
 	err := mysql.Migrate(db)
 
 	if err != nil {
-		fmt.Printf("ERROR - counldn't apply database migration: %v", err)
+		fmt.Printf("ERROR - couldn't apply database migration: %v", err)
 		os.Exit(1)
 	}
 	fmt.Println("database migration applied successfully")
