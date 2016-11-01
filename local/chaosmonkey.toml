@@ -3,3 +3,6 @@ host = "localhost"
 name = "chaosmonkey"
 user = "root"
 encrypted_password = "password"
+
+[spinnaker]
+endpoint = "http://localhost:8084"
