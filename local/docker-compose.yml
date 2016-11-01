@@ -8,6 +8,8 @@ services:
             - "3306:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=password
+        volumes:
+            - "./mysql:/docker-entrypoint-initdb.d"
 
     # used by spinnaker
     redis:
@@ -22,6 +24,8 @@ services:
         image: "registry:2"
         ports:
             - "5001:5000"  # Use 5001 because corectl.app runs a separate registry at 5000
+        volumes:
+            - "./registry-data:/var/lib/registry"
 
     # fronts k8s
     clouddriver:
