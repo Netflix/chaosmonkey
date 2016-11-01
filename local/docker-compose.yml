@@ -2,6 +2,7 @@ version: '2'
 services:
     # Used by chaos monkey, not spinnaker
     mysql:
+        container_name: mysql
         image: "mysql:5.6"
         ports:
             - "3306:3306"
