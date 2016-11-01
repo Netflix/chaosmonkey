@@ -21,7 +21,7 @@ services:
         container_name: registry
         image: "registry:2"
         ports:
-            - "5001:5000"
+            - "5001:5000"  # Use 5001 because corectl.app runs a separate registry at 5000
 
     # fronts k8s
     clouddriver:
