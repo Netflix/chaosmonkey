@@ -37,6 +37,13 @@ type Monkey struct {
 	v      *viper.Viper
 }
 
+const (
+	clockStartHour      int = 0
+	clockEndHour        int = 23
+	hoursInClock        int = 24
+	cronBeforeStartHour int = 2
+)
+
 func (m *Monkey) setDefaults() {
 	m.v.SetDefault(param.Enabled, false)
 	m.v.SetDefault(param.Leashed, true)
@@ -64,6 +71,9 @@ func (m *Monkey) setDefaults() {
 	m.v.SetDefault(param.DynamicEndpoint, "")
 	m.v.SetDefault(param.DynamicPath, "")
 
+	m.v.SetDefault(param.InstalledCronPath, "/etc/cron.d/chaosmonkey-schedule")
+	m.v.SetDefault(param.InstalledScriptPath, "/apps/chaosmonkey/chaosmonkey-schedule.sh")
+	m.v.SetDefault(param.LogPath, "/var/log")
 }
 
 func (m *Monkey) setupEnvVarReader() {
@@ -422,4 +432,57 @@ func (p proxy) Watch(rp viper.RemoteProvider) (io.Reader, error) {
 func SetRemoteProvider(name string, factory RemoteConfigFactory) {
 	viper.RemoteConfig = proxy{factory}
 	viper.SupportedRemoteProviders = []string{name}
+}
+
+// InstalledCronExpression returns the chaosmonkey main run cron expression.
+// It defaults to 2 hour before start_hour on weekdays, if no cron expression
+// is specified in the config
+func (m *Monkey) InstalledCronExpression() (string, error) {
+	defaultCron := "0 %d * * 1-5"
+	cron := m.v.Get(param.InstalledCronExpression)
+	if cron == nil {
+		runAtHour, err := calculateDefaultCronRunHour(m.StartHour())
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf(defaultCron, runAtHour), nil
+	}
+	switch cron := cron.(type) {
+	default:
+		return "", fmt.Errorf("%s: unexpected type %T", param.InstalledCronExpression, cron)
+	case string:
+		return string(cron), nil
+	}
+}
+
+func calculateDefaultCronRunHour(startHour int) (int, error) {
+	if (startHour < clockStartHour) || (startHour > clockEndHour) {
+		return -1, errors.Errorf("%d is not in cron range(0-23)", startHour)
+	}
+	runAtHour := startHour - cronBeforeStartHour
+	if runAtHour < 0 {
+		// assuming a 24 hour clock system(0 - 23), -ve values means going back to previous day
+		// e.g. if start hour is 0 (midnight), the "cronTime" time should be 22 hours
+		// on the previous day.
+		return hoursInClock + runAtHour, nil
+	}
+	return runAtHour, nil
+}
+
+// InstalledCronPath returns the path to which
+// main chaosmonkey crontab is located
+func (m *Monkey) InstalledCronPath() string {
+	return m.v.GetString(param.InstalledCronPath)
+}
+
+// InstalledScriptPath returns the path to which main
+// chaosmonkey script(invoked from cron) is located
+func (m *Monkey) InstalledScriptPath() string {
+	return m.v.GetString(param.InstalledScriptPath)
+}
+
+// LogPath returns the path to which
+// log files should be written
+func (m *Monkey) LogPath() string {
+	return m.v.GetString(param.LogPath)
 }

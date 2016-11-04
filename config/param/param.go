@@ -49,4 +49,10 @@ const (
 	DynamicProvider = "dynamic.provider"
 	DynamicEndpoint = "dynamic.endpoint"
 	DynamicPath     = "dynamic.path"
+
+	// installation properties, determines when to start the main chaosmonkey cron
+	InstalledCronExpression = "install.run_cron_expression"
+	InstalledCronPath       = "install.run_cron_path"
+	InstalledScriptPath     = "install.run_script_path"
+	LogPath                 = "install.log_path"
 )

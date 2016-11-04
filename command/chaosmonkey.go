@@ -220,6 +220,9 @@ func Execute() {
 	}()
 
 	switch cmd {
+	case "install":
+		executable := ChaosmonkeyExecutable{}
+		Install(cfg, executable, sql)
 	case "migrate":
 		Migrate(sql)
 	case "schedule":
@@ -333,7 +336,6 @@ func Execute() {
 			return
 		}
 		fmt.Println(provider)
-
 	default:
 		flag.Usage()
 		os.Exit(1)

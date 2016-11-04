@@ -451,9 +451,8 @@ func Migrate(mysqlDb MySQL) error {
 	migrationCount, err := migrate.Exec(mysqlDb.db, databaseDialect, migrationSource, migrate.Up)
 	if err != nil {
 		return errors.Wrap(err, "database migration failed")
-	} else {
-		log.Println("Successfully applied database migrations. Number of migrations applied: ", migrationCount)
 	}
+	log.Println("Successfully applied database migrations. Number of migrations applied: ", migrationCount)
 
 	return nil
 }
