@@ -59,6 +59,9 @@ Usage:
 
 command: migrate | schedule | terminate | fetch-schedule | outage | config  | email | eligible | intest
 
+Install
+-------
+Installs chaosmonkey with all the setup required, e.g setting up the cron, appling database migration etc.
 
 migrate
 -------

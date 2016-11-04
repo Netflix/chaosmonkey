@@ -455,6 +455,9 @@ func (m *Monkey) InstalledCronExpression() (string, error) {
 	}
 }
 
+// calculates the default cron run hour based on startHour.
+// The default cron starts "cronBeforeStartHour" hours
+// before "startHour"
 func calculateDefaultCronRunHour(startHour int) (int, error) {
 	if (startHour < clockStartHour) || (startHour > clockEndHour) {
 		return -1, errors.Errorf("%d is not in cron range(0-23)", startHour)
