@@ -33,7 +33,7 @@ func assertHasSameContent(fileName string, expectedContent string) error {
 
 	actualContent := string(cronContent)
 	if actualContent != expectedContent {
-		errors.Errorf("\nFile : %s\nExpected:\n%s\nActual:\n%s", fileName, expectedContent, actualContent)
+		return errors.Errorf("\nFile : %s\nExpected:\n%s\nActual:\n%s", fileName, expectedContent, actualContent)
 	}
 	return nil
 }
@@ -65,7 +65,7 @@ func TestInstallationWithDefaultCron(t *testing.T) {
 	executable := mock.Executable{Path: execPath}
 	InstallCron(defaultConfig, executable)
 
-	expectedCron := fmt.Sprintf("0 7 * * 1-5 root %s", scriptPath)
+	expectedCron := fmt.Sprintf("0 7 * * 1-5 root %s\n", scriptPath)
 	err = assertHasSameContent(cronPath, expectedCron)
 	if err != nil {
 		t.Error(err.Error())
@@ -100,7 +100,7 @@ func TestInstallationWithUserDefinedCron(t *testing.T) {
 	executable := mock.Executable{Path: execPath}
 	InstallCron(defaultConfig, executable)
 
-	expectedCron := fmt.Sprintf("%s root %s", userDefinedCron, scriptPath)
+	expectedCron := fmt.Sprintf("%s root %s\n", userDefinedCron, scriptPath)
 	err = assertHasSameContent(cronPath, expectedCron)
 	if err != nil {
 		t.Error(err.Error())

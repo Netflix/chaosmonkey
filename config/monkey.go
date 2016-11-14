@@ -451,7 +451,7 @@ func (m *Monkey) InstalledCronExpression() (string, error) {
 	default:
 		return "", fmt.Errorf("%s: unexpected type %T", param.InstalledCronExpression, cron)
 	case string:
-		return string(cron), nil
+		return cron, nil
 	}
 }
 

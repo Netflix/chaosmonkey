@@ -44,9 +44,13 @@ func Install(cfg *config.Monkey, exec CurrentExecutable, db mysql.MySQL) {
 	log.Println("installation done!")
 }
 
-// InstallCron installs chaosmonkey schedule generation and termination crons
+// InstallCron installs chaosmonkey schedule generation cron
 func InstallCron(cfg *config.Monkey, exec CurrentExecutable) {
 	executablePath, err := exec.ExecutablePath()
+	if err != nil {
+		log.Fatalf("FATAL: %v", err)
+	}
+	err = setupTerminationScript(cfg, executablePath)
 	if err != nil {
 		log.Fatalf("FATAL: %v", err)
 	}
@@ -56,10 +60,6 @@ func InstallCron(cfg *config.Monkey, exec CurrentExecutable) {
 		log.Fatalf("FATAL: %v", err)
 	}
 
-	err = setupTermination(cfg, executablePath)
-	if err != nil {
-		log.Fatalf("FATAL: %v", err)
-	}
 	log.Println("chaosmonkey cron is installed successfully")
 }
 
@@ -92,14 +92,14 @@ func setupCron(cfg *config.Monkey, executablePath string) error {
 		return err
 	}
 
-	crontab := fmt.Sprintf("%s %s %s", cronExpr, cfg.TermAccount(), cfg.InstalledScriptPath())
+	crontab := fmt.Sprintf("%s %s %s\n", cronExpr, cfg.TermAccount(), cfg.InstalledScriptPath())
 	var cronPerms os.FileMode = 0644 // -rw-r--r-- : cron config file shouldn't have write perm
 	log.Printf("Creating %s\n", cfg.InstalledCronPath())
 	err = ioutil.WriteFile(cfg.InstalledCronPath(), []byte(crontab), cronPerms)
 	return err
 }
 
-func setupTermination(cfg *config.Monkey, executablePath string) error {
+func setupTerminationScript(cfg *config.Monkey, executablePath string) error {
 	err := EnsureFileAbsent(cfg.TermPath())
 	if err != nil {
 		return err
