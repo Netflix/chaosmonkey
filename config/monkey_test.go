@@ -20,7 +20,7 @@ import (
 	"testing"
 )
 
-func TestInstalledCronDefault(t *testing.T) {
+func TestDefaultCron(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 9)
 
@@ -36,7 +36,7 @@ func TestInstalledCronDefault(t *testing.T) {
 	}
 }
 
-func TestInstalledCronDefaultAtMidnight(t *testing.T) {
+func TestDefaultCronForStartHourMidnight(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 0)
 
@@ -52,7 +52,7 @@ func TestInstalledCronDefaultAtMidnight(t *testing.T) {
 	}
 }
 
-func TestInstalledCronDefaultAtOneAM(t *testing.T) {
+func TestDefaultCronForStartHourOneAM(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 1)
 
@@ -68,7 +68,7 @@ func TestInstalledCronDefaultAtOneAM(t *testing.T) {
 	}
 }
 
-func TestInstalledCronDefaultBeforeClockStart(t *testing.T) {
+func TestDefaultCronForStartHourBeforeClockStart(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, -1)
 
@@ -79,7 +79,7 @@ func TestInstalledCronDefaultBeforeClockStart(t *testing.T) {
 	}
 }
 
-func TestInstalledCronDefaultAfterClockStart(t *testing.T) {
+func TestDefaultCronForStartHourAfterClockEnd(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 24)
 
