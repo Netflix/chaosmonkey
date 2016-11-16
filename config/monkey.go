@@ -71,8 +71,8 @@ func (m *Monkey) setDefaults() {
 	m.v.SetDefault(param.DynamicEndpoint, "")
 	m.v.SetDefault(param.DynamicPath, "")
 
-	m.v.SetDefault(param.InstalledCronPath, "/etc/cron.d/chaosmonkey-schedule")
-	m.v.SetDefault(param.InstalledScriptPath, "/apps/chaosmonkey/chaosmonkey-schedule.sh")
+	m.v.SetDefault(param.SchedulePath, "/etc/cron.d/chaosmonkey-schedule")
+	m.v.SetDefault(param.ScriptPath, "/apps/chaosmonkey/chaosmonkey-schedule.sh")
 	m.v.SetDefault(param.LogPath, "/var/log")
 }
 
@@ -434,12 +434,12 @@ func SetRemoteProvider(name string, factory RemoteConfigFactory) {
 	viper.SupportedRemoteProviders = []string{name}
 }
 
-// InstalledCronExpression returns the chaosmonkey main run cron expression.
+// CronExpression returns the chaosmonkey main run cron expression.
 // It defaults to 2 hour before start_hour on weekdays, if no cron expression
 // is specified in the config
-func (m *Monkey) InstalledCronExpression() (string, error) {
+func (m *Monkey) CronExpression() (string, error) {
 	defaultCron := "0 %d * * 1-5"
-	cron := m.v.Get(param.InstalledCronExpression)
+	cron := m.v.Get(param.CronExpression)
 	if cron == nil {
 		runAtHour, err := calculateDefaultCronRunHour(m.StartHour())
 		if err != nil {
@@ -449,7 +449,7 @@ func (m *Monkey) InstalledCronExpression() (string, error) {
 	}
 	switch cron := cron.(type) {
 	default:
-		return "", fmt.Errorf("%s: unexpected type %T", param.InstalledCronExpression, cron)
+		return "", fmt.Errorf("%s: unexpected type %T", param.CronExpression, cron)
 	case string:
 		return cron, nil
 	}
@@ -472,16 +472,16 @@ func calculateDefaultCronRunHour(startHour int) (int, error) {
 	return runAtHour, nil
 }
 
-// InstalledCronPath returns the path to which
+// SchedulePath returns the path to which
 // main chaosmonkey crontab is located
-func (m *Monkey) InstalledCronPath() string {
-	return m.v.GetString(param.InstalledCronPath)
+func (m *Monkey) SchedulePath() string {
+	return m.v.GetString(param.SchedulePath)
 }
 
-// InstalledScriptPath returns the path to which main
+// ScriptPath returns the path to which main
 // chaosmonkey script(invoked from cron) is located
-func (m *Monkey) InstalledScriptPath() string {
-	return m.v.GetString(param.InstalledScriptPath)
+func (m *Monkey) ScriptPath() string {
+	return m.v.GetString(param.ScriptPath)
 }
 
 // LogPath returns the path to which

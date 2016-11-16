@@ -24,7 +24,7 @@ func TestInstalledCronDefault(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 9)
 
-	actual, err := monkey.InstalledCronExpression()
+	actual, err := monkey.CronExpression()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -40,7 +40,7 @@ func TestInstalledCronDefaultAtMidnight(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 0)
 
-	actual, err := monkey.InstalledCronExpression()
+	actual, err := monkey.CronExpression()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -56,7 +56,7 @@ func TestInstalledCronDefaultAtOneAM(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 1)
 
-	actual, err := monkey.InstalledCronExpression()
+	actual, err := monkey.CronExpression()
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -72,7 +72,7 @@ func TestInstalledCronDefaultBeforeClockStart(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, -1)
 
-	_, err := monkey.InstalledCronExpression()
+	_, err := monkey.CronExpression()
 	if err == nil {
 		t.Error("Expected InstalledCronExpression to return an error as start hour is before clock start hour")
 		return
@@ -83,7 +83,7 @@ func TestInstalledCronDefaultAfterClockStart(t *testing.T) {
 	monkey := Defaults()
 	monkey.Set(param.StartHour, 24)
 
-	_, err := monkey.InstalledCronExpression()
+	_, err := monkey.CronExpression()
 	if err == nil {
 		t.Error("Expected InstalledCronExpression to return an error as start hour is after clock end hour")
 		return

@@ -31,6 +31,10 @@ const (
 	ErrorCounter    = "chaosmonkey.error_counter"
 	Decryptor       = "chaosmonkey.decryptor"
 	OutageChecker   = "chaosmonkey.outage_checker"
+	CronExpression  = "chaosmonkey.cron_expression"
+	SchedulePath    = "chaosmonkey.schedule_path"
+	ScriptPath      = "chaosmonkey.script_path"
+	LogPath         = "chaosmonkey.log_path"
 
 	// spinnaker
 	SpinnakerEndpoint          = "spinnaker.endpoint"
@@ -49,10 +53,4 @@ const (
 	DynamicProvider = "dynamic.provider"
 	DynamicEndpoint = "dynamic.endpoint"
 	DynamicPath     = "dynamic.path"
-
-	// installation properties, determines when to start the main chaosmonkey cron
-	InstalledCronExpression = "install.run_cron_expression"
-	InstalledCronPath       = "install.run_cron_path"
-	InstalledScriptPath     = "install.run_script_path"
-	LogPath                 = "install.log_path"
 )
