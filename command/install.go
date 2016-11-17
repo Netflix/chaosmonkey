@@ -64,25 +64,25 @@ func InstallCron(cfg *config.Monkey, exec CurrentExecutable) {
 }
 
 func setupCron(cfg *config.Monkey, executablePath string) error {
-	err := EnsureFileAbsent(cfg.ScriptPath())
+	err := EnsureFileAbsent(cfg.SchedulePath())
 	if err != nil {
 		return err
 	}
 
-	err = EnsureFileAbsent(cfg.SchedulePath())
+	err = EnsureFileAbsent(cfg.ScheduleCronPath())
 	if err != nil {
 		return err
 	}
 
 	var scriptPerms os.FileMode = 0755 // -rwx-rx--rx-- : scripts should be executable
-	log.Printf("Creating %s\n", cfg.ScriptPath())
+	log.Printf("Creating %s\n", cfg.SchedulePath())
 
 	content, err := generateScriptContent(scheduleCommand, cfg, executablePath)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(cfg.ScriptPath(), content, scriptPerms)
+	err = ioutil.WriteFile(cfg.SchedulePath(), content, scriptPerms)
 	if err != nil {
 		return err
 	}
@@ -92,10 +92,10 @@ func setupCron(cfg *config.Monkey, executablePath string) error {
 		return err
 	}
 
-	crontab := fmt.Sprintf("%s %s %s\n", cronExpr, cfg.TermAccount(), cfg.ScriptPath())
+	crontab := fmt.Sprintf("%s %s %s\n", cronExpr, cfg.TermAccount(), cfg.SchedulePath())
 	var cronPerms os.FileMode = 0644 // -rw-r--r-- : cron config file shouldn't have write perm
-	log.Printf("Creating %s\n", cfg.SchedulePath())
-	err = ioutil.WriteFile(cfg.SchedulePath(), []byte(crontab), cronPerms)
+	log.Printf("Creating %s\n", cfg.ScheduleCronPath())
+	err = ioutil.WriteFile(cfg.ScheduleCronPath(), []byte(crontab), cronPerms)
 	return err
 }
 

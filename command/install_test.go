@@ -40,8 +40,8 @@ func assertHasSameContent(fileName string, expectedContent string) error {
 
 func initInstallationConfig(script string, cron string, log string, term string) (*config.Monkey, error) {
 	defaultConfig := config.Defaults()
-	defaultConfig.Set(param.ScriptPath, script)
-	defaultConfig.Set(param.SchedulePath, cron)
+	defaultConfig.Set(param.SchedulePath, script)
+	defaultConfig.Set(param.ScheduleCronPath, cron)
 	defaultConfig.Set(param.LogPath, log)
 	defaultConfig.Set(param.StartHour, 9)
 	defaultConfig.Set(param.TermAccount, "root")

@@ -71,8 +71,8 @@ func (m *Monkey) setDefaults() {
 	m.v.SetDefault(param.DynamicEndpoint, "")
 	m.v.SetDefault(param.DynamicPath, "")
 
-	m.v.SetDefault(param.SchedulePath, "/etc/cron.d/chaosmonkey-schedule")
-	m.v.SetDefault(param.ScriptPath, "/apps/chaosmonkey/chaosmonkey-schedule.sh")
+	m.v.SetDefault(param.ScheduleCronPath, "/etc/cron.d/chaosmonkey-schedule")
+	m.v.SetDefault(param.SchedulePath, "/apps/chaosmonkey/chaosmonkey-schedule.sh")
 	m.v.SetDefault(param.LogPath, "/var/log")
 }
 
@@ -472,16 +472,16 @@ func calculateDefaultCronRunHour(startHour int) (int, error) {
 	return runAtHour, nil
 }
 
-// SchedulePath returns the path to which
+// ScheduleCronPath returns the path to which
 // main chaosmonkey crontab is located
-func (m *Monkey) SchedulePath() string {
-	return m.v.GetString(param.SchedulePath)
+func (m *Monkey) ScheduleCronPath() string {
+	return m.v.GetString(param.ScheduleCronPath)
 }
 
-// ScriptPath returns the path to which main
-// chaosmonkey script(invoked from cron) is located
-func (m *Monkey) ScriptPath() string {
-	return m.v.GetString(param.ScriptPath)
+// SchedulePath returns the path to which main
+// chaosmonkey schedule script(invoked from cron) is located
+func (m *Monkey) SchedulePath() string {
+	return m.v.GetString(param.SchedulePath)
 }
 
 // LogPath returns the path to which
