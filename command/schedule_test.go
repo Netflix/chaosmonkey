@@ -16,7 +16,6 @@ package command
 
 import (
 	"io/ioutil"
-	"os"
 	"testing"
 	"time"
 
@@ -37,19 +36,6 @@ func addToSchedule(t *testing.T, sched *schedule.Schedule, timeString string, gr
 	sched.Add(tm, group)
 }
 
-// Ensure that a file is absent, returning an error otherwise
-func ensureFileAbsent(path string) error {
-	err := os.Remove(path)
-
-	// If it's an IsNotExist error, we can ignore it, since it
-	// satisfies the contract of the file being absent
-	if os.IsNotExist(err) {
-		return nil
-	}
-
-	return err
-}
-
 func newClusterGroup(app, account, cluster, region string) grp.InstanceGroup {
 	return grp.New(app, account, region, "", cluster)
 }
@@ -60,7 +46,7 @@ func TestRegisterWithCron(t *testing.T) {
 
 	// Ensure the file isn't there from a previous run
 	fname := "/tmp/chaoscron"
-	err := ensureFileAbsent(fname)
+	err := EnsureFileAbsent(fname)
 
 	if err != nil {
 		t.Error(err.Error())
@@ -110,7 +96,7 @@ func TestCronOutputInSortedOrder(t *testing.T) {
 
 	// Ensure the file isn't there from a previous run
 	fname := "/tmp/chaoscron"
-	err := ensureFileAbsent(fname)
+	err := EnsureFileAbsent(fname)
 
 	if err != nil {
 		t.Fatal(err.Error())

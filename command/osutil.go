@@ -15,16 +15,28 @@
 package command
 
 import (
-	"github.com/Netflix/chaosmonkey/mysql"
-	"log"
+	"github.com/kardianos/osext"
+	"os"
 )
 
-// Migrate executes database migration
-func Migrate(db mysql.MySQL) {
-	err := mysql.Migrate(db)
+// ChaosmonkeyExecutable is a representation of Chaosmonkey executable
+type ChaosmonkeyExecutable struct {
+}
 
-	if err != nil {
-		log.Fatalf("ERROR - couldn't apply database migration: %v", err)
+// ExecutablePath implements command.CurrentExecutable.ExecutablePath
+func (e ChaosmonkeyExecutable) ExecutablePath() (string, error) {
+	return osext.Executable()
+}
+
+// EnsureFileAbsent ensures that a file is absent, returning an error otherwise
+func EnsureFileAbsent(path string) error {
+	err := os.Remove(path)
+
+	// If it's an IsNotExist error, we can ignore it, since it
+	// satisfies the contract of the file being absent
+	if os.IsNotExist(err) {
+		return nil
 	}
-	log.Println("database migration applied successfully")
+
+	return err
 }

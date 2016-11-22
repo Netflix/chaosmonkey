@@ -12,19 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package command
+package mock
 
-import (
-	"github.com/Netflix/chaosmonkey/mysql"
-	"log"
-)
+// Executable is a mock representation of Chaosmonkey executable
+type Executable struct {
+	// Path returns the path to executable
+	Path string
+}
 
-// Migrate executes database migration
-func Migrate(db mysql.MySQL) {
-	err := mysql.Migrate(db)
-
-	if err != nil {
-		log.Fatalf("ERROR - couldn't apply database migration: %v", err)
-	}
-	log.Println("database migration applied successfully")
+// ExecutablePath returns a mock implementation of command.CurrentExecutable.ExecutablePath
+func (m Executable) ExecutablePath() (string, error) {
+	return m.Path, nil
 }

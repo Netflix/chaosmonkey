@@ -33,7 +33,7 @@ func TestScheduleCommand(t *testing.T) {
 
 	// Setup
 	cronFile := "/tmp/chaoscron"
-	err := ensureFileAbsent(cronFile)
+	err := EnsureFileAbsent(cronFile)
 	if err != nil {
 		t.Fatal(err)
 	}

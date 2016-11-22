@@ -59,6 +59,9 @@ Usage:
 
 command: migrate | schedule | terminate | fetch-schedule | outage | config  | email | eligible | intest
 
+Install
+-------
+Installs chaosmonkey with all the setup required, e.g setting up the cron, appling database migration etc.
 
 migrate
 -------
@@ -220,6 +223,9 @@ func Execute() {
 	}()
 
 	switch cmd {
+	case "install":
+		executable := ChaosmonkeyExecutable{}
+		Install(cfg, executable, sql)
 	case "migrate":
 		Migrate(sql)
 	case "schedule":
@@ -333,7 +339,6 @@ func Execute() {
 			return
 		}
 		fmt.Println(provider)
-
 	default:
 		flag.Usage()
 		os.Exit(1)
