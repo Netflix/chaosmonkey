@@ -33,7 +33,7 @@ Azure, Kubernetes, Cloud Foundry). It has been tested with AWS and Kubernetes.
 To install the Chaos Monkey binary on your local machine:
 
 ```
-go get github.com/Netflix/chaosmonkey/bin/chaosmonkey
+go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
 ```
 
 ### How to deploy
