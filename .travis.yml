@@ -15,8 +15,9 @@ install:
 # With the "docker" tag enabled,
 # the mysql:5.6 docker container will be started
 # and the mysql tests will connect to this container
-#
+# This requires us to stop the pre-installed mysql server
 script:
+    - sudo service mysql stop
     - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -Ev '/vendor/|/migration'`)
     - go list ./... | grep -Ev '/vendor/|/migration' | xargs -L1 golint
     - go vet `go list ./... | grep -v /vendor/`
