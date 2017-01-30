@@ -1,7 +1,6 @@
 ![logo](logo.png "logo")
 
-
-[![Build Status][travis-badge]][travis] [![GoDoc][godoc-badge]][godoc] [![GoReportCard][report-badge]][report]
+[![NetflixOSS Lifecycle](https://img.shields.io/osslifecycle/Netflix/chaosmonkey.svg)](OSSMETADATA) [![Build Status][travis-badge]][travis] [![GoDoc][godoc-badge]][godoc] [![GoReportCard][report-badge]][report]
 
 [travis-badge]: https://travis-ci.org/Netflix/chaosmonkey.svg?branch=master
 [travis]: https://travis-ci.org/Netflix/chaosmonkey
