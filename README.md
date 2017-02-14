@@ -13,6 +13,8 @@ Chaos Monkey randomly terminates virtual machine instances and containers that
 run inside of your production environment. Exposing engineers to
 failures more frequently incentivizes them to build resilient services.
 
+See the [documentation][docs] for info on how to use Chaos Monkey.
+
 Chaos Monkey is an example of a tool that follows the
 [Principles of Chaos Engineering][PoC].
 
@@ -37,10 +39,11 @@ go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
 
 ### How to deploy
 
-See the [wiki](https://github.com/Netflix/chaosmonkey/wiki) for instructions on how to configure and deploy Chaos Monkey.
-
-[Spinnaker]: http://www.spinnaker.io/
+See the [docs] for instructions on how to configure and deploy Chaos Monkey.
 
 ### Support
 
 [Simian Army Google group](http://groups.google.com/group/simianarmy-users).
+
+[Spinnaker]: http://www.spinnaker.io/
+[docs]: https://netflix.github.io/chaosmonkey
