@@ -191,7 +191,7 @@ func Execute() {
 		log.Fatalf("FATAL: failed to load config: %v", err)
 	}
 
-	// Associate config values with falgs
+	// Associate config values with flags
 	err = cfg.BindPFlag(param.MaxApps, flag.Lookup(maxAppsFlag))
 	if err != nil {
 		log.Fatalf("FATAL: failed to bind flag: --%s: %v", maxAppsFlag, err)

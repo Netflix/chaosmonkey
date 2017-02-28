@@ -25,7 +25,7 @@ import (
 // EligibleInstanceGroups returns a slice of InstanceGroups that represent
 // groups of instances that are eligible for termination.
 //
-// Note that this code does not check for violations of mininum time between
+// Note that this code does not check for violations of minimum time between
 // terminations. Chaos Monkey checks that precondition immediately before
 // termination, not when considering groups of eligible instances.
 //
