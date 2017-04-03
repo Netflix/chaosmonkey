@@ -22,7 +22,7 @@ To build Chaos Monkey on your local machine (requires the Go
 toolchain).
 
 ```
-go get github.com/Netflix/chaosmonkey/bin/chaosmonkey
+go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
 ```
 
 This will install a `chaosmonkey` binary in your `$GOBIN` directory.
