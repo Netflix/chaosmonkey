@@ -225,7 +225,7 @@ location of the chaosmonkey binary so be sure to specify it explicitly.
 /apps/chaosmonkey/chaosmonkey-schedule.sh:
 ```bash
 #!/bin/bash
-/apps/chaosmonkey/chaosmonkey schedule >> /var/log/chosmonkey-schedule.log 2>&1
+/apps/chaosmonkey/chaosmonkey schedule >> /var/log/chaosmonkey-schedule.log 2>&1
 ```
 
 ### Create /etc/cron.d/chaosmonkey-schedule
