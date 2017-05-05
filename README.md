@@ -26,8 +26,9 @@ This version of Chaos Monkey is fully integrated with [Spinnaker], the
 continuous delivery platform that we use at Netflix. You must be managing your
 apps with Spinnaker to use Chaos Monkey to terminate instances.
 
-Chaos Monkey should work with any backend that Spinnaker supports (AWS, GCP,
-Azure, Kubernetes, Cloud Foundry). It has been tested with AWS and Kubernetes.
+Chaos Monkey should work with any backend that Spinnaker supports (AWS, Google
+Compute Engine, Azure, Kubernetes, Cloud Foundry). It has been tested with
+AWS, GCE, and Kubernetes.
 
 ### Install locally
 
