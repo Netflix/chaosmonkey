@@ -14,7 +14,7 @@ install:
     - go get github.com/golang/lint/golint
     - go get github.com/kisielk/errcheck
 
-# With the "docker" tag enabled,
+# With the "docker" tag enabled on go test invocation (-tags docker)
 # the mysql:5.6 docker container will be started
 # and the mysql tests will connect to this container
 # This requires us to stop the pre-installed mysql server
@@ -24,7 +24,7 @@ script:
     - go list ./... | grep -Ev '/vendor/|/migration' | xargs -L1 golint
     - go vet `go list ./... | grep -v /vendor/`
     - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
-    - go test -v -tags docker  ./...
+    - go test -v  ./...
 
 after_success:
     - ./update-docs.sh
