@@ -27,7 +27,7 @@ const (
 	scheduleCommand  = "schedule"
 	terminateCommand = "terminate"
 	scriptContent    = `#!/bin/bash
-%s %s >> %s/chaosmonkey-%s.log 2>&1
+%s %s "$@" >> %s/chaosmonkey-%s.log 2>&1
 `
 )
 
