@@ -73,7 +73,7 @@ func TestInstallationWithDefaultCron(t *testing.T) {
 	}
 
 	expectedScript := fmt.Sprintf(`#!/bin/bash
-%s %s >> %s/chaosmonkey-%s.log 2>&1
+%s %s "$@" >> %s/chaosmonkey-%s.log 2>&1
 `, execPath, "schedule", logPath, "schedule")
 	err = assertHasSameContent(scriptPath, expectedScript)
 	if err != nil {
@@ -108,7 +108,7 @@ func TestInstallationWithUserDefinedCron(t *testing.T) {
 	}
 
 	expectedScript := fmt.Sprintf(`#!/bin/bash
-%s %s >> %s/chaosmonkey-%s.log 2>&1
+%s %s "$@" >> %s/chaosmonkey-%s.log 2>&1
 `, execPath, "schedule", logPath, "schedule")
 	err = assertHasSameContent(scriptPath, expectedScript)
 	if err != nil {
