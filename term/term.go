@@ -167,7 +167,7 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 	for _, tracker := range d.Trackers {
 		err = tracker.Track(trm)
 		if err != nil {
-			return errors.Wrap(err, "not terminating: recording termination event failed: %v")
+			return errors.Wrap(err, "not terminating: recording termination event failed")
 		}
 	}
 
