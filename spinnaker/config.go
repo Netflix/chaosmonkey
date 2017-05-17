@@ -25,7 +25,8 @@ import (
 
 // Get implements chaosmonkey.Getter.Get
 func (s Spinnaker) Get(app string) (c *chaosmonkey.AppConfig, err error) {
-	url := s.appURL(app)
+	// avoid expanding the response to avoid unneeded load
+	url := s.appURL(app) + "?expand=false"
 	resp, err := s.client.Get(url)
 	if err != nil {
 		return nil, errors.Wrapf(err, "http get failed at %s", url)
