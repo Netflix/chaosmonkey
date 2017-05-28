@@ -28,7 +28,7 @@ apps with Spinnaker to use Chaos Monkey to terminate instances.
 
 Chaos Monkey should work with any backend that Spinnaker supports (AWS, Google
 Compute Engine, Azure, Kubernetes, Cloud Foundry). It has been tested with
-AWS, GCE, and Kubernetes.
+AWS, [GCE][gce-blogpost], and Kubernetes.
 
 ### Install locally
 
@@ -48,3 +48,4 @@ See the [docs] for instructions on how to configure and deploy Chaos Monkey.
 
 [Spinnaker]: http://www.spinnaker.io/
 [docs]: https://netflix.github.io/chaosmonkey
+[gce-blogpost]: https://medium.com/continuous-delivery-scale/running-chaos-monkey-on-spinnaker-google-compute-engine-gce-155dc52f20ef
