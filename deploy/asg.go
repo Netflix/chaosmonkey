@@ -14,7 +14,11 @@
 
 package deploy
 
-import frigga "github.com/SmartThingsOSS/frigga-go"
+import (
+	"fmt"
+
+	frigga "github.com/SmartThingsOSS/frigga-go"
+)
 
 // ASG identifies an autoscaling group in the deployment
 type ASG struct {
@@ -38,6 +42,11 @@ func NewASG(name, region string, instanceIDs []string, cluster *Cluster) *ASG {
 	}
 
 	return &result
+}
+
+// String returns a string representation
+func (a *ASG) String() string {
+	return fmt.Sprintf("name:%s account:%s region:%s", a.Name(), a.AccountName(), a.RegionName())
 }
 
 // Instances returns a slice of the instances associated with the ASG

@@ -138,6 +138,10 @@ type group struct {
 	app, account, region, stack, cluster string
 }
 
+func (g group) String() string {
+	return String(g)
+}
+
 func (g group) MarshalJSON() ([]byte, error) {
 	var s = struct {
 		App     string `json:"app"`

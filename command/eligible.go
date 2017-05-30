@@ -22,11 +22,15 @@ import (
 	"github.com/Netflix/chaosmonkey/deploy"
 	"github.com/Netflix/chaosmonkey/grp"
 	"github.com/Netflix/chaosmonkey/term"
+
+	jww "github.com/spf13/jwalterweatherman"
 )
 
 // Eligible prints out a list of instance ids eligible for termination
 // It is intended only for testing
 func Eligible(g chaosmonkey.AppConfigGetter, d deploy.Deployment, app, account, region, stack, cluster string) {
+	jww.SetStdoutThreshold(jww.LevelDebug)
+
 	cfg, err := g.Get(app)
 	if err != nil {
 		fmt.Printf("Failed to retrieve config for app %s\n%+v", app, err)
@@ -34,6 +38,8 @@ func Eligible(g chaosmonkey.AppConfigGetter, d deploy.Deployment, app, account, 
 	}
 
 	group := grp.New(app, account, region, stack, cluster)
+
+	jww.DEBUG.Printf("identifying eligible instances for chaos monkey group: {%s}", group)
 	pApp, err := d.GetApp(app)
 	if err != nil {
 		fmt.Printf("GetApp failed for app %s\n%+v", app, err)
