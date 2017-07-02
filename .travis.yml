@@ -9,6 +9,9 @@ env:
 services:
     - docker
 
+before_install:
+    - go get github.com/mattn/goveralls
+
 install:
     - docker pull mysql:5.6
     - go get github.com/golang/lint/golint
@@ -25,6 +28,7 @@ script:
     - go vet `go list ./... | grep -v /vendor/`
     - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
     - go test -v  ./...
+    - $HOME/gopath/bin/goveralls -service=travis-ci
 
 after_success:
     - ./update-docs.sh
