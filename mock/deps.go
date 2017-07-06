@@ -103,9 +103,9 @@ func Deps() deps.Deps {
 	return deps.Deps{
 		MonkeyCfg:  cfg,
 		Checker:    Checker{Error: nil},
-		ConfGetter: ConfigGetter{},
+		ConfGetter: DefaultConfigGetter(),
 		Cl:         clock.New(),
-		Dep:        Deployment(),
+		Dep:        Dep(),
 		T:          new(Terminator),
 		Ou:         Outage{},
 		ErrCounter: ErrorCounter{},

@@ -38,7 +38,7 @@ func TestScheduleCommand(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	d := mock.Deployment() // mock that returns four apps
+	d := mock.Dep() // mock that returns four apps
 	a := new(mockAPI)
 	cfg := config.Defaults()
 	cfg.Set(param.Enabled, true)

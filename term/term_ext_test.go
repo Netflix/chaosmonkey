@@ -28,7 +28,7 @@ func TestEnabledAccounts(t *testing.T) {
 	d := mock.Deps()
 	d.Dep = mock.NewDeployment(
 		map[string]D.AppMap{
-			"foo": D.AppMap{
+			"foo": {
 				D.AccountName("prod"): {CloudProvider: "aws", Clusters: D.ClusterMap{D.ClusterName("foo"): {D.RegionName("us-east-1"): {D.ASGName("foo-v001"): []D.InstanceID{"i-00000000"}}}}},
 				D.AccountName("test"): {CloudProvider: "aws", Clusters: D.ClusterMap{D.ClusterName("foo"): {D.RegionName("us-east-1"): {D.ASGName("foo-v001"): []D.InstanceID{"i-00000001"}}}}},
 				D.AccountName("mce"):  {CloudProvider: "aws", Clusters: D.ClusterMap{D.ClusterName("foo"): {D.RegionName("us-east-1"): {D.ASGName("foo-v001"): []D.InstanceID{"i-00000002"}}}}},

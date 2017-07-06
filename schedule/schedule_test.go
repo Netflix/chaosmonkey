@@ -28,7 +28,7 @@ func TestPopulate(t *testing.T) {
 	// Setup
 	s := New()
 	// mock deployment returns 4 single-cluster apps, 3 in prod and one in test
-	d := mock.Deployment()
+	d := mock.Dep()
 
 	// mockConfigGetter configures each app for App-level grouping
 	getter := new(mockConfigGetter)

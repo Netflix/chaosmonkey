@@ -18,6 +18,9 @@ package grp
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"github.com/SmartThingsOSS/frigga-go"
+	"log"
 )
 
 // New generates an InstanceGroup.
@@ -40,7 +43,7 @@ type InstanceGroup interface {
 	// App returns the name of the app
 	App() string
 
-	// Account returns the name of the app
+	// Account returns the name of the account
 	Account() string
 
 	// Region returns (region name, region present)
@@ -54,6 +57,9 @@ type InstanceGroup interface {
 	// Cluster returns (cluster name, cluster present)
 	// If the group is cross-cluster, the boolean will be false
 	Cluster() (name string, ok bool)
+
+	// String outputs a stringified rep
+	String() string
 }
 
 // Equal returns true if g1 and g2 represent the same group of instances
@@ -138,6 +144,10 @@ type group struct {
 	app, account, region, stack, cluster string
 }
 
+func (g group) String() string {
+	return fmt.Sprintf("InstanceGroup{app=%s account=%s region=%s stack=%s cluster=%s}", g.app, g.account, g.region, g.stack, g.cluster)
+}
+
 func (g group) MarshalJSON() ([]byte, error) {
 	var s = struct {
 		App     string `json:"app"`
@@ -196,27 +206,31 @@ func AnyRegion(g InstanceGroup) bool {
 	return !specific
 }
 
-// AnyStack is true if the group matches any region
+// AnyStack is true if the group matches any stack
 func AnyStack(g InstanceGroup) bool {
 	_, specific := g.Stack()
 	return !specific
 }
 
-// AnyCluster is true if the group matches any region
+// AnyCluster is true if the group matches any cluster
 func AnyCluster(g InstanceGroup) bool {
 	_, specific := g.Cluster()
 	return !specific
 }
 
-// Contains returns true if the asg/instance with
-// matching app, account, region, stack and cluster
-// are elements of this instance group
-func Contains(g InstanceGroup, app, account, region, stack, cluster string) bool {
-	return app == g.App() &&
-		account == g.Account() &&
-		(AnyRegion(g) || region == must(g.Region())) &&
-		(AnyStack(g) || stack == must(g.Stack())) &&
-		(AnyCluster(g) || cluster == must(g.Cluster()))
+// Contains returns true if the (account, region, cluster) is within the instance group
+func Contains(g InstanceGroup, account, region, cluster string) bool {
+	names, err := frigga.Parse(cluster)
+	if err != nil {
+		log.Printf("WARNING: could not parse cluster name: %s", cluster)
+		return false
+	}
+
+	return names.App == g.App() &&
+		string(account) == g.Account() &&
+		(AnyRegion(g) || string(region) == must(g.Region())) &&
+		(AnyStack(g) || names.Stack == must(g.Stack())) &&
+		(AnyCluster(g) || string(cluster) == must(g.Cluster()))
 }
 
 // must returns val if ok is true

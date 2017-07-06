@@ -29,6 +29,7 @@ import (
 	"github.com/Netflix/chaosmonkey/clock"
 	"github.com/Netflix/chaosmonkey/config"
 	"github.com/Netflix/chaosmonkey/config/param"
+	"github.com/Netflix/chaosmonkey/deploy"
 	"github.com/Netflix/chaosmonkey/deps"
 	"github.com/Netflix/chaosmonkey/mysql"
 	"github.com/Netflix/chaosmonkey/schedstore"
@@ -147,6 +148,25 @@ Example:
 
 	chaosmonkey provider test
 
+
+clusters <app> <account>
+------------------------
+
+List the clusters for a given app and account
+
+Example:
+
+	chaosmonkey clusters chaosguineapig test
+
+
+regions <cluster> <account>
+---------------------------
+
+List the regions for a given cluster and account
+
+Example:
+
+	chaosmonkey regions chaosguineapig test
 `
 	fmt.Printf(usage)
 }
@@ -339,6 +359,34 @@ func Execute() {
 			return
 		}
 		fmt.Println(provider)
+	case "clusters":
+		if len(flag.Args()) != 3 {
+			flag.Usage()
+			os.Exit(1)
+		}
+
+		app := flag.Arg(1)
+		account := flag.Arg(2)
+		clusters, err := spin.GetClusterNames(app, deploy.AccountName(account))
+		if err != nil {
+			fmt.Printf("ERROR: %v\n", err)
+			os.Exit(1)
+		}
+		for _, cluster := range clusters {
+			fmt.Println(cluster)
+		}
+
+	case "regions":
+		if len(flag.Args()) != 3 {
+			flag.Usage()
+			os.Exit(1)
+		}
+
+		cluster := flag.Arg(1)
+		account := flag.Arg(2)
+
+		DumpRegions(cluster, account, spin)
+
 	default:
 		flag.Usage()
 		os.Exit(1)

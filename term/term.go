@@ -25,6 +25,7 @@ import (
 	"github.com/Netflix/chaosmonkey"
 	"github.com/Netflix/chaosmonkey/deploy"
 	"github.com/Netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey/eligible"
 	"github.com/Netflix/chaosmonkey/grp"
 )
 
@@ -55,7 +56,7 @@ func Terminate(d deps.Deps, app string, account string, region string, stack str
 	}
 
 	if !enabled {
-		log.Printf("not terminating: enabled=false")
+		log.Println("not terminating: enabled=false")
 		return nil
 	}
 
@@ -67,7 +68,7 @@ func Terminate(d deps.Deps, app string, account string, region string, stack str
 	}
 
 	if problem {
-		log.Printf("not terminating: outage in progress")
+		log.Println("not terminating: outage in progress")
 		return nil
 	}
 
@@ -125,20 +126,17 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 		return errors.Wrapf(err, "not terminating: Could not retrieve config for app=%s", appName)
 	}
 
-	// Even though EligibleInstances (called by PickRandomInstance) will check
-	// the appcFg.Enabled flag as well, the logging messages are more meaningful
-	// if we check here and bail out early with a more informative log message
 	if !appCfg.Enabled {
 		log.Printf("not terminating: enabled=false for app=%s", appName)
 		return nil
 	}
 
-	app, err := d.Dep.GetApp(appName)
-	if err != nil {
-		return errors.Wrapf(err, "GetApp failed for %s", appName)
+	if appCfg.Whitelist != nil {
+		log.Printf("not terminating: app=%s has a whitelist which is no longer supported", appName)
+		return nil
 	}
 
-	instance, ok := PickRandomInstance(group, *appCfg, app)
+	instance, ok := PickRandomInstance(group, *appCfg, d.Dep)
 	if !ok {
 		log.Printf("No eligible instances in group, nothing to terminate: %+v", group)
 		return nil
@@ -183,8 +181,12 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 }
 
 // PickRandomInstance randomly selects an eligible instance from a group
-func PickRandomInstance(group grp.InstanceGroup, cfg chaosmonkey.AppConfig, app *deploy.App) (chaosmonkey.Instance, bool) {
-	instances := EligibleInstances(group, cfg, app)
+func PickRandomInstance(group grp.InstanceGroup, cfg chaosmonkey.AppConfig, dep deploy.Deployment) (chaosmonkey.Instance, bool) {
+	instances, err := eligible.Instances(group, cfg.Exceptions, dep)
+	if err != nil {
+		log.Printf("WARNING: eligible.Instances failed for %s: %v", group, err)
+		return nil, false
+	}
 	if len(instances) == 0 {
 		return nil, false
 	}

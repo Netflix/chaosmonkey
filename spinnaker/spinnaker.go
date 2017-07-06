@@ -223,6 +223,50 @@ func (s Spinnaker) Apps(c chan<- *D.App, appNames []string) {
 	}
 }
 
+// GetInstanceIDs gets the instance ids for a cluster
+func (s Spinnaker) GetInstanceIDs(app string, account D.AccountName, cloudProvider string, region D.RegionName, cluster D.ClusterName) (D.ASGName, []D.InstanceID, error) {
+	url := s.activeASGURL(app, string(account), string(cluster), cloudProvider, string(region))
+
+	resp, err := s.client.Get(url)
+	if err != nil {
+		return "", nil, errors.Wrapf(err, "http get failed at %s", url)
+	}
+
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
+			err = errors.Wrapf(err, "body close failed at %s", url)
+		}
+	}()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+	}
+
+	var data struct {
+		Name      string
+		Instances []struct{ Name string }
+	}
+
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		return "", nil, errors.Wrapf(err, "failed to parse json at %s", url)
+	}
+
+	asg := D.ASGName(data.Name)
+	instances := make([]D.InstanceID, len(data.Instances))
+	for i, instance := range data.Instances {
+		instances[i] = D.InstanceID(instance.Name)
+	}
+
+	return asg, instances, nil
+
+}
+
 // GetApp implements deploy.Deployment.GetApp
 func (s Spinnaker) GetApp(appName string) (*D.App, error) {
 	// data arg is a map like {accountName: {clusterName: {regionName: {asgName: [instanceId]}}}}
@@ -450,4 +494,93 @@ func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
 	}
 
 	return fields.CloudProvider, nil
+}
+
+// GetClusterNames returns a list of cluster names for an app
+func (s Spinnaker) GetClusterNames(app string, account D.AccountName) (clusters []D.ClusterName, err error) {
+	url := s.appURL(app)
+	resp, err := s.client.Get(url)
+	if err != nil {
+		return nil, errors.Wrapf(err, "http get failed at %s", url)
+	}
+
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
+			err = errors.Wrapf(err, "body close failed at %s", url)
+		}
+	}()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+	}
+
+	var pcl struct {
+		Clusters map[D.AccountName][]struct {
+			Name D.ClusterName
+		}
+	}
+
+	err = json.Unmarshal(body, &pcl)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to parse json at %s", url)
+	}
+
+	cls := pcl.Clusters[account]
+
+	clusters = make([]D.ClusterName, len(cls))
+	for i, cl := range cls {
+		clusters[i] = cl.Name
+	}
+
+	return clusters, nil
+}
+
+// GetRegionNames returns a list of regions that a cluster is deployed into
+func (s Spinnaker) GetRegionNames(app string, account D.AccountName, cluster D.ClusterName) ([]D.RegionName, error) {
+	url := s.clusterURL(app, string(account), string(cluster))
+	resp, err := s.client.Get(url)
+	if err != nil {
+		return nil, errors.Wrapf(err, "http get failed at %s", url)
+	}
+
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
+			err = errors.Wrapf(err, "body close failed at %s", url)
+		}
+	}()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+	}
+
+	var cl struct {
+		ServerGroups []struct{ Region D.RegionName }
+	}
+
+	err = json.Unmarshal(body, &cl)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to parse json at %s", url)
+	}
+
+	set := make(map[D.RegionName]bool)
+	for _, g := range cl.ServerGroups {
+		set[g.Region] = true
+	}
+
+	result := make([]D.RegionName, 0, len(set))
+	for region := range set {
+		result = append(result, region)
+	}
+
+	return result, nil
 }
