@@ -179,7 +179,7 @@ func fromJSON(js []byte) (*chaosmonkey.AppConfig, error) {
 	return &cfg, nil
 }
 
-// parsedJson is the parsed JSON representatino
+// parsedJson is the parsed JSON representation
 type parsedJSON struct {
 	Name       string      `json:"name"`
 	Attributes *parsedAttr `json:"attributes"`
