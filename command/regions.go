@@ -1,4 +1,4 @@
-// Copyright 2016 Netflix, Inc.
+// Copyright 2017 Netflix, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,31 +16,29 @@ package command
 
 import (
 	"fmt"
-	"os"
-
-	"github.com/Netflix/chaosmonkey"
 	"github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/eligible"
-	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/spinnaker"
+	"github.com/SmartThingsOSS/frigga-go"
+	"os"
 )
 
-// Eligible prints out a list of instance ids eligible for termination
-// It is intended only for testing
-func Eligible(g chaosmonkey.AppConfigGetter, d deploy.Deployment, app, account, region, stack, cluster string) {
-	cfg, err := g.Get(app)
+// DumpRegions lists the regions that a cluster is in
+func DumpRegions(cluster, account string, spin spinnaker.Spinnaker) {
+
+	names, err := frigga.Parse(cluster)
 	if err != nil {
-		fmt.Printf("Failed to retrieve config for app %s\n%+v", app, err)
+		fmt.Printf("ERROR: %s", err)
 		os.Exit(1)
 	}
 
-	group := grp.New(app, account, region, stack, cluster)
-	instances, err := eligible.Instances(group, cfg.Exceptions, d)
+	regions, err := spin.GetRegionNames(names.App, deploy.AccountName(account), deploy.ClusterName(cluster))
 	if err != nil {
-		fmt.Print(err)
+		fmt.Printf("ERROR: %v", err)
 		os.Exit(1)
 	}
 
-	for _, instance := range instances {
-		fmt.Println(instance.ID())
+	for _, region := range regions {
+		fmt.Println(region)
 	}
+
 }

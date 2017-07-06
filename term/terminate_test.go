@@ -33,9 +33,9 @@ func mockDeps() deps.Deps {
 	monkeyCfg.Set(param.Leashed, false)
 	monkeyCfg.Set(param.Accounts, []string{"prod"})
 	recorder := mock.Checker{Error: nil}
-	confGetter := mock.ConfigGetter{}
+	confGetter := mock.DefaultConfigGetter()
 	cl := clock.New()
-	dep := mock.Deployment()
+	dep := mock.Dep()
 	ttor := mock.Terminator{}
 	ou := mock.Outage{}
 	env := mock.Env{IsInTest: false}
@@ -172,4 +172,28 @@ func TestDoesNotTerminateIfTrackerFails(t *testing.T) {
 		t.Errorf("Expected terminator to not be called, got ttor.Ncalls=%d", ttor.Ncalls)
 	}
 
+}
+
+func TestDoesNotTerminateIfAppIsDisabled(t *testing.T) {
+	deps := mockDeps()
+
+	// Disable app
+	deps.ConfGetter = mock.NewConfigGetter(chaosmonkey.AppConfig{
+		Enabled:                        false,
+		RegionsAreIndependent:          true,
+		MeanTimeBetweenKillsInWorkDays: 5,
+		MinTimeBetweenKillsInWorkDays:  1,
+		Grouping:                       chaosmonkey.Cluster,
+		Exceptions:                     nil,
+	})
+
+	err := Terminate(deps, "foo", "prod", "us-east-1", "", "foo-prod")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ttor := deps.T.(*mock.Terminator)
+	if got, want := ttor.Ncalls, 0; got != want {
+		t.Errorf("Expected terminator to not be called, got ttor.Ncalls=%d", ttor.Ncalls)
+	}
 }

@@ -173,23 +173,23 @@ func TestNewClusterCrossRegion(t *testing.T) {
 
 func TestContains(t *testing.T) {
 	tests := []struct {
-		group                                grp.InstanceGroup
-		app, account, region, stack, cluster string
-		matches                              bool
+		group                    grp.InstanceGroup
+		account, region, cluster string
+		matches                  bool
 	}{
-		{grp.New("foo", "prod", "", "", ""), "foo", "prod", "us-east-1", "staging", "foo-staging-a", true},
-		{grp.New("foo", "prod", "us-east-1", "", ""), "foo", "prod", "us-east-1", "staging", "foo-staging-a", true},
-		{grp.New("foo", "prod", "us-east-1", "", ""), "foo", "prod", "us-east-1", "staging", "foo-staging-a", true},
-		{grp.New("foo", "prod", "us-east-1", "", "foo-staging-a"), "foo", "prod", "us-east-1", "staging", "foo-staging-a", true},
-		{grp.New("foo", "prod", "", "", ""), "bar", "prod", "us-east-1", "staging", "foo-staging-a", false},
-		{grp.New("foo", "prod", "", "", ""), "foo", "test", "us-east-1", "staging", "foo-staging-a", false},
-		{grp.New("foo", "prod", "us-east-1", "", "foo-staging-a"), "foo", "prod", "us-west-2", "staging", "foo-staging-a", false},
+		{grp.New("foo", "prod", "", "", ""), "prod", "us-east-1", "foo-staging-a", true},
+		{grp.New("foo", "prod", "us-east-1", "", ""), "prod", "us-east-1", "foo-staging-a", true},
+		{grp.New("foo", "prod", "us-east-1", "", ""), "prod", "us-east-1", "foo-staging-a", true},
+		{grp.New("foo", "prod", "us-east-1", "", "foo-staging-a"), "prod", "us-east-1", "foo-staging-a", true},
+		{grp.New("foo", "prod", "", "", ""), "prod", "us-east-1", "bar-staging-a", false},
+		{grp.New("foo", "prod", "", "", ""), "test", "us-east-1", "foo-staging-a", false},
+		{grp.New("foo", "prod", "us-east-1", "", "foo-staging-a"), "prod", "us-west-2", "foo-staging-a", false},
 	}
 
 	for _, tt := range tests {
-		if grp.Contains(tt.group, tt.app, tt.account, tt.region, tt.stack, tt.cluster) != tt.matches {
-			t.Errorf("unexpected grp.Contains(app=%s, account=%s, region=%s, stack=%s, cluster=%s). group=%+v. expected %t",
-				tt.app, tt.account, tt.region, tt.stack, tt.cluster, tt.group, tt.matches)
+		if grp.Contains(tt.group, tt.account, tt.region, tt.cluster) != tt.matches {
+			t.Errorf("unexpected grp.Contains(account=%s, region=%s, cluster=%s). group=%+v. expected %t",
+				tt.account, tt.region, tt.cluster, tt.group, tt.matches)
 		}
 	}
 }

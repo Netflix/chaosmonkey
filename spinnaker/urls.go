@@ -31,6 +31,11 @@ func (s Spinnaker) clustersURL(appName string) string {
 	return fmt.Sprintf("%s/applications/%s/clusters", s.endpoint, appName)
 }
 
+// clusterUrl returns the Spinnaker endpoint for retrieving info about a cluster
+func (s Spinnaker) clusterURL(appName string, account string, clusterName string) string {
+	return fmt.Sprintf("%s/applications/%s/clusters/%s/%s", s.endpoint, appName, account, clusterName)
+}
+
 // serverGroupsUrl returns the Spinnaker endpoint for retrieving server groups
 func (s Spinnaker) serverGroupsURL(appName, account, clusterName string) string {
 	return fmt.Sprintf("%s/applications/%s/clusters/%s/%s/serverGroups", s.endpoint, appName, account, clusterName)
@@ -44,4 +49,10 @@ func (s Spinnaker) accountURL(account string) string {
 // instanceURL returns the spinnaker URL for an instance
 func (s Spinnaker) instanceURL(account string, region string, id string) string {
 	return fmt.Sprintf("%s/instances/%s/%s/%s", s.endpoint, account, region, id)
+}
+
+// activeASGURL returns the spinnaker URL for getting the active asg in a cluster
+func (s Spinnaker) activeASGURL(appName, account, clusterName, cloudProvider, region string) string {
+	return fmt.Sprintf("%s/applications/%s/clusters/%s/%s/%s/%s/serverGroups/target/CURRENT?onlyEnabled=true",
+		s.endpoint, appName, account, clusterName, cloudProvider, region)
 }

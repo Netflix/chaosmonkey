@@ -33,6 +33,18 @@ type Deployment interface {
 
 	// AppNames returns the names of all apps
 	AppNames() ([]string, error)
+
+	// GetInstanceIDs returns the ids for instances in a cluster
+	GetInstanceIDs(app string, account AccountName, cloudProvider string, region RegionName, cluster ClusterName) (asgName ASGName, instances []InstanceID, err error)
+
+	// GetClusterNames returns the list of cluster names
+	GetClusterNames(app string, account AccountName) ([]ClusterName, error)
+
+	// GetRegionNames returns the list of regions associated with a cluster
+	GetRegionNames(app string, account AccountName, cluster ClusterName) ([]RegionName, error)
+
+	// CloudProvider returns the provider associated with an account
+	CloudProvider(account string) (provider string, err error)
 }
 
 // Account represents the set of clusters associated with an App that reside

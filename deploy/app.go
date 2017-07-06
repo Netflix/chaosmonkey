@@ -31,11 +31,17 @@ func (a App) Accounts() []*Account {
 }
 
 type (
+	// AppName is the name of an app
+	AppName string
+
 	// AccountName is the name of a cloud account
 	AccountName string
 
 	// ClusterName is the app-stack-detail name of a cluster
 	ClusterName string
+
+	// StackName is the stack part of the cluster name
+	StackName string
 
 	// RegionName is the name of an AWS region
 	RegionName string
@@ -45,6 +51,9 @@ type (
 
 	// InstanceID is the i-xxxxxx name of an AWS instance or uuid of a container
 	InstanceID string
+
+	// CloudProvider is the name of the cloud backend (e.g., aws)
+	CloudProvider string
 
 	// ClusterMap maps cluster name to information about instances by region and
 	// ASG
