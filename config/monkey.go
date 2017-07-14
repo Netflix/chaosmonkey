@@ -66,8 +66,8 @@ func (m *Monkey) setDefaults() {
 	m.v.SetDefault(param.SpinnakerCertificate, "")
 	m.v.SetDefault(param.SpinnakerEncryptedPassword, "")
 	m.v.SetDefault(param.SpinnakerUser, "")
-	m.v.SetDefault(param.SpinnakerX509Public, "")
-	m.v.SetDefault(param.SpinnakerX509Private, "")
+	m.v.SetDefault(param.SpinnakerX509Cert, "")
+	m.v.SetDefault(param.SpinnakerX509Key, "")
 
 	m.v.SetDefault(param.DynamicProvider, "")
 	m.v.SetDefault(param.DynamicEndpoint, "")
@@ -360,17 +360,17 @@ func (m *Monkey) SpinnakerUser() string {
 	return m.v.GetString(param.SpinnakerUser)
 }
 
-// SpinnakerX509Public retunrs a path to a X509 Public file
-func (m *Monkey) SpinnakerX509Public() string {
-	return m.v.GetString(param.SpinnakerX509Public)
+// SpinnakerX509Cert retunrs a path to a X509 cert file
+func (m *Monkey) SpinnakerX509Cert() string {
+	return m.v.GetString(param.SpinnakerX509Cert)
 }
 
-// SpinnakerX509Private retunrs a path to a X509 Private file
-func (m *Monkey) SpinnakerX509Private() string {
-	return m.v.GetString(param.SpinnakerX509Private)
+// SpinnakerX509Key retunrs a path to a X509 key file
+func (m *Monkey) SpinnakerX509Key() string {
+	return m.v.GetString(param.SpinnakerX509Key)
 }
 
-// Decryptor returns an interface for decrypting sercrets
+// Decryptor returns an interface for decrypting secrets
 func (m *Monkey) Decryptor() string {
 	return m.v.GetString(param.Decryptor)
 }

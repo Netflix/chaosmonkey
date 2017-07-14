@@ -88,22 +88,13 @@ func getClient(pfxData []byte, password string) (*http.Client, error) {
 
 // getClientX509 takes X509 data (Public and Private keys) and the
 // and returns an http client that does TLS client auth
-func getClientX509(x509Public, x509Private string) (*http.Client, error) {
-	x509Cert, err := ioutil.ReadFile(x509Public)
+func getClientX509(x509Cert, x509Key string) (*http.Client, error) {
+	cert, err := tls.LoadX509KeyPair(x509Cert, x509Key)
 	if err != nil {
 		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
 	}
-	x509Key, err := ioutil.ReadFile(x509Private)
-	if err != nil {
-		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
-	}
-	cert, err := tls.X509KeyPair(x509Cert, x509Key)
-	if err != nil {
-		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
-	}
-
 	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{cert},
+		Certificates:       []tls.Certificate{cert},
 		InsecureSkipVerify: true,
 	}
 	transport := &http.Transport{TLSClientConfig: tlsConfig}
@@ -116,8 +107,8 @@ func NewFromConfig(cfg *config.Monkey) (Spinnaker, error) {
 	certPath := cfg.SpinnakerCertificate()
 	encryptedPassword := cfg.SpinnakerEncryptedPassword()
 	user := cfg.SpinnakerUser()
-	x509Public := cfg.SpinnakerX509Public()
-	x509Private := cfg.SpinnakerX509Private()
+	x509Cert := cfg.SpinnakerX509Cert()
+	x509Key := cfg.SpinnakerX509Key()
 
 	if spinnakerEndpoint == "" {
 		return Spinnaker{}, errors.New("FATAL: no spinnaker endpoint specified in config")
@@ -139,23 +130,22 @@ func NewFromConfig(cfg *config.Monkey) (Spinnaker, error) {
 		}
 	}
 
-	return New(spinnakerEndpoint, certPath, password, x509Public, x509Private, user)
+	return New(spinnakerEndpoint, certPath, password, x509Cert, x509Key, user)
 
 }
 
 // New returns a Spinnaker using a .p12 cert at certPath encrypted with
 // password or x509 cert. The user argument identifies the email address of the user which is
 // sent in the payload of the terminateInstances task API call
-func New(endpoint string, certPath string, password string, x509Public string, x509Private string, user string) (Spinnaker, error) {
+func New(endpoint string, certPath string, password string, x509Cert string, x509Key string, user string) (Spinnaker, error) {
 	var client *http.Client
+	var err error
 
-	if x509Public != "" && certPath != "" {
+	if x509Cert != "" && certPath != "" {
 		return Spinnaker{}, errors.New("cannot use both p12 and x509 certs, choose one")
 	}
 
-	fmt.Println(x509Public, certPath)
 	if certPath != "" {
-		fmt.Println("inside if certPath")
 		pfxData, err := ioutil.ReadFile(certPath)
 		if err != nil {
 			return Spinnaker{}, errors.Wrapf(err, "failed to read file %s", certPath)
@@ -165,13 +155,11 @@ func New(endpoint string, certPath string, password string, x509Public string, x
 		if err != nil {
 			return Spinnaker{}, err
 		}
-	} else if x509Public != "" {
-		var err error
-		client, err = getClientX509(x509Public, x509Private)
+	} else if x509Cert != "" {
+		client, err = getClientX509(x509Cert, x509Key)
 		if err != nil {
 			return Spinnaker{}, err
 		}
-		fmt.Println("YAY!")
 	} else {
 		client = new(http.Client)
 	}
