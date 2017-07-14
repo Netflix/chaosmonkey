@@ -86,12 +86,29 @@ func getClient(pfxData []byte, password string) (*http.Client, error) {
 	return &http.Client{Transport: transport}, nil
 }
 
+// getClientX509 takes X509 data (Public and Private keys) and the
+// and returns an http client that does TLS client auth
+func getClientX509(x509Public, x509Private string) (*http.Client, error) {
+	cert, err := tls.LoadX509KeyPair(x509Public, x509Private)
+	if err != nil {
+		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
+	}
+
+	tlsConfig := &tls.Config{
+		Certificates: []tls.Certificate{cert},
+	}
+	transport := &http.Transport{TLSClientConfig: tlsConfig}
+	return &http.Client{Transport: transport}, nil
+}
+
 // NewFromConfig returns a Spinnaker based on config
 func NewFromConfig(cfg *config.Monkey) (Spinnaker, error) {
 	spinnakerEndpoint := cfg.SpinnakerEndpoint()
 	certPath := cfg.SpinnakerCertificate()
 	encryptedPassword := cfg.SpinnakerEncryptedPassword()
 	user := cfg.SpinnakerUser()
+	x509Public := cfg.SpinnakerX509Public()
+	x509Private := cfg.SpinnakerX509Private()
 
 	if spinnakerEndpoint == "" {
 		return Spinnaker{}, errors.New("FATAL: no spinnaker endpoint specified in config")
@@ -113,15 +130,23 @@ func NewFromConfig(cfg *config.Monkey) (Spinnaker, error) {
 		}
 	}
 
-	return New(spinnakerEndpoint, certPath, password, user)
+	return New(spinnakerEndpoint, certPath, password, x509Public, x509Private, user)
 
 }
 
 // New returns a Spinnaker using a .p12 cert at certPath encrypted with
-// password. The user argument identifies the email address of the user which is
+// password or x509 cert. The user argument identifies the email address of the user which is
 // sent in the payload of the terminateInstances task API call
-func New(endpoint string, certPath string, password string, user string) (Spinnaker, error) {
+func New(endpoint string, certPath string, password string, x509Public string, x509Private string, user string) (Spinnaker, error) {
 	var client *http.Client
+
+	if x509Public != "" && certPath != "" {
+		return Spinnaker{}, errors.New("cannot use both p12 and x509 certs, choose one")
+	}
+
+	if x509Public != "" && x509Private != "" {
+		getClientX509(x509Public, x509Private)
+	}
 
 	if certPath != "" {
 		pfxData, err := ioutil.ReadFile(certPath)
@@ -133,6 +158,13 @@ func New(endpoint string, certPath string, password string, user string) (Spinna
 		if err != nil {
 			return Spinnaker{}, err
 		}
+	} else if x509Public != "" {
+		var err error
+		client, err = getClientX509(x509Public, x509Private)
+		if err != nil {
+			return Spinnaker{}, err
+		}
+		fmt.Println("YAY!")
 	} else {
 		client = new(http.Client)
 	}
