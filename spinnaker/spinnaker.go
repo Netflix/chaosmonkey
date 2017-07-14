@@ -89,13 +89,22 @@ func getClient(pfxData []byte, password string) (*http.Client, error) {
 // getClientX509 takes X509 data (Public and Private keys) and the
 // and returns an http client that does TLS client auth
 func getClientX509(x509Public, x509Private string) (*http.Client, error) {
-	cert, err := tls.LoadX509KeyPair(x509Public, x509Private)
+	x509Cert, err := ioutil.ReadFile(x509Public)
+	if err != nil {
+		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
+	}
+	x509Key, err := ioutil.ReadFile(x509Private)
+	if err != nil {
+		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
+	}
+	cert, err := tls.X509KeyPair(x509Cert, x509Key)
 	if err != nil {
 		return nil, errors.Wrap(err, "tls.X509KeyPair failed")
 	}
 
 	tlsConfig := &tls.Config{
 		Certificates: []tls.Certificate{cert},
+		InsecureSkipVerify: true,
 	}
 	transport := &http.Transport{TLSClientConfig: tlsConfig}
 	return &http.Client{Transport: transport}, nil
@@ -144,11 +153,9 @@ func New(endpoint string, certPath string, password string, x509Public string, x
 		return Spinnaker{}, errors.New("cannot use both p12 and x509 certs, choose one")
 	}
 
-	if x509Public != "" && x509Private != "" {
-		getClientX509(x509Public, x509Private)
-	}
-
+	fmt.Println(x509Public, certPath)
 	if certPath != "" {
+		fmt.Println("inside if certPath")
 		pfxData, err := ioutil.ReadFile(certPath)
 		if err != nil {
 			return Spinnaker{}, errors.Wrapf(err, "failed to read file %s", certPath)
