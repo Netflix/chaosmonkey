@@ -36,7 +36,7 @@ const (
 	SchedulePath     = "chaosmonkey.schedule_path"
 	LogPath          = "chaosmonkey.log_path"
 
-	// spinnaker // Add public and private key over here - It will be a file path!
+	// spinnaker
 	SpinnakerEndpoint          = "spinnaker.endpoint"
 	SpinnakerCertificate       = "spinnaker.certificate"
 	SpinnakerEncryptedPassword = "spinnaker.encrypted_password"
