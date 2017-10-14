@@ -101,9 +101,9 @@ func TestPublishRetrieveMultipleEntries(t *testing.T) {
 	psched := schedule.New()
 
 	pEntries := []schedule.Entry{
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
+		{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
+		{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
+		{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
 	}
 
 	for _, v := range pEntries {
@@ -164,9 +164,9 @@ func TestScheduleAlreadyExists(t *testing.T) {
 	// Try to publish a new schedule
 
 	pEntries := []schedule.Entry{
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
+		{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
+		{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
+		{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
 	}
 
 	psched2 := schedule.New()
@@ -202,9 +202,9 @@ func TestScheduleAlreadyExistsConcurrency(t *testing.T) {
 	psched1.Add(time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), grp.New("imaginaryproject", "test", "us-west-2", "", ""))
 
 	pEntries := []schedule.Entry{
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
-		schedule.Entry{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
+		{Time: time.Date(2016, time.June, 20, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
+		{Time: time.Date(2016, time.June, 20, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
+		{Time: time.Date(2016, time.June, 20, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
 	}
 
 	psched2 := schedule.New()
@@ -282,9 +282,9 @@ func TestOnlyReturnsFromDayRequested(t *testing.T) {
 	psched2 := schedule.New()
 	d2 := time.Date(2016, time.June, 21, 0, 0, 0, 0, loc)
 	pEntries := []schedule.Entry{
-		schedule.Entry{Time: time.Date(2016, time.June, 21, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
-		schedule.Entry{Time: time.Date(2016, time.June, 21, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
-		schedule.Entry{Time: time.Date(2016, time.June, 21, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
+		{Time: time.Date(2016, time.June, 21, 11, 40, 0, 0, loc), Group: grp.New("doesnotexist", "test", "us-east-1", "", "doesnotexist-foo-bar")},
+		{Time: time.Date(2016, time.June, 21, 12, 35, 0, 0, loc), Group: grp.New("foobar", "other", "us-west-2", "", "foobar-baz-quux")},
+		{Time: time.Date(2016, time.June, 21, 9, 7, 0, 0, loc), Group: grp.New("chaosguineapig", "prod", "us-east-1", "", "chaosguineapig-prod")},
 	}
 
 	for _, v := range pEntries {

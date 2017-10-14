@@ -117,7 +117,7 @@ func killJSONPayload(ins chaosmonkey.Instance, otherID string, spinnakerUser str
 		Application: ins.AppName(),
 		Description: desc,
 		Job: []kpJob{
-			kpJob{
+			{
 				User:            spinnakerUser,
 				Type:            terminateType,
 				Credentials:     ins.AccountName(),
