@@ -66,7 +66,7 @@ Installs chaosmonkey with all the setup required, e.g setting up the cron, appli
 
 migrate
 -------
-Applies database migration to the database defined in the configuraton file.
+Applies database migration to the database defined in the configuration file.
 
 schedule [--max-apps=<N>] [--apps=foo,bar,baz] [--no-record-schedule]
 --------------------------------------------------------------------
