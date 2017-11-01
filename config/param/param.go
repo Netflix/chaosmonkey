@@ -41,7 +41,8 @@ const (
 	SpinnakerCertificate       = "spinnaker.certificate"
 	SpinnakerEncryptedPassword = "spinnaker.encrypted_password"
 	SpinnakerUser              = "spinnaker.user"
-
+	SpinnakerX509Cert          = "spinnaker.x509_cert"
+	SpinnakerX509Key           = "spinnaker.x509_key"
 	// database
 	DatabaseHost              = "database.host"
 	DatabasePort              = "database.port"
