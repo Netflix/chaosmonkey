@@ -129,6 +129,9 @@ func startMySQLContainer() (*exec.Cmd, error) {
 
 		for !strings.Contains(s, readyString) {
 			s, err = reader.ReadString('\n')
+			if err != nil {
+				return nil, err
+			}
 			fmt.Print(s)
 		}
 

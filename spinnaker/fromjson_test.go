@@ -70,8 +70,8 @@ func TestFromJSON(t *testing.T) {
 	}
 
 	expectedEx := []chaosmonkey.Exception{
-		chaosmonkey.Exception{Account: "test", Stack: "*", Detail: "*", Region: "*"},
-		chaosmonkey.Exception{Account: "prod", Stack: "*", Detail: "*", Region: "eu-west-1"},
+		{Account: "test", Stack: "*", Detail: "*", Region: "*"},
+		{Account: "prod", Stack: "*", Detail: "*", Region: "eu-west-1"},
 	}
 
 	actualEx := actual.Exceptions
@@ -261,8 +261,8 @@ func TestFromJSONPopulatedWhitelist(t *testing.T) {
 	actualWl := *actual.Whitelist
 
 	expectedWl := []chaosmonkey.Exception{
-		chaosmonkey.Exception{Account: "test", Stack: "*", Detail: "*", Region: "*"},
-		chaosmonkey.Exception{Account: "prod", Stack: "*", Detail: "*", Region: "eu-west-1"},
+		{Account: "test", Stack: "*", Detail: "*", Region: "*"},
+		{Account: "prod", Stack: "*", Detail: "*", Region: "eu-west-1"},
 	}
 
 	if len(actualWl) != len(expectedWl) {

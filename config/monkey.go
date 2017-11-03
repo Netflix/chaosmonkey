@@ -414,7 +414,7 @@ func (m *Monkey) BindPFlag(parameter string, flag *pflag.Flag) (err error) {
 }
 
 // The code below is to provide a mechanism for adding a new remote config
-// provider without directly viper. Viper wasn't desinged for this use-case
+// provider without directly viper. Viper wasn't designed for this use-case
 // so this is a workaround.
 
 // RemoteProvider is a type alias

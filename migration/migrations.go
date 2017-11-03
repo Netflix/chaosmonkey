@@ -182,10 +182,11 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
-	"migration": &bintree{nil, map[string]*bintree{
-		"mysql": &bintree{nil, map[string]*bintree{
-			"1.0.0_initial_schema.sql": &bintree{migrationMysql100_initial_schemaSql, map[string]*bintree{}},
+	"migration": {nil, map[string]*bintree{
+		"mysql": {nil, map[string]*bintree{
+			"1.0.0_initial_schema.sql": {migrationMysql100_initial_schemaSql, map[string]*bintree{}},
 		}},
 	}},
 }}
@@ -236,4 +237,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-
