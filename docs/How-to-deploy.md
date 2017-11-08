@@ -187,9 +187,9 @@ generates a complete schedule, you can limit the number of apps  using the
 chaosmonkey schedule --no-record-schedule --max-apps=10
 ```
 
-#### Try to terminate an instance
+#### Terminate an instance
 
-You can test out that instance termination is working by using the same terminate command:
+You can manually invoke Chaos Monkey to terminate an instance. For example:
 
 ```
 chaosmonkey terminate chaosguineapig test --cluster=chaosguineapig --region=us-east-1
