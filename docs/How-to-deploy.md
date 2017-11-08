@@ -173,6 +173,27 @@ If Chaos Monkey cannot reach the database, you will see an error. For example:
 [69668] 2016/09/30 23:43:50 FATAL: could not fetch schedule: failed to retrieve schedule for 2016-09-30 23:43:50.953795019 -0700 PDT: dial tcp 127.0.0.1:3306: getsockopt: connection refused
 ```
 
+#### Generate a termination schedule
+
+You can manually invoke Chaos Monkey to generate a schedule file. When testing,
+you may want to specify `--no-record-schedule` so the schedule doesn't get
+written to the database.
+
+If you have many apps and you don't want to sit there while Chaos Monkey
+generates a complete schedule, you can limit the number of apps  using the
+`--max-apps=<number>`. For example:
+
+```
+chaosmonkey schedule --no-record-schedule --max-apps=10
+```
+
+#### Try to terminate an instance
+
+You can test out that instance termination is working by using the same terminate command:
+
+```
+chaosmonkey terminate chaosguineapig test --cluster=chaosguineapig --region=us-east-1
+```
 
 
 ### Optional: Dynamic properties (etcd, consul)
