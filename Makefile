@@ -29,4 +29,4 @@ cover:
 	go tool cover -html=coverage.out
 
 fix:
-	gofmt -w `find . -name '*.go' | grep -Ev '/vendor/|/migration'`
+	gofmt -w -s `find . -name '*.go' | grep -Ev '/vendor/|/migration'`
