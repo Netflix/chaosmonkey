@@ -237,6 +237,11 @@ func Execute() {
 		log.Fatalf("FATAL: could not initialize mysql connection: %+v", err)
 	}
 
+	cons, err := deps.GetConstrainer(cfg)
+	if err != nil {
+		log.Fatalf("FATAL: deps.GetConstrainer failed: %+v", err)
+	}
+
 	// Ensure mysql object gets closed
 	defer func() {
 		_ = sql.Close()
@@ -272,7 +277,7 @@ func Execute() {
 			schedStore = nullSchedStore{}
 		}
 
-		Schedule(spin, schedStore, cfg, spin, apps)
+		Schedule(spin, schedStore, cfg, spin, cons, apps)
 	case "fetch-schedule":
 		FetchSchedule(sql, cfg)
 	case "terminate":

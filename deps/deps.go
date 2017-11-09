@@ -20,6 +20,7 @@ import (
 	"github.com/Netflix/chaosmonkey/clock"
 	"github.com/Netflix/chaosmonkey/config"
 	"github.com/Netflix/chaosmonkey/deploy"
+	"github.com/Netflix/chaosmonkey/schedule"
 )
 
 var (
@@ -39,6 +40,9 @@ var (
 
 	// GetOutage returns an interface for checking if there is an outage
 	GetOutage func(*config.Monkey) (chaosmonkey.Outage, error)
+
+	// GetConstrainer returns an interface for constraining the schedule
+	GetConstrainer func(*config.Monkey) (schedule.Constrainer, error)
 )
 
 // Deps are a common set of external dependencies

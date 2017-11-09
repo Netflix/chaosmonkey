@@ -30,7 +30,7 @@ import (
 
 // Schedule executes the "schedule" command. This defines the schedule
 // of terminations for the day and records them as cron jobs
-func Schedule(g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *config.Monkey, d deploy.Deployment, apps []string) {
+func Schedule(g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *config.Monkey, d deploy.Deployment, cons schedule.Constrainer, apps []string) {
 
 	enabled, err := cfg.ScheduleEnabled()
 	if err != nil {
@@ -47,7 +47,7 @@ func Schedule(g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *conf
 	 scheduling time but later in the day becomes enabled, it still
 	 functions correctly.
 	*/
-	err = do(d, g, ss, cfg, apps)
+	err = do(d, g, ss, cfg, cons, apps)
 
 	if err != nil {
 		log.Fatalf("FATAL: %v", err)
@@ -56,14 +56,18 @@ func Schedule(g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *conf
 }
 
 // do is the actual implementation for the Schedule function
-func do(d deploy.Deployment, g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *config.Monkey, apps []string) error {
+func do(d deploy.Deployment, g chaosmonkey.AppConfigGetter, ss schedstore.SchedStore, cfg *config.Monkey, cons schedule.Constrainer, apps []string) error {
 
 	s := schedule.New()
 	err := s.Populate(d, g, cfg, apps)
 	if err != nil {
 		return fmt.Errorf("failed to populate schedule: %v", err)
 	}
-	err = deploySchedule(s, ss, cfg)
+
+	// Filter out terminations that violate constrains
+	sched := cons.Filter(*s)
+
+	err = deploySchedule(&sched, ss, cfg)
 	if err != nil {
 		return fmt.Errorf("failed to deploy schedule: %v", err)
 	}

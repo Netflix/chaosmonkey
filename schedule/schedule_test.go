@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package schedule
+package schedule_test
 
 import (
 	"bytes"
@@ -22,11 +22,12 @@ import (
 	"github.com/Netflix/chaosmonkey/config"
 	"github.com/Netflix/chaosmonkey/config/param"
 	"github.com/Netflix/chaosmonkey/mock"
+	"github.com/Netflix/chaosmonkey/schedule"
 )
 
 func TestPopulate(t *testing.T) {
 	// Setup
-	s := New()
+	s := schedule.New()
 	// mock deployment returns 4 single-cluster apps, 3 in prod and one in test
 	d := mock.Dep()
 

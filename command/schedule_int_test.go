@@ -23,6 +23,7 @@ import (
 	"github.com/Netflix/chaosmonkey"
 	"github.com/Netflix/chaosmonkey/config"
 	"github.com/Netflix/chaosmonkey/config/param"
+	"github.com/Netflix/chaosmonkey/constrainer"
 	"github.com/Netflix/chaosmonkey/mock"
 	"github.com/Netflix/chaosmonkey/schedule"
 )
@@ -51,7 +52,7 @@ func TestScheduleCommand(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	err = do(d, a, a, cfg, appNames)
+	err = do(d, a, a, cfg, constrainer.NullConstrainer{}, appNames)
 
 	if err != nil {
 		t.Errorf("%v", err)
