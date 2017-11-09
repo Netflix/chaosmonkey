@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Configuring behavior via Spinnaker - Chaos Monkey</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Configuring behavior via Spinnaker";
+    var mkdocs_page_input_path = "Configuring-behavior-via-Spinnaker.md";
+    var mkdocs_page_url = "/Configuring-behavior-via-Spinnaker/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Chaos Monkey</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuration-file-format/">Configuration file format</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Configuring behavior via Spinnaker</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#termination-frequency">Termination frequency</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#grouping">Grouping</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#exceptions">Exceptions</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Decryptor/">Decryptor</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Error-counter/">Error counter</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../How-to-deploy/">How to deploy</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Outage-checker/">Outage checker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-locally/">Running locally</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-tests/">Running tests</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Termination-behavior/">Termination behavior</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Tracker/">Tracker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Vendoring-dependencies/">Vendoring dependencies</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Chaos Monkey</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Configuring behavior via Spinnaker</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Netflix/chaosmonkey/edit/master/docs/Configuring-behavior-via-Spinnaker.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>Through the Spinnaker web UI, you can configure how often Chaos Monkey
+terminates instances for each application.</p>
+<p>Click on the "Config" tab in Spinnaker. There should be a "Chaos Monkey"
+widget where you can enable/disable Chaos Monkey for the app, as well as
+configure its behavior.</p>
+<p><img alt="Config screnshot" src="../config.png" /></p>
+<h2 id="termination-frequency">Termination frequency</h2>
+<p>By default, Chaos Monkey is configured for a <em>mean time between terminations</em> of
+two (2) days, which means that on average Chaos Monkey will terminate an
+instance every two days for each group in that app.</p>
+<p>Chaos Monkey also has a <em>minimum time between terminations</em>, which defaults to
+one (1) day. This means that Chaos Monkey is guaranteed to never kill more often
+than once a day for each group. Even if multiple Chaos Monkeys are deployed, as
+long as they are all configured to use the same database, they will obey the
+minimum time between terminations.</p>
+<h3 id="grouping">Grouping</h3>
+<p>Chaos Monkey operates on <em>groups</em> of instances. Every work day, for every
+(enabled) group of instances, Chaos Monkey will flip a biased coin to determine
+whether it should kill from an instance from a group. If so, it will randomly
+select an instance from the group.</p>
+<p>Users can configure what Chaos Monkey considers a group.  The three options are:</p>
+<ul>
+<li>app</li>
+<li>stack</li>
+<li>cluster</li>
+</ul>
+<p>If grouping is set to "app", Chaos Monkey will terminate up to one instance per
+app each day, regardless of how these instances are organized into clusters.</p>
+<p>If the grouping is set to "stack", Chaos Monkey will terminate up to one instance per
+stack each day. For instance, if an application has three stacks defined, then
+Chaos Monkey may kill up to three instances in this app per day.</p>
+<p>If the grouping is set to "cluster", Chaos Monkey will terminate up to one
+instance per cluster each day.</p>
+<p>By default, Chaos Monkey treats each region separately. However, if the "regions
+are independent" option is unchecked, then Chaos Monkey will not terminate
+instances that are in the same group but in different regions. This is intended
+to support databases that replicate across regions where simultaneous
+termination across regions is undesirable.</p>
+<h2 id="exceptions">Exceptions</h2>
+<p>You can opt-out combinations of account, region, stack, and detail. In the
+example config shown above, Chaos Monkey will not terminate instances in the
+prod account in the us-west-2 region with a stack of "staging" and a blank
+detail field.</p>
+<p>The exception field also supports a wildcard, <code>*</code>, which matches everything. In
+the example above, Chaos Monkey will also not terminate any instances in the
+test account, regardless of region, stack or detail.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Decryptor/" class="btn btn-neutral float-right" title="Decryptor">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Configuration-file-format/" class="btn btn-neutral" title="Configuration file format"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p><b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a></p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Netflix/chaosmonkey/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Configuration-file-format/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Decryptor/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

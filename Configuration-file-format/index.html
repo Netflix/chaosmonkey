@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Configuration file format - Chaos Monkey</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Configuration file format";
+    var mkdocs_page_input_path = "Configuration-file-format.md";
+    var mkdocs_page_url = "/Configuration-file-format/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Chaos Monkey</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Configuration file format</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#example">Example</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#defaults">Defaults</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuring-behavior-via-Spinnaker/">Configuring behavior via Spinnaker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Decryptor/">Decryptor</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Error-counter/">Error counter</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../How-to-deploy/">How to deploy</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Outage-checker/">Outage checker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-locally/">Running locally</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-tests/">Running tests</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Termination-behavior/">Termination behavior</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Tracker/">Tracker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Vendoring-dependencies/">Vendoring dependencies</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Chaos Monkey</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Configuration file format</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Netflix/chaosmonkey/edit/master/docs/Configuration-file-format.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>The config file is in <a href="https://github.com/toml-lang/toml">TOML</a> format.</p>
+<p>Chaos Monkey will look for a file named <code>chaosmonkey.toml</code> in the following
+locations:</p>
+<ul>
+<li><code>.</code> (current directory)</li>
+<li><code>/apps/chaosmonkey</code></li>
+<li><code>/etc</code></li>
+<li><code>/etc/chaosmonkey</code></li>
+</ul>
+<h2 id="example">Example</h2>
+<p>Here is an example configuration file:</p>
+<pre><code>[chaosmonkey]
+enabled = true
+schedule_enabled = true
+leashed = false
+accounts = [&quot;production&quot;, &quot;test&quot;]
+
+[database]
+host = &quot;dbhost.example.com&quot;
+name = &quot;chaosmonkey&quot;
+user = &quot;chaosmonkey&quot;
+encrypted_password = &quot;securepasswordgoeshere&quot;
+
+[spinnaker]
+endpoint = &quot;http://spinnaker.example.com:8084&quot;
+</code></pre>
+
+<p>Note that while the field is called "encrypted_password", you should put the
+unencrypted version of your password here. Chaos Monkey currently only ships
+with a no-op (do nothing) password decryptor.</p>
+<h3 id="defaults">Defaults</h3>
+<p>The following example shows all of the default values:</p>
+<pre><code>[chaosmonkey]
+enabled = false                    # if false, won't terminate instances when invoked
+leashed = true                     # if true, terminations are only simulated (logged only)
+schedule_enabled = false           # if true, will generate schedule of terminations each weekday
+accounts = []                      # list of Spinnaker accounts with chaos monkey enabled, e.g.: [&quot;prod&quot;, &quot;test&quot;]
+
+start_hour = 9                     # time during day when starts terminating
+end_hour = 15                      # time during day when stops terminating
+
+# tzdata format, see TZ column in https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# Other allowed values: &quot;UTC&quot;, &quot;Local&quot;
+time_zone = &quot;America/Los_Angeles&quot;  # time zone used by start.hour and end.hour
+
+term_account = &quot;root&quot;              # account used to run the term_path command
+
+max_apps = 2147483647              # max number of apps Chaos Monkey will schedule terminations for
+
+# location of command Chaos Monkey uses for doing terminations
+term_path = &quot;/apps/chaosmonkey/chaosmonkey-terminate.sh&quot;
+
+# cron file that Chaos Monkey writes to each day for scheduling kills
+cron_path = &quot;/etc/cron.d/chaosmonkey-daily-terminations&quot;
+
+# decryption system for encrypted_password fields for spinnaker and database
+decryptor = &quot;&quot;
+
+# event tracking systems that records chaos monkey terminations
+trackers = []
+
+# metric collection systems that track errors for monitoring/alerting
+error_counter = &quot;&quot;
+
+# outage checking system that tells chaos monkey if there is an ongoing outage
+outage_checker = &quot;&quot;
+
+[database]
+host = &quot;&quot;                # database host
+port = 3306              # tcp port that the database is lstening on
+user = &quot;&quot;                # database user
+encrypted_password = &quot;&quot;  # password for database auth, encrypted by decryptor
+name = &quot;&quot;                # name of database that contains chaos monkey data
+
+[spinnaker]
+endpoint = &quot;&quot;           # spinnaker api url
+certificate = &quot;&quot;        # path to p12 file when using client-side tls certs
+encrypted_password = &quot;&quot; # password used for p12 certificate, encrypted by decryptor
+user = &quot;&quot;               # user associated with terminations, sent in API call to terminate
+
+# For dynamic configuration options, see viper docs
+[dynamic]
+provider = &quot;&quot;   # options: &quot;etcd&quot;, &quot;consul&quot;
+endpoint = &quot;&quot;   # url for dynamic provider
+path = &quot;&quot;       # path for dynamic provider
+</code></pre>
+
+<p>Note that many of these configuration parameters (decryptor, trackers,
+error_counter, outage_checker) currently only have no-op implementations.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Configuring-behavior-via-Spinnaker/" class="btn btn-neutral float-right" title="Configuring behavior via Spinnaker">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p><b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a></p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Netflix/chaosmonkey/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Configuring-behavior-via-Spinnaker/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

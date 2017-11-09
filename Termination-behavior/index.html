@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Termination behavior - Chaos Monkey</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Termination behavior";
+    var mkdocs_page_input_path = "Termination-behavior.md";
+    var mkdocs_page_url = "/Termination-behavior/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Chaos Monkey</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuration-file-format/">Configuration file format</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuring-behavior-via-Spinnaker/">Configuring behavior via Spinnaker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Decryptor/">Decryptor</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Error-counter/">Error counter</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../How-to-deploy/">How to deploy</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Outage-checker/">Outage checker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-locally/">Running locally</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-tests/">Running tests</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Termination behavior</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#enabled-group">Enabled group</a></li>
+    
+
+    <li class="toctree-l2"><a href="#probability">Probability</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Tracker/">Tracker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Vendoring-dependencies/">Vendoring dependencies</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Chaos Monkey</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Termination behavior</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Netflix/chaosmonkey/edit/master/docs/Termination-behavior.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="enabled-group">Enabled group</h2>
+<p>Chaos Monkey will only consider server groups eligible for termination if they
+are marked as enabled by Spinnaker.  The Spinnaker API exposes an <em>isDisabled</em>
+boolean flag to indicate whether a group is disabled. Chaos Monkey filters on
+this to ensure that it only terminates from active groups.</p>
+<h2 id="probability">Probability</h2>
+<p>For each app, Chaos Monkey divides the instances into instance groups (the groupings
+depend on how the app is configured). Every weekday, for each instance group,
+Chaos Monkey flips a weighted coin to decide whether to terminate an instance
+from that group. If the coin comes up heads, Chaos Monkey schedules a termination at
+a random time between 9AM and 3PM that day.</p>
+<p>Under this behavior, the number of work days between terminations for an
+instance group is a random variable that has a <a href="https://en.wikipedia.org/wiki/Geometric_distribution">geometric distribution</a>.</p>
+<p>The equation below describes the probability distribution for the time between
+terminations. <em>X</em> is the random variable, <em>n</em> is the number of work days between
+terminations, and <em>p</em> is the probability that the coin comes up heads.</p>
+<pre><code>P(X=n) = (1-p)^(n-1) × p,   n&gt;=1
+</code></pre>
+<p>Taking expectation over <em>X</em> gives the mean:</p>
+<pre><code>E[X] = 1/p
+</code></pre>
+<p>Each app defines two parameters that governs how often Chaos Monkey should
+instances for that app:</p>
+<ul>
+<li>mean time between terminations in work days (μ)</li>
+<li>min time between terminations in work days  (ɛ)</li>
+</ul>
+<p>Chaos Monkey uses μ to determine what <em>p</em> should be. If we ignore the effect of
+ɛ and solve for <em>p</em>:</p>
+<pre><code>μ = E[X] = 1/p
+p = 1/μ
+</code></pre>
+<p>As an example, for a given app, assume that μ=5. On each day, the probability of
+a termination is 1/5.</p>
+<p>Note that if ɛ&gt;1, Chaos Monkey termination behavior is no longer
+a geometric distribution:</p>
+<pre><code>P(X=n) = (1-p)^(n-1) × p,  n&gt;=ɛ
+</code></pre>
+<p>In particular, as ɛ grows larger, E[X]-μ gets larger. We don't apply a
+correction for this, because the additional complexity in the math isn't worth
+having E[X] exactly equal μ.</p>
+<p>Also note that if μ=1, then p=1, which guarantees a termination each day.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Tracker/" class="btn btn-neutral float-right" title="Tracker">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Running-tests/" class="btn btn-neutral" title="Running tests"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p><b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a></p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Netflix/chaosmonkey/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Running-tests/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Tracker/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

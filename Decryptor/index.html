@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Decryptor - Chaos Monkey</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Decryptor";
+    var mkdocs_page_input_path = "Decryptor.md";
+    var mkdocs_page_url = "/Decryptor/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Chaos Monkey</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuration-file-format/">Configuration file format</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuring-behavior-via-Spinnaker/">Configuring behavior via Spinnaker</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Decryptor</a>
+    <ul class="subnav">
+            
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Error-counter/">Error counter</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../How-to-deploy/">How to deploy</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Outage-checker/">Outage checker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-locally/">Running locally</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-tests/">Running tests</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Termination-behavior/">Termination behavior</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Tracker/">Tracker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Vendoring-dependencies/">Vendoring dependencies</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Chaos Monkey</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Decryptor</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Netflix/chaosmonkey/edit/master/docs/Decryptor.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>A decryptor allows you to use encrypted versions of the passwords for the MySQL
+database and Spinnaker p12 certificate (see <a href="../Configuration-file-format">configuration file format</a>).
+Chaos Monkey will invoke the decryptor to decrypt the passwords before using
+them.</p>
+<p>Chaos Monkey does not ship with any decryptor implementations. If you wish to
+use this functionality, you will need to implement your own.</p>
+<p>If you wish to store your passwords encrypted and use a decryption system at
+runtime, you need to:</p>
+<ol>
+<li>Give your decryptor a name (e.g., "gpg")</li>
+<li>Code up a type in Go that implements the <a href="https://godoc.org/github.com/Netflix/chaosmonkey/#Decryptor">Decryptor</a> interface.</li>
+<li>Modify <a href="https://github.com/Netflix/chaosmonkey/blob/master/decryptor/decryptor.go">decryptor.go</a> so that it recognizes your decryptor.</li>
+<li>Edit your <a href="../Configuration-file-format">config file</a> to specify your decryptor.</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Error-counter/" class="btn btn-neutral float-right" title="Error counter">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Configuring-behavior-via-Spinnaker/" class="btn btn-neutral" title="Configuring behavior via Spinnaker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p><b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a></p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Netflix/chaosmonkey/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Configuring-behavior-via-Spinnaker/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Error-counter/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

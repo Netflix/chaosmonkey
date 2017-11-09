@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Configuration-file-format/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Configuring-behavior-via-Spinnaker/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Decryptor/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Error-counter/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/How-to-deploy/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Outage-checker/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Running-locally/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Running-tests/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Termination-behavior/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Tracker/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://netflix.github.io/chaosmonkey/Vendoring-dependencies/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+</urlset>

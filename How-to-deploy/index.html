@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>How to deploy - Chaos Monkey</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "How to deploy";
+    var mkdocs_page_input_path = "How-to-deploy.md";
+    var mkdocs_page_url = "/How-to-deploy/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Chaos Monkey</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuration-file-format/">Configuration file format</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Configuring-behavior-via-Spinnaker/">Configuring behavior via Spinnaker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Decryptor/">Decryptor</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Error-counter/">Error counter</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">How to deploy</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#prerequisites">Prerequisites</a></li>
+    
+
+    <li class="toctree-l2"><a href="#build">Build</a></li>
+    
+
+    <li class="toctree-l2"><a href="#how-chaos-monkey-runs">How Chaos Monkey runs</a></li>
+    
+
+    <li class="toctree-l2"><a href="#deploy-overview">Deploy overview</a></li>
+    
+
+    <li class="toctree-l2"><a href="#configure-spinnaker-for-chaos-monkey-support">Configure Spinnaker for Chaos Monkey support</a></li>
+    
+
+    <li class="toctree-l2"><a href="#create-the-mysql-database">Create the MySQL database</a></li>
+    
+
+    <li class="toctree-l2"><a href="#write-a-configuration-file-chaosmonkeytoml">Write a configuration file (chaosmonkey.toml)</a></li>
+    
+
+    <li class="toctree-l2"><a href="#create-the-database-schema">Create the database schema</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#verifying-chaos-monkey-is-configured-properly">Verifying Chaos Monkey is configured properly</a></li>
+        
+            <li><a class="toctree-l3" href="#optional-dynamic-properties-etcd-consul">Optional: Dynamic properties (etcd, consul)</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#set-up-a-cron-job-that-runs-chaos-monkey-daily-schedule">Set up a cron job that runs Chaos Monkey daily schedule</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#create-appschaosmonkeychaosmonkey-schedulesh">Create /apps/chaosmonkey/chaosmonkey-schedule.sh</a></li>
+        
+            <li><a class="toctree-l3" href="#create-etccrondchaosmonkey-schedule">Create /etc/cron.d/chaosmonkey-schedule</a></li>
+        
+            <li><a class="toctree-l3" href="#create-appschaosmonkeychaosmonkey-terminatesh">Create /apps/chaosmonkey/chaosmonkey-terminate.sh</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Outage-checker/">Outage checker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-locally/">Running locally</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Running-tests/">Running tests</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Termination-behavior/">Termination behavior</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Tracker/">Tracker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Vendoring-dependencies/">Vendoring dependencies</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Chaos Monkey</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>How to deploy</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/Netflix/chaosmonkey/edit/master/docs/How-to-deploy.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>We currently don't have a streamlined process for deploying Chaos Monkey. This
+page describes the manual steps required to build and deploy. A great way to
+contribute to this project would be to use Docker containers to make it easier
+for other users to get up and running quickly.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><a href="http://www.spinnaker.io/">Spinnaker</a></li>
+<li>MySQL (5.6 or later)</li>
+</ul>
+<p>To use this version of Chaos Monkey, you must be using <a href="http://www.spinnaker.io/">Spinnaker</a> to manage your applications. Spinnaker is the
+continuous delivery platform that we use at Netflix.</p>
+<p>Chaos Monkey also requires a MySQL-compatible database, version 5.6 or later.</p>
+<h2 id="build">Build</h2>
+<p>To build Chaos Monkey on your local machine (requires the Go
+toolchain).</p>
+<pre><code>go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
+</code></pre>
+
+<p>This will install a <code>chaosmonkey</code> binary in your <code>$GOBIN</code> directory.</p>
+<h2 id="how-chaos-monkey-runs">How Chaos Monkey runs</h2>
+<p>Chaos Monkey does not run as a service. Instead, you set up a cron job
+that calls Chaos Monkey once a weekday to create a schedule of terminations.</p>
+<p>When Chaos Monkey creates a schedule, it creates another cron job to schedule terminations
+during the working hours of the day.</p>
+<h2 id="deploy-overview">Deploy overview</h2>
+<p>To deploy Chaos Monkey, you need to:</p>
+<ol>
+<li>Configure Spinnaker for Chaos Monkey support</li>
+<li>Set up the MySQL database</li>
+<li>Write a configuration file (chaosmonkey.toml)</li>
+<li>Set up a cron job that runs Chaos Monkey daily schedule</li>
+</ol>
+<h2 id="configure-spinnaker-for-chaos-monkey-support">Configure Spinnaker for Chaos Monkey support</h2>
+<p>Spinnaker's web interface is called <em>Deck</em>. You need to be running Deck version
+v.2839.0 or greater for Chaos Monkey support. Check which version of Deck you are
+running by hitting the <code>/version.json</code> endpoint of your Spinnaker deployment.
+(Note that this version information will not be present if you are running
+Deck using a <a href="https://quay.io/repository/spinnaker/deck">Docker container hosted on Quay</a>).</p>
+<p>Deck has a config file named <code>/var/www/settings.js</code>. In this file there is a
+"feature" object that contains a number of feature flags:</p>
+<pre><code>  feature: {
+    pipelines: true,
+    notifications: false,
+    fastProperty: true,
+    ...
+</code></pre>
+
+<p>Add the following flag:</p>
+<pre><code>chaosMonkey: true
+</code></pre>
+
+<p>If the feature was enabled successfully, when you create a new app with Spinnaker, you will see
+a "Chaos Monkey: Enabled" checkbox in the "New Application" modal dialog. If it
+does not appear, you may need to deploy a more recent version of Spinnaker.</p>
+<p><img alt="new-app" src="../new-app.png" title="new application dialog" /></p>
+<p>For more details, see <a href="http://www.spinnaker.io/docs/custom-configuration#section-additional-configuration-files">Additional configuration files</a> on the
+Spinnaker website.</p>
+<h2 id="create-the-mysql-database">Create the MySQL database</h2>
+<p>Chaos Monkey uses a MySQL database as a backend to record a daily termination
+schedule and to enforce a minimum time between terminations. (By default, Chaos
+Monkey will not terminate more than one instance per day per group).</p>
+<p>Log in to your MySQL deployment and create a database named <code>chaosmonkey</code>:</p>
+<pre><code>mysql&gt; CREATE DATABASE chaosmonkey;
+</code></pre>
+
+<p>Note: Chaos Monkey does not currently include a mechanism for purging old data.
+Until this function exists, it is the operator's responsibility to remove old
+data as needed.</p>
+<h2 id="write-a-configuration-file-chaosmonkeytoml">Write a configuration file (chaosmonkey.toml)</h2>
+<p>See <a href="../Configuration-file-format">Configuration file format</a> for the configuration file format.</p>
+<h2 id="create-the-database-schema">Create the database schema</h2>
+<p>Once you have created a <code>chaosmonkey</code> database and have populated the
+configuration file with the database credentials, add the tables to the database
+by doing:</p>
+<pre><code>chaosmonkey migrate
+</code></pre>
+
+<h3 id="verifying-chaos-monkey-is-configured-properly">Verifying Chaos Monkey is configured properly</h3>
+<p>Chaos Monkey supports a number of command-line arguments that are useful for
+verifying that things are working properly.</p>
+<h4 id="spinnaker">Spinnaker</h4>
+<p>You can verify that Chaos Monkey reach Spinnaker by fetching the Chaos Monkey
+configuration for an app:</p>
+<pre><code>chaosmonkey config &lt;appname&gt;
+</code></pre>
+
+<p>If successful, you'll see output that looks like:</p>
+<pre><code>(*chaosmonkey.AppConfig)(0xc4202ec0c0)({
+ Enabled: (bool) true,
+ RegionsAreIndependent: (bool) true,
+ MeanTimeBetweenKillsInWorkDays: (int) 2,
+ MinTimeBetweenKillsInWorkDays: (int) 1,
+ Grouping: (chaosmonkey.Group) cluster,
+ Exceptions: ([]chaosmonkey.Exception) {
+ }
+})
+</code></pre>
+
+<p>If it fails, you'll see an error message.</p>
+<h4 id="database">Database</h4>
+<p>You can verify that Chaos Monkey can reach the database by attempting to
+retrieve the termination schedule for the day.</p>
+<pre><code>chaosmonkey fetch-schedule
+</code></pre>
+
+<p>If successful, you should see output like:</p>
+<pre><code>[69400] 2016/09/30 23:41:03 chaosmonkey fetch-schedule starting
+[69400] 2016/09/30 23:41:03 Writing /etc/cron.d/chaosmonkey-daily-terminations
+[69400] 2016/09/30 23:41:03 chaosmonkey fetch-schedule done
+</code></pre>
+
+<p>(Chaos Monkey will write an empty file to
+<code>/etc/cron.d/chaosmonkey-daily-terminations</code> since the database does not contain
+any termination schedules yet).</p>
+<p>If Chaos Monkey cannot reach the database, you will see an error. For example:</p>
+<pre><code>[69668] 2016/09/30 23:43:50 chaosmonkey fetch-schedule starting
+[69668] 2016/09/30 23:43:50 FATAL: could not fetch schedule: failed to retrieve schedule for 2016-09-30 23:43:50.953795019 -0700 PDT: dial tcp 127.0.0.1:3306: getsockopt: connection refused
+</code></pre>
+
+<h4 id="generate-a-termination-schedule">Generate a termination schedule</h4>
+<p>You can manually invoke Chaos Monkey to generate a schedule file. When testing,
+you may want to specify <code>--no-record-schedule</code> so the schedule doesn't get
+written to the database.</p>
+<p>If you have many apps and you don't want to sit there while Chaos Monkey
+generates a complete schedule, you can limit the number of apps  using the
+<code>--max-apps=&lt;number&gt;</code>. For example:</p>
+<pre><code>chaosmonkey schedule --no-record-schedule --max-apps=10
+</code></pre>
+
+<h4 id="terminate-an-instance">Terminate an instance</h4>
+<p>You can manually invoke Chaos Monkey to terminate an instance. For example:</p>
+<pre><code>chaosmonkey terminate chaosguineapig test --cluster=chaosguineapig --region=us-east-1
+</code></pre>
+
+<h3 id="optional-dynamic-properties-etcd-consul">Optional: Dynamic properties (etcd, consul)</h3>
+<p>Chaos Monkey supports changing the following configuration properties dynamically:</p>
+<ul>
+<li>chaosmonkey.enabled</li>
+<li>chaosmonkey.leashed</li>
+<li>chaosmonkey.schedule_enabled</li>
+<li>chaosmonkey.accounts</li>
+</ul>
+<p>These are intended to allow an operator to make certain changes to Chaos
+Monkey's behavior without having to redeploy.</p>
+<p>Note: the configuration file takes precedence over dynamic provider, so do
+not specify these properties in the config file if you want to set them
+dynamically.</p>
+<p>To take advantage of dynamic properties, you need to keep those properties in
+either <a href="https://coreos.com/etcd/docs/latest/">etcd</a> or <a href="https://www.consul.io/">Consul</a> and add a <code>[dynamic]</code> section that contains the
+endpoint for the service and a path that returns a JSON file that has each of
+the properties you want to set dynamically.</p>
+<p>Chaos Monkey uses the <a href="https://github.com/spf13/viper">Viper</a> library to implement dynamic configuration, see the
+Viper <a href="https://github.com/spf13/viper#remote-keyvalue-store-support">remote key/value store support</a> docs for more details.</p>
+<h2 id="set-up-a-cron-job-that-runs-chaos-monkey-daily-schedule">Set up a cron job that runs Chaos Monkey daily schedule</h2>
+<h3 id="create-appschaosmonkeychaosmonkey-schedulesh">Create /apps/chaosmonkey/chaosmonkey-schedule.sh</h3>
+<p>For the remainder if the docs, we assume you have copied the chaosmonkey binary
+to <code>/apps/chaosmonkey</code>, and will create the scripts described below there as
+well. However, Chaos Monkey makes no explicit assumptions about the location of
+these files.</p>
+<p>Create a file called <code>chaosmonkey-schedule.sh</code> that invokes <code>chaosmonkey
+schedule</code> and writes the output to a logfile.</p>
+<p>Note that because this will be invoked from cron, the PATH will likely not include the
+location of the chaosmonkey binary so be sure to specify it explicitly.</p>
+<p>/apps/chaosmonkey/chaosmonkey-schedule.sh:</p>
+<pre><code class="bash">#!/bin/bash
+/apps/chaosmonkey/chaosmonkey schedule &gt;&gt; /var/log/chaosmonkey-schedule.log 2&gt;&amp;1
+</code></pre>
+
+<h3 id="create-etccrondchaosmonkey-schedule">Create /etc/cron.d/chaosmonkey-schedule</h3>
+<p>Once you have this script, create a cron job that invokes it once a day. Chaos
+Monkey starts terminating at <code>chaosmonkey.start_hour</code> in
+<code>chaosmonkey.time_zone</code>, so it's best to pick a time earlier in the day.</p>
+<p>The example below generates termination schedules each weekday at 12:00 system
+time (which we assume is in UTC).</p>
+<p>/etc/cron.d/chaosmonkey-schedule:</p>
+<pre><code class="bash"># Run the Chaos Monkey scheduler at 5AM PDT (4AM PST) every weekday
+# This corresponds to: 12:00 UTC
+# Because system clock runs UTC, time change affects when job runs
+
+# The scheduler must run as root because it needs root permissions to write
+# to the file /etc/cron.d/chaosmonkey-daily-terminations
+
+# min  hour  dom  month  day  user  command
+    0    12    *      *  1-5  root  /apps/chaosmonkey/chaosmonkey-schedule.sh
+</code></pre>
+
+<h3 id="create-appschaosmonkeychaosmonkey-terminatesh">Create /apps/chaosmonkey/chaosmonkey-terminate.sh</h3>
+<p>When Chaos Monkey schedules terminations, it will create cron jobs that call the
+path specified by <code>chaosmonkey.term_path</code>, which defaults to /apps/chaosmonkey/chaosmonkey-terminate.sh</p>
+<p>/apps/chaosmonkey/chaosmonkey-terminate.sh:</p>
+<pre><code>#!/bin/bash
+/apps/chaosmonkey/chaosmonkey terminate &quot;$@&quot; &gt;&gt; /var/log/chaosmonkey-terminate.log 2&gt;&amp;1
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Outage-checker/" class="btn btn-neutral float-right" title="Outage checker">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Error-counter/" class="btn btn-neutral" title="Error counter"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p><b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a></p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Netflix/chaosmonkey/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Error-counter/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Outage-checker/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>
