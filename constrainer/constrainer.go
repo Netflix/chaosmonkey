@@ -1,4 +1,4 @@
-// Copyright 2016 Netflix, Inc.
+// Copyright 2017 Netflix, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
-Chaos Monkey randomly terminates instances.
-*/
-package main
+package constrainer
 
 import (
-	"github.com/Netflix/chaosmonkey/command"
-
-	// These are anonymous imported so that the related Get* methods (e.g.,
-	// GetDecryptor) are picked up.
-
-	_ "github.com/Netflix/chaosmonkey/constrainer"
-	_ "github.com/Netflix/chaosmonkey/decryptor"
-	_ "github.com/Netflix/chaosmonkey/env"
-	_ "github.com/Netflix/chaosmonkey/errorcounter"
-	_ "github.com/Netflix/chaosmonkey/outage"
-	_ "github.com/Netflix/chaosmonkey/tracker"
+	"github.com/Netflix/chaosmonkey/config"
+	"github.com/Netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey/schedule"
 )
 
-func main() {
-	command.Execute()
+type NullConstrainer struct{}
+
+func init() {
+	deps.GetConstrainer = getNullConstrainer
+}
+
+// Filter implements schedule.Constrainer.Filter
+// This is a no-op implementation
+func (n NullConstrainer) Filter(s schedule.Schedule) schedule.Schedule {
+	return s
+}
+
+func getNullConstrainer(cfg *config.Monkey) (schedule.Constrainer, error) {
+	return NullConstrainer{}, nil
 }
