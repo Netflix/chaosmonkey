@@ -3,3 +3,21 @@ site_url: https://netflix.github.io/chaosmonkey
 repo_url: https://github.com/Netflix/chaosmonkey
 theme: readthedocs
 copyright: <b>A Netflix Original Production</b><br><a href="http://netflix.github.io/">Netflix OSS</a> | <a href="http://techblog.netflix.com/">Tech Blog</a> | <a href="https://twitter.com/NetflixOSS">Twitter @NetflixOSS</a> | <a href="https://jobs.netflix.com">Jobs</a>
+pages:
+  - Home: index.md
+  - How to deploy: How-to-deploy.md
+  - Configuration file format: Configuration-file-format.md
+  - Configuring behavior via Spinnaker: Configuring-behavior-via-spinnaker.md
+  - Termination behaior: Termination-behavior.md
+  - Running locally: Running-locally.md
+  - Plugins:
+      - Home: plugins/index.md
+      - Decryptor: plugins/Decryptor.md
+      - Error counter: plugins/Error-counter.md
+      - Outage checker: plugins/Outage-checker.md
+      - Tracker: plugins/Tracker.md
+      - Constrainer: plugins/Constrainer.md
+  - Development:
+      - Running tests: dev/Running-tests.md
+      - Vendoring dependencies: dev/Vendoring-dependencies.md
+
