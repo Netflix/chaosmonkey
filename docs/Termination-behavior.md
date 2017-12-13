@@ -26,7 +26,7 @@ Taking expectation over *X* gives the mean:
 
     E[X] = 1/p
 
-Each app defines two parameters that governs how often Chaos Monkey should
+Each app defines two parameters that governs how often Chaos Monkey should terminate
 instances for that app:
 
  * mean time between terminations in work days (μ)
