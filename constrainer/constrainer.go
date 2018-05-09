@@ -20,6 +20,7 @@ import (
 	"github.com/Netflix/chaosmonkey/schedule"
 )
 
+//NullConstrainer struct
 type NullConstrainer struct{}
 
 func init() {
