@@ -122,7 +122,7 @@ verifying that things are working properly.
 
 #### Spinnaker
 
-You can verify that Chaos Monkey reach Spinnaker by fetching the Chaos Monkey
+You can verify that Chaos Monkey can reach Spinnaker by fetching the Chaos Monkey
 configuration for an app:
 
 ```

@@ -23,7 +23,7 @@ minimum time between terminations.
 
 Chaos Monkey operates on *groups* of instances. Every work day, for every
 (enabled) group of instances, Chaos Monkey will flip a biased coin to determine
-whether it should kill from an instance from a group. If so, it will randomly
+whether it should kill an instance from a group. If so, it will randomly
 select an instance from the group.
 
 Users can configure what Chaos Monkey considers a group.  The three options are:
