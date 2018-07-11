@@ -20,6 +20,7 @@ import (
 	"github.com/Netflix/chaosmonkey/schedule"
 )
 
+// NullConstrainer is a no-op constrainer
 type NullConstrainer struct{}
 
 func init() {
