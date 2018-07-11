@@ -117,8 +117,7 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 			return nil, err
 		}
 
-		var deployedRegions []deploy.RegionName
-		deployedRegions, err = dep.GetRegionNames(names.App, account, clusterName)
+		deployedRegions, err := dep.GetRegionNames(names.App, account, clusterName)
 		if err != nil {
 			return nil, err
 		}
@@ -152,14 +151,19 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 func regions(group grp.InstanceGroup, deployedRegions []deploy.RegionName) []deploy.RegionName {
 	region, ok := group.Region()
 	if ok {
-		if contains(region, deployedRegions) {
-			return []deploy.RegionName{deploy.RegionName(region)}
-		} else {
-			return nil
-		}
-	}  else {
-		return deployedRegions
+		return regionsWhenAppSpecifiesSingleRegion(region, deployedRegions)
 	}
+
+	return deployedRegions
+}
+
+// regionsWhenAppSpecifiesSingleRegion returns a list containing either the region or empty, depending on whether the region is one of the deployed ones
+func regionsWhenAppSpecifiesSingleRegion(region string, deployedRegions []deploy.RegionName) []deploy.RegionName {
+	if contains(region, deployedRegions) {
+		return []deploy.RegionName{deploy.RegionName(region)}
+	}
+
+	return nil
 }
 
 func contains(region string, regions []deploy.RegionName) bool {
