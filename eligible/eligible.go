@@ -117,26 +117,13 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 			return nil, err
 		}
 
-		var regions []deploy.RegionName
-		regions, err = dep.GetRegionNames(names.App, account, clusterName)
+		var deployedRegions []deploy.RegionName
+		deployedRegions, err = dep.GetRegionNames(names.App, account, clusterName)
 		if err != nil {
 			return nil, err
 		}
 
-		region, ok := group.Region()
-		if ok {
-			// group is associated with a single region
-
-			// verify the cluster is deployed in the region
-			if contains(region, regions) {
-				regions = []deploy.RegionName{deploy.RegionName(region)}
-			} else {
-				// don't process this cluster, it isn't deployed in this region
-				continue
-			}
-		}
-
-		for _, region := range regions {
+		for _, region := range regions(group, deployedRegions) {
 
 			if isException(exs, account, names, region) {
 				continue
@@ -159,6 +146,20 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 	}
 
 	return result, nil
+}
+
+// regions returns list of candidate regions for termination given app config and where cluster is deployed
+func regions(group grp.InstanceGroup, deployedRegions []deploy.RegionName) []deploy.RegionName {
+	region, ok := group.Region()
+	if ok {
+		if contains(region, deployedRegions) {
+			return []deploy.RegionName{deploy.RegionName(region)}
+		} else {
+			return nil
+		}
+	}  else {
+		return deployedRegions
+	}
 }
 
 func contains(region string, regions []deploy.RegionName) bool {
