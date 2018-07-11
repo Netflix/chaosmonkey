@@ -118,15 +118,21 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 		}
 
 		var regions []deploy.RegionName
+		regions, err = dep.GetRegionNames(names.App, account, clusterName)
+		if err != nil {
+			return nil, err
+		}
+
 		region, ok := group.Region()
 		if ok {
 			// group is associated with a single region
-			regions = []deploy.RegionName{deploy.RegionName(region)}
-		} else {
-			// group is multi-region, we need to query the deployment to figure out which regions the cluster is in
-			regions, err = dep.GetRegionNames(names.App, account, clusterName)
-			if err != nil {
-				return nil, err
+
+			// verify the cluster is deployed in the region
+			if contains(region, regions) {
+				regions = []deploy.RegionName{deploy.RegionName(region)}
+			} else {
+				// don't process this cluster, it isn't deployed in this region
+				continue
 			}
 		}
 
@@ -153,6 +159,15 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 	}
 
 	return result, nil
+}
+
+func contains(region string, regions []deploy.RegionName) bool {
+	for _, r := range regions {
+		if region == string(r) {
+			return true
+		}
+	}
+	return false
 }
 
 const whiteListErrorMessage = "whitelist is not supported"
