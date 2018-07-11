@@ -95,7 +95,7 @@ func TestAppLevelGroupingWhereClustersAreRegionSpecific(t *testing.T) {
 		}},
 		}}}
 
-		group := grp.New("foo", "prod", "us-east-1", "", "")
+	group := grp.New("foo", "prod", "us-east-1", "", "")
 
 	instances, err := Instances(group, nil, dep)
 	if err != nil {
