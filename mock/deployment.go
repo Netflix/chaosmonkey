@@ -14,7 +14,11 @@
 
 package mock
 
-import D "github.com/Netflix/chaosmonkey/deploy"
+import (
+	"github.com/pkg/errors"
+
+	D "github.com/Netflix/chaosmonkey/deploy"
+)
 
 const cloudProvider = "aws"
 
@@ -109,8 +113,27 @@ func (d Deployment) CloudProvider(account string) (string, error) {
 
 // GetInstanceIDs implements deploy.Deployment.GetInstanceIDs
 func (d Deployment) GetInstanceIDs(app string, account D.AccountName, cloudProvider string, region D.RegionName, cluster D.ClusterName) (D.ASGName, []D.InstanceID, error) {
-	// asgs associated with the cluster
-	asgs := d.AppMap[app][account].Clusters[cluster][region]
+	// Return an error if the cluster doesn't exist in the region
+
+	appInfo, ok := d.AppMap[app]
+	if !ok {
+		return "", nil, errors.Errorf("no app %s", app)
+	}
+
+	accountInfo, ok := appInfo[account]
+	if !ok {
+		return "", nil, errors.Errorf("app %s not deployed in account %s", app, account)
+	}
+
+	clusterInfo, ok := accountInfo.Clusters[cluster]
+	if !ok {
+		return "", nil, errors.Errorf("no cluster %s in app:%s, account:%s", cluster)
+	}
+
+	asgs, ok := clusterInfo[region]
+	if !ok {
+		return "", nil, errors.Errorf("cluster %s in account %s not deployed in region %s", cluster, account, region)
+	}
 
 	instances := make([]D.InstanceID, 0)
 
