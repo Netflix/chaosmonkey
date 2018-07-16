@@ -128,7 +128,6 @@ func TestAppLevelGroupingWhereClusterIsInTwoRegions(t *testing.T) {
 	}
 }
 
-
 func TestExceptions(t *testing.T) {
 	tests := []struct {
 		label string
