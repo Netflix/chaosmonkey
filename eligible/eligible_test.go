@@ -83,6 +83,51 @@ func TestGroupings(t *testing.T) {
 	}
 }
 
+func TestAppLevelGroupingWhereClustersAreRegionSpecific(t *testing.T) {
+	dep := &mock.Deployment{AppMap: map[string]D.AppMap{
+		"foo": {"prod": D.AccountInfo{CloudProvider: "aws", Clusters: D.ClusterMap{
+			"foo-useast1": {
+				"us-east-1": {"foo-useast1-v001": []D.InstanceID{"i-11111111", "i-22222222", "i-33333333"}},
+			},
+			"foo-uswest2": {
+				"us-west-2": {"foo-uswest2-v005": []D.InstanceID{"i-cccccccc", "i-dddddddd"}},
+			},
+		}},
+		}}}
+
+	group := grp.New("foo", "prod", "us-east-1", "", "")
+
+	instances, err := Instances(group, nil, dep)
+	if err != nil {
+		t.Fatalf("%+v", err)
+	}
+
+	if got, want := len(instances), 3; got != want {
+		t.Errorf("got: %d, want: %d", got, want)
+	}
+}
+
+func TestAppLevelGroupingWhereClusterIsInTwoRegions(t *testing.T) {
+	dep := &mock.Deployment{AppMap: map[string]D.AppMap{
+		"foo": {"prod": D.AccountInfo{CloudProvider: "aws", Clusters: D.ClusterMap{
+			"foo-prod": {
+				"us-east-1": {"foo-prod-v001": []D.InstanceID{"i-11111111", "i-22222222", "i-33333333"}},
+				"us-west-2": {"foo-prod-v001": []D.InstanceID{"i-aaaaaaaa", "i-bbbbbbbb", "i-cccccccc"}},
+			},
+		}}}}}
+
+	group := grp.New("foo", "prod", "", "", "")
+
+	instances, err := Instances(group, nil, dep)
+	if err != nil {
+		t.Fatalf("%+v", err)
+	}
+
+	if got, want := len(instances), 6; got != want {
+		t.Errorf("got: %d, want: %d", got, want)
+	}
+}
+
 func TestExceptions(t *testing.T) {
 	tests := []struct {
 		label string

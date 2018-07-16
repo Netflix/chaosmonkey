@@ -117,20 +117,12 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 			return nil, err
 		}
 
-		var regions []deploy.RegionName
-		region, ok := group.Region()
-		if ok {
-			// group is associated with a single region
-			regions = []deploy.RegionName{deploy.RegionName(region)}
-		} else {
-			// group is multi-region, we need to query the deployment to figure out which regions the cluster is in
-			regions, err = dep.GetRegionNames(names.App, account, clusterName)
-			if err != nil {
-				return nil, err
-			}
+		deployedRegions, err := dep.GetRegionNames(names.App, account, clusterName)
+		if err != nil {
+			return nil, err
 		}
 
-		for _, region := range regions {
+		for _, region := range regions(group, deployedRegions) {
 
 			if isException(exs, account, names, region) {
 				continue
@@ -153,6 +145,34 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 	}
 
 	return result, nil
+}
+
+// regions returns list of candidate regions for termination given app config and where cluster is deployed
+func regions(group grp.InstanceGroup, deployedRegions []deploy.RegionName) []deploy.RegionName {
+	region, ok := group.Region()
+	if ok {
+		return regionsWhenTermScopedtoSingleRegion(region, deployedRegions)
+	}
+
+	return deployedRegions
+}
+
+// regionsWhenTermScopedtoSingleRegion returns a list containing either the region or empty, depending on whether the region is one of the deployed ones
+func regionsWhenTermScopedtoSingleRegion(region string, deployedRegions []deploy.RegionName) []deploy.RegionName {
+	if contains(region, deployedRegions) {
+		return []deploy.RegionName{deploy.RegionName(region)}
+	}
+
+	return nil
+}
+
+func contains(region string, regions []deploy.RegionName) bool {
+	for _, r := range regions {
+		if region == string(r) {
+			return true
+		}
+	}
+	return false
 }
 
 const whiteListErrorMessage = "whitelist is not supported"
