@@ -151,14 +151,14 @@ func clusters(group grp.InstanceGroup, cloudProvider deploy.CloudProvider, exs [
 func regions(group grp.InstanceGroup, deployedRegions []deploy.RegionName) []deploy.RegionName {
 	region, ok := group.Region()
 	if ok {
-		return regionsWhenConfiguredForSingleRegion(region, deployedRegions)
+		return regionsWhenTermScopedtoSingleRegion(region, deployedRegions)
 	}
 
 	return deployedRegions
 }
 
-// regionsWhenConfiguredForSingleRegion returns a list containing either the region or empty, depending on whether the region is one of the deployed ones
-func regionsWhenConfiguredForSingleRegion(region string, deployedRegions []deploy.RegionName) []deploy.RegionName {
+// regionsWhenTermScopedtoSingleRegion returns a list containing either the region or empty, depending on whether the region is one of the deployed ones
+func regionsWhenTermScopedtoSingleRegion(region string, deployedRegions []deploy.RegionName) []deploy.RegionName {
 	if contains(region, deployedRegions) {
 		return []deploy.RegionName{deploy.RegionName(region)}
 	}
