@@ -3,10 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "QNUzQ9hC5R53WM0cQCDcM2esqMI=",
+			"checksumSHA1": "X5fYX+aczewfHRL0FYoG0F0Lhjs=",
 			"path": "github.com/SmartThingsOSS/frigga-go",
-			"revision": "ecc2955753f6282fde28c6cb95e779aef7e8898c",
-			"revisionTime": "2016-07-26T13:24:17-05:00"
+			"revision": "55b2c36db3e755eec17627a5a50265064ce3ad7a",
+			"revisionTime": "2018-08-27T23:07:14Z"
 		},
 		{
 			"checksumSHA1": "5rPfda8jFccr3A6heL+JAmi9K9g=",
