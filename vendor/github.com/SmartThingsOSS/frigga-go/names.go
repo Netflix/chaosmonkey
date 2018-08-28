@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	nameChars       = "a-zA-Z0-9\\._"
-	nameHyphenChars = "\\-a-zA-Z0-9\\._"
+	nameChars       = "a-zA-Z0-9\\._\\^"
+	nameHyphenChars = "\\-a-zA-Z0-9\\._\\^"
 
 	// Deviation from Frigga: SmartThings allows for more than 3 characters in the
 	// push format, as well as underscore values! This does not affect the test
