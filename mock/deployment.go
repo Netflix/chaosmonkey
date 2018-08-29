@@ -127,7 +127,7 @@ func (d Deployment) GetInstanceIDs(app string, account D.AccountName, cloudProvi
 
 	clusterInfo, ok := accountInfo.Clusters[cluster]
 	if !ok {
-		return "", nil, errors.Errorf("no cluster %s in app:%s, account:%s", cluster)
+		return "", nil, errors.Errorf("no cluster %s in app:%s, account:%s", cluster, app, account)
 	}
 
 	asgs, ok := clusterInfo[region]
