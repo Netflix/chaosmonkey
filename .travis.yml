@@ -14,7 +14,7 @@ before_install:
 
 install:
     - docker pull mysql:5.6
-    - go get github.com/golang/lint/golint
+    - go get golang.org/x/lint/golint
     - go get github.com/kisielk/errcheck
 
 # With the "docker" tag enabled on go test invocation (-tags docker)
