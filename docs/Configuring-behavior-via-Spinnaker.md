@@ -13,6 +13,8 @@ By default, Chaos Monkey is configured for a *mean time between terminations* of
 two (2) days, which means that on average Chaos Monkey will terminate an
 instance every two days for each group in that app.
 
+The lowest permitted value for mean time between terminations is one (1) day.
+
 Chaos Monkey also has a *minimum time between terminations*, which defaults to
 one (1) day. This means that Chaos Monkey is guaranteed to never kill more often
 than once a day for each group. Even if multiple Chaos Monkeys are deployed, as
