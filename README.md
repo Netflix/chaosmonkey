@@ -34,8 +34,20 @@ AWS, [GCE][gce-blogpost], and Kubernetes.
 
 To install the Chaos Monkey binary on your local machine:
 
+#### Without Go Modules - or before Go 1.11
+
 ```
 go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
+```
+
+#### Using Go Modules - Go 1.11 or higher
+
+This method is also useful to get a mutable copy of the source code.
+
+```
+git clone https://github.com/Netflix/chaosmonkey ;# clone outside of GOPATH
+cd chaosmonkey
+go install ./cmd/chaosmonkey
 ```
 
 ### How to deploy
