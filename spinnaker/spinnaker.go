@@ -481,6 +481,14 @@ func (s Spinnaker) asgs(appName, account, clusterName string) (result []spinnake
 
 // CloudProvider returns the cloud provider for a given account
 func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
+	exist, e := s.existsAccount(account)
+	if e != nil {
+		return "", e
+	}
+	if !exist {
+		return "", errors.New("the account name doesn't exist")
+	}
+
 	url := s.accountURL(account)
 	resp, err := s.client.Get(url)
 	if err != nil {
@@ -521,6 +529,45 @@ func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
 	}
 
 	return fields.CloudProvider, nil
+}
+
+func (s Spinnaker) existsAccount(account string) (bool, error) {
+	url := s.credentialsURL()
+	resp, err := s.client.Get(url)
+	if err != nil {
+		return false, errors.Wrap(err, fmt.Sprintf("http get failed at %s", url))
+	}
+
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
+			err = errors.Wrap(err, fmt.Sprintf("body close failed at %s", url))
+		}
+	}()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return false, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+	}
+
+	type credential struct {
+		Name string `json:"name"`
+		Type string `json:"type"`
+	}
+
+	var credentials = make([]credential, 0)
+
+	err = json.Unmarshal(body, &credentials)
+	if err != nil {
+		return false, errors.Wrap(err, "json unmarshal failed")
+	}
+
+	for _, c := range credentials {
+		if c.Name == account {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 // GetClusterNames returns a list of cluster names for an app
