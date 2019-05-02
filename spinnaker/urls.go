@@ -46,9 +46,13 @@ func (s Spinnaker) accountURL(account string) string {
 	return fmt.Sprintf("%s/credentials/%s", s.endpoint, account)
 }
 
-// credentialsURL returns the Spinnaker endpoint for retrieving all credentials
-func (s Spinnaker) credentialsURL() string {
-	return fmt.Sprintf("%s/credentials/", s.endpoint)
+// accountsURL returns the Spinnaker endpoint for retrieving all accounts, with details or not
+func (s Spinnaker) accountsURL(expanded bool) string {
+	var qs string
+	if expanded {
+		qs = "?expanded=true"
+	}
+	return fmt.Sprintf("%s/credentials/"+qs, s.endpoint)
 }
 
 // instanceURL returns the spinnaker URL for an instance

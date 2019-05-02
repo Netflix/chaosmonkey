@@ -479,64 +479,35 @@ func (s Spinnaker) asgs(appName, account, clusterName string) (result []spinnake
 	return asgs, nil
 }
 
-// CloudProvider returns the cloud provider for a given account
-func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
-	exist, err := s.existsAccount(account)
+// CloudProvider returns the cloud provider for a given account name
+func (s Spinnaker) CloudProvider(name string) (provider string, err error) {
+	account, err := s.account(name)
 	if err != nil {
 		return "", err
 	}
-	if !exist {
-		return "", errors.New("the account name doesn't exist")
-	}
 
-	url := s.accountURL(account)
-	resp, err := s.client.Get(url)
-	if err != nil {
-		return "", errors.Wrap(err, fmt.Sprintf("http get failed at %s", url))
-	}
-
-	defer func() {
-		if cerr := resp.Body.Close(); cerr != nil && err == nil {
-			err = errors.Wrap(err, fmt.Sprintf("body close failed at %s", url))
-		}
-	}()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
-	}
-
-	var fields struct {
-		CloudProvider string `json:"cloudProvider"`
-		Error         string `json:"error"`
-	}
-
-	err = json.Unmarshal(body, &fields)
-	if err != nil {
-		return "", errors.Wrap(err, "json unmarshal failed")
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		if fields.Error == "" {
-			return "", fmt.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
-		}
-
-		return "", fmt.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, fields.Error)
-	}
-
-	if fields.CloudProvider == "" {
+	if account.CloudProvider == "" {
 		return "", fmt.Errorf("no cloudProvider field in response body")
 	}
 
-	return fields.CloudProvider, nil
+	return account.CloudProvider, nil
 }
 
-// existsAccount checks the existence of an account by its name
-func (s Spinnaker) existsAccount(name string) (bool, error) {
-	url := s.credentialsURL()
+// account represents a spinnaker account
+type account struct {
+	CloudProvider string `json:"cloudProvider"`
+	Name          string `json:"name"`
+	Error         string `json:"error"`
+}
+
+// account returns an account by its name
+func (s Spinnaker) account(name string) (*account, error) {
+	url := s.accountsURL(true)
 	resp, err := s.client.Get(url)
+
+	// Usual HTTP checks
 	if err != nil {
-		return false, errors.Wrap(err, fmt.Sprintf("http get failed at %s", url))
+		return nil, errors.Wrap(err, fmt.Sprintf("http get failed at %s", url))
 	}
 
 	defer func() {
@@ -547,28 +518,33 @@ func (s Spinnaker) existsAccount(name string) (bool, error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
 	}
 
-	type credential struct {
-		Name string `json:"name"`
-		Type string `json:"type"`
-	}
-
-	credentials := make([]credential, 0)
-
-	err = json.Unmarshal(body, &credentials)
+	accounts := make([]account, 0)
+	err = json.Unmarshal(body, &accounts)
 	if err != nil {
-		return false, errors.Wrap(err, "json unmarshal failed")
+		return nil, errors.Wrap(err, "json unmarshal failed")
 	}
+	statusKO := resp.StatusCode != http.StatusOK
 
-	for _, c := range credentials {
-		if c.Name == name {
-			return true, nil
+	// Finally find account
+	for _, c := range accounts {
+		if c.Name != name {
+			continue
 		}
+		if statusKO {
+			if c.Error == "" {
+				return nil, fmt.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
+			}
+
+			return nil, fmt.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, c.Error)
+		}
+
+		return &c, nil
 	}
 
-	return false, nil
+	return nil, errors.New("the account name doesn't exist")
 }
 
 // GetClusterNames returns a list of cluster names for an app
