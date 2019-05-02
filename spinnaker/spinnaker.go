@@ -529,19 +529,19 @@ func (s Spinnaker) account(name string) (*account, error) {
 	statusKO := resp.StatusCode != http.StatusOK
 
 	// Finally find account
-	for _, c := range accounts {
-		if c.Name != name {
+	for _, a := range accounts {
+		if a.Name != name {
 			continue
 		}
 		if statusKO {
-			if c.Error == "" {
+			if a.Error == "" {
 				return nil, fmt.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
 			}
 
-			return nil, fmt.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, c.Error)
+			return nil, fmt.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, a.Error)
 		}
 
-		return &c, nil
+		return &a, nil
 	}
 
 	return nil, errors.New("the account name doesn't exist")
