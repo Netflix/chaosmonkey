@@ -481,9 +481,9 @@ func (s Spinnaker) asgs(appName, account, clusterName string) (result []spinnake
 
 // CloudProvider returns the cloud provider for a given account
 func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
-	exist, e := s.existsAccount(account)
-	if e != nil {
-		return "", e
+	exist, err := s.existsAccount(account)
+	if err != nil {
+		return "", err
 	}
 	if !exist {
 		return "", errors.New("the account name doesn't exist")
@@ -531,7 +531,8 @@ func (s Spinnaker) CloudProvider(account string) (provider string, err error) {
 	return fields.CloudProvider, nil
 }
 
-func (s Spinnaker) existsAccount(account string) (bool, error) {
+// existsAccount checks the existence of an account by its name
+func (s Spinnaker) existsAccount(name string) (bool, error) {
 	url := s.credentialsURL()
 	resp, err := s.client.Get(url)
 	if err != nil {
@@ -554,7 +555,7 @@ func (s Spinnaker) existsAccount(account string) (bool, error) {
 		Type string `json:"type"`
 	}
 
-	var credentials = make([]credential, 0)
+	credentials := make([]credential, 0)
 
 	err = json.Unmarshal(body, &credentials)
 	if err != nil {
@@ -562,7 +563,7 @@ func (s Spinnaker) existsAccount(account string) (bool, error) {
 	}
 
 	for _, c := range credentials {
-		if c.Name == account {
+		if c.Name == name {
 			return true, nil
 		}
 	}
