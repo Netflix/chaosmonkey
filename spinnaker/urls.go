@@ -50,7 +50,7 @@ func (s Spinnaker) accountURL(account string) string {
 func (s Spinnaker) accountsURL(expanded bool) string {
 	var qs string
 	if expanded {
-		qs = "?expanded=true"
+		qs = "?expand=true"
 	}
 	return fmt.Sprintf("%s/credentials/"+qs, s.endpoint)
 }
