@@ -487,7 +487,7 @@ func (s Spinnaker) CloudProvider(name string) (provider string, err error) {
 	}
 
 	if account.CloudProvider == "" {
-		return "", fmt.Errorf("no cloudProvider field in response body")
+		return "", errors.New("no cloudProvider field in response body")
 	}
 
 	return account.CloudProvider, nil
