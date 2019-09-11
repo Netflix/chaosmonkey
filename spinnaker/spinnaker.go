@@ -507,7 +507,7 @@ func (s Spinnaker) account(name string) (*account, error) {
 
 	// Usual HTTP checks
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("http get failed at %s", url))
+		return nil, errors.Wrapf(err, "http get failed at %s", url)
 	}
 
 	defer func() {
@@ -518,10 +518,10 @@ func (s Spinnaker) account(name string) (*account, error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
+		return nil, errors.Wrapf(err, "body read failed at %s", url)
 	}
 
-	accounts := make([]account, 0)
+	var accounts []account
 	err = json.Unmarshal(body, &accounts)
 	if err != nil {
 		return nil, errors.Wrap(err, "json unmarshal failed")
@@ -535,10 +535,10 @@ func (s Spinnaker) account(name string) (*account, error) {
 		}
 		if statusKO {
 			if a.Error == "" {
-				return nil, fmt.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
+				return nil, errors.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
 			}
 
-			return nil, fmt.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, a.Error)
+			return nil, errors.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, a.Error)
 		}
 
 		return &a, nil
