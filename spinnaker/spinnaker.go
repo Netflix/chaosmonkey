@@ -501,13 +501,14 @@ type account struct {
 }
 
 // account returns an account by its name
-func (s Spinnaker) account(name string) (*account, error) {
+func (s Spinnaker) account(name string) (account, error) {
 	url := s.accountsURL(true)
 	resp, err := s.client.Get(url)
+	var ac account
 
 	// Usual HTTP checks
 	if err != nil {
-		return nil, errors.Wrapf(err, "http get failed at %s", url)
+		return ac, errors.Wrapf(err, "http get failed at %s", url)
 	}
 
 	defer func() {
@@ -518,13 +519,13 @@ func (s Spinnaker) account(name string) (*account, error) {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrapf(err, "body read failed at %s", url)
+		return ac, errors.Wrapf(err, "body read failed at %s", url)
 	}
 
 	var accounts []account
 	err = json.Unmarshal(body, &accounts)
 	if err != nil {
-		return nil, errors.Wrap(err, "json unmarshal failed")
+		return ac, errors.Wrap(err, "json unmarshal failed")
 	}
 	statusKO := resp.StatusCode != http.StatusOK
 
@@ -535,16 +536,16 @@ func (s Spinnaker) account(name string) (*account, error) {
 		}
 		if statusKO {
 			if a.Error == "" {
-				return nil, errors.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
+				return ac, errors.Errorf("unexpected status code: %d. body: %s", resp.StatusCode, body)
 			}
 
-			return nil, errors.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, a.Error)
+			return ac, errors.Errorf("unexpected status code: %d. error: %s", resp.StatusCode, a.Error)
 		}
 
-		return &a, nil
+		return a, nil
 	}
 
-	return nil, errors.New("the account name doesn't exist")
+	return ac, errors.New("the account name doesn't exist")
 }
 
 // GetClusterNames returns a list of cluster names for an app
