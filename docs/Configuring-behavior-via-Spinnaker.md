@@ -5,7 +5,7 @@ Click on the "Config" tab in Spinnaker. There should be a "Chaos Monkey"
 widget where you can enable/disable Chaos Monkey for the app, as well as
 configure its behavior.
 
-![Config screnshot](config.png)
+![Config screenshot](config.png)
 
 ## Termination frequency
 
