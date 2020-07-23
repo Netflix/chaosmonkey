@@ -117,7 +117,7 @@ func startMySQLContainer() (*exec.Cmd, error) {
 		return nil, err
 	}
 
-	ch := make(chan int)
+	ch := make(chan int, 1)
 
 	readyString := "mysqld: ready for connections"
 
