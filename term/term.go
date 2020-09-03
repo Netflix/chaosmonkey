@@ -5,6 +5,7 @@
 // You may obtain a copy of the License at
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,7 +52,7 @@ func (err UnleashedInTestEnv) Error() string {
 func Terminate(d deps.Deps, app string, account string, region string, stack string, cluster string) error {
 	enabled, err := d.MonkeyCfg.Enabled()
 	if err != nil {
-		return errors.Wrap(err, "not terminating: could not determine if monkey is enabled")
+		return errors.Wrap(err, "not terminating: Could not determine if monkey is enabled")
 	}
 
 	if !enabled {
@@ -63,18 +64,18 @@ func Terminate(d deps.Deps, app string, account string, region string, stack str
 
 	// If the check for ongoing outage fails, we err on the safe side nd don't terminate an instance
 	if err != nil {
-		return errors.Wrapf(err, "not terminating: problem checking if there is an outage")
+		return errors.Wrapf(err, "not terminating: Problem checking if there is an outage")
 	}
 
 	if problem {
-		log.Println("not terminating: outage in progress")
+		log.Println("not terminating: Outage in progress")
 		return nil
 	}
 
 	accountEnabled, err := d.MonkeyCfg.AccountEnabled(account)
 
 	if err != nil {
-		return errors.Wrap(err, "not terminating: could not determine if account is enabled")
+		return errors.Wrap(err, "not terminating: Could not determine if account is enabled")
 	}
 
 	if !accountEnabled {
@@ -95,7 +96,7 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 	leashed, err := d.MonkeyCfg.Leashed()
 
 	if err != nil {
-		return errors.Wrap(err, "not terminating: could not determine leashed status")
+		return errors.Wrap(err, "not terminating: Could not determine leashed status")
 	}
 
 	/*
@@ -145,7 +146,7 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 
 	loc, err := d.MonkeyCfg.Location()
 	if err != nil {
-		return errors.Wrap(err, "not terminating: could not retrieve location")
+		return errors.Wrap(err, "not terminating: Could not retrieve location")
 	}
 
 	trm := chaosmonkey.Termination{Instance: instance, Time: d.Cl.Now(), Leashed: leashed}
@@ -155,7 +156,7 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 	//
 	err = d.Checker.Check(trm, *appCfg, d.MonkeyCfg.EndHour(), loc)
 	if err != nil {
-		return errors.Wrap(err, "not terminating: check for min time between terminations failed")
+		return errors.Wrap(err, "not terminating: Check for min time between terminations failed")
 	}
 
 	//
@@ -164,7 +165,7 @@ func doTerminate(d deps.Deps, group grp.InstanceGroup) error {
 	for _, tracker := range d.Trackers {
 		err = tracker.Track(trm)
 		if err != nil {
-			return errors.Wrap(err, "not terminating: recording termination event failed")
+			return errors.Wrap(err, "not terminating: Recording termination event failed")
 		}
 	}
 
