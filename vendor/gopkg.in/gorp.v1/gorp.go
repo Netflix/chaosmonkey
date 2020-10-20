@@ -1596,7 +1596,7 @@ func rawselect(m *DbMap, exec SqlExecutor, i interface{}, query string,
 
 	for {
 		if !rows.Next() {
-			// if error occured return rawselect
+			// if error occurred return rawselect
 			if rows.Err() != nil {
 				return nil, rows.Err()
 			}
