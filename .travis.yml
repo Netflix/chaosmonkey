@@ -3,6 +3,9 @@ sudo: required
 
 language: go
 
+go:
+ - 1.14
+
 env:
     - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
 
