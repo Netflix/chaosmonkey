@@ -3,18 +3,18 @@ sudo: required
 
 language: go
 
+go:
+ - "1.14"
+
 env:
     - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
 
 services:
     - docker
 
-before_install:
-    - go get github.com/mattn/goveralls
-
 install:
     - docker pull mysql:5.6
-    - go get github.com/golang/lint/golint
+    - go get golang.org/x/lint/golint
     - go get github.com/kisielk/errcheck
 
 # With the "docker" tag enabled on go test invocation (-tags docker)
@@ -28,7 +28,6 @@ script:
     - go vet `go list ./... | grep -v /vendor/`
     - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
     - go test -v  ./...
-    - $HOME/gopath/bin/goveralls -service=travis-ci
 
 after_success:
     - ./update-docs.sh
