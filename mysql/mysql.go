@@ -242,7 +242,7 @@ func schedExists(tx *sql.Tx, date time.Time) (result bool, err error) {
 // See: https://github.com/go-sql-driver/mysql#dsn-data-source-name
 func dsn(host string, port int, user string, password string, dbname string) string {
 	params := map[string]string{
-		"tx_isolation": "SERIALIZABLE", // we need serializable transactions for atomic test & set behavior
+		"transaction_isolation": "SERIALIZABLE", // we need serializable transactions for atomic test & set behavior
 		"parseTime":    "true",         // enable us to use sql.Rows.Scan to read time.Time objects from queries
 		"loc":          "UTC",          // Scan'd time.Times should be treated as being in UTC time zone
 		"time_zone":    "UTC",          // MySQL should interpret DATETIME values as being in UTC
