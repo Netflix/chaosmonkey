@@ -16,9 +16,8 @@ failures more frequently incentivizes them to build resilient services.
 See the [documentation][docs] for info on how to use Chaos Monkey.
 
 Chaos Monkey is an example of a tool that follows the
-[Principles of Chaos Engineering][PoC].
+Principles of Chaos Engineering.
 
-[PoC]: http://principlesofchaos.org/
 
 ### Requirements
 
