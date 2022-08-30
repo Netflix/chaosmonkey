@@ -389,7 +389,7 @@ func respectsMinTimeBetweenKills(tx *sql.Tx, now time.Time, term chaosmonkey.Ter
 //  Output: Tue, Dec. 15, 2015 5:00 PM PST
 //
 //
-// If days=0, returns the the current date, with
+// If days=0, returns the current date, with
 // the time set to endHour. For example:
 //
 //  days: 0
