@@ -78,7 +78,7 @@ outage_checker = ""
 
 [database]
 host = ""                # database host
-port = 3306              # tcp port that the database is lstening on
+port = 3306              # tcp port that the database is listening on
 user = ""                # database user
 encrypted_password = ""  # password for database auth, encrypted by decryptor
 name = ""                # name of database that contains chaos monkey data
