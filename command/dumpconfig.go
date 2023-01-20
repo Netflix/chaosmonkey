@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/v2"
 	"github.com/davecgh/go-spew/spew"
 )
 

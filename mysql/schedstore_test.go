@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build docker
 // +build docker
 
 // The tests in this package use docker to test against a mysql:5.6 database
@@ -26,10 +27,10 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/Netflix/chaosmonkey/grp"
-	"github.com/Netflix/chaosmonkey/mysql"
-	"github.com/Netflix/chaosmonkey/schedstore"
-	"github.com/Netflix/chaosmonkey/schedule"
+	"github.com/Netflix/chaosmonkey/v2/grp"
+	"github.com/Netflix/chaosmonkey/v2/mysql"
+	"github.com/Netflix/chaosmonkey/v2/schedstore"
+	"github.com/Netflix/chaosmonkey/v2/schedule"
 )
 
 // Test we can publish and then retrieve a schedule

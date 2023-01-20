@@ -17,7 +17,7 @@ package command
 import (
 	"fmt"
 
-	"github.com/Netflix/chaosmonkey/config"
+	"github.com/Netflix/chaosmonkey/v2/config"
 )
 
 // DumpMonkeyConfig dumps the monkey-level config parameters to stdout

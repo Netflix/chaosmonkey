@@ -15,7 +15,7 @@
 package command
 
 import (
-	"github.com/Netflix/chaosmonkey/mysql"
+	"github.com/Netflix/chaosmonkey/v2/mysql"
 	"log"
 )
 

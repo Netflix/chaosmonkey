@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/grp"
 )
 
 // EligibleInstanceGroups returns a slice of InstanceGroups that represent
@@ -30,14 +30,14 @@ import (
 // termination, not when considering groups of eligible instances.
 //
 // The way instances are divided into group will depend on
-//  * the grouping configuration for the app (cluster, stack, app)
-//  * whether regions are independent
+//   - the grouping configuration for the app (cluster, stack, app)
+//   - whether regions are independent
 //
 // The returned InstanceGroups are guaranteed to contain at least one instance
 // each
 //
 // Preconditions:
-//   * app is enabled for Chaos Monkey
+//   - app is enabled for Chaos Monkey
 func (app *App) EligibleInstanceGroups(cfg chaosmonkey.AppConfig) []grp.InstanceGroup {
 	if !cfg.Enabled {
 		log.Fatalf("app %s unexpectedly disabled", app.Name())

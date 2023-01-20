@@ -28,7 +28,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/Netflix/chaosmonkey/config/param"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
 )
 
 // Monkey is is a config implementation backed by viper

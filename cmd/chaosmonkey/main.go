@@ -18,17 +18,17 @@ Chaos Monkey randomly terminates instances.
 package main
 
 import (
-	"github.com/Netflix/chaosmonkey/command"
+	"github.com/Netflix/chaosmonkey/v2/command"
 
 	// These are anonymous imported so that the related Get* methods (e.g.,
 	// GetDecryptor) are picked up.
 
-	_ "github.com/Netflix/chaosmonkey/constrainer"
-	_ "github.com/Netflix/chaosmonkey/decryptor"
-	_ "github.com/Netflix/chaosmonkey/env"
-	_ "github.com/Netflix/chaosmonkey/errorcounter"
-	_ "github.com/Netflix/chaosmonkey/outage"
-	_ "github.com/Netflix/chaosmonkey/tracker"
+	_ "github.com/Netflix/chaosmonkey/v2/constrainer"
+	_ "github.com/Netflix/chaosmonkey/v2/decryptor"
+	_ "github.com/Netflix/chaosmonkey/v2/env"
+	_ "github.com/Netflix/chaosmonkey/v2/errorcounter"
+	_ "github.com/Netflix/chaosmonkey/v2/outage"
+	_ "github.com/Netflix/chaosmonkey/v2/tracker"
 )
 
 func main() {

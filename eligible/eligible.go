@@ -16,9 +16,9 @@
 package eligible
 
 import (
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/deploy"
+	"github.com/Netflix/chaosmonkey/v2/grp"
 	"github.com/SmartThingsOSS/frigga-go"
 	"github.com/pkg/errors"
 	"strings"

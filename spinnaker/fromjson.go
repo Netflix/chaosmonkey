@@ -18,7 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/v2"
 
 	"github.com/pkg/errors"
 )
@@ -26,71 +26,70 @@ import (
 // FromJSON takes a Spinnaker JSON representation of an app
 // and returns a Chaos Monkey config
 // Example:
-//   {
-//       "name": "abc",
-//       "attributes": {
-//         "chaosMonkey": {
-//         "enabled": true,
-//           "meanTimeBetweenKillsInWorkDays": 5,
-//           "minTimeBetweenKillsInWorkDays": 1,
-//           "grouping": "cluster",
-//           "regionsAreIndependent": false,
-//         },
-//         "exceptions" : [
-//             {
-//                 "account": "test",
-//                 "stack": "*",
-//                 "cluster": "*",
-//                 "region": "*"
-//             },
-//             {
-//                 "account": "prod",
-//                 "stack": "*",
-//                 "cluster": "*",
-//                 "region": "eu-west-1"
-//             },
-//         ]
-//       }
-//   }
 //
+//	{
+//	    "name": "abc",
+//	    "attributes": {
+//	      "chaosMonkey": {
+//	      "enabled": true,
+//	        "meanTimeBetweenKillsInWorkDays": 5,
+//	        "minTimeBetweenKillsInWorkDays": 1,
+//	        "grouping": "cluster",
+//	        "regionsAreIndependent": false,
+//	      },
+//	      "exceptions" : [
+//	          {
+//	              "account": "test",
+//	              "stack": "*",
+//	              "cluster": "*",
+//	              "region": "*"
+//	          },
+//	          {
+//	              "account": "prod",
+//	              "stack": "*",
+//	              "cluster": "*",
+//	              "region": "eu-west-1"
+//	          },
+//	      ]
+//	    }
+//	}
 //
 // Example of disabled app:
-//   {
-//       "name": "abc",
-//       "attributes": {
-//         "chaosMonkey": {
-//         "enabled": false
-//         }
-//       }
-//    }
 //
+//	{
+//	    "name": "abc",
+//	    "attributes": {
+//	      "chaosMonkey": {
+//	      "enabled": false
+//	      }
+//	    }
+//	 }
 //
 // Example with whitelist
 //
-// 	  {
-//  	  "enabled": true,
-//  	  "grouping": "app",
-//  	  "meanTimeBetweenKillsInWorkDays": 4,
-//  	  "minTimeBetweenKillsInWorkDays": 1,
-//  	  "regionsAreIndependent": true,
-//  	  "exceptions": [
-//  	  	{
-//  	  	"account": "prod",
-//  	  	"region": "us-west-2",
-//  	  	"stack": "foo",
-//  	  	"detail": "bar"
-//  	  	}
-//  	  ],
-//  	  "whitelist": [
-//  	  	{
-//  	  	"account": "test",
-//  	  	"stack": "*",
-//  	  	"region": "*",
-//  	  	"detail": "*"
-//  	  	}
-//  	  ]
-// 	  }
-//
+//		  {
+//	 	  "enabled": true,
+//	 	  "grouping": "app",
+//	 	  "meanTimeBetweenKillsInWorkDays": 4,
+//	 	  "minTimeBetweenKillsInWorkDays": 1,
+//	 	  "regionsAreIndependent": true,
+//	 	  "exceptions": [
+//	 	  	{
+//	 	  	"account": "prod",
+//	 	  	"region": "us-west-2",
+//	 	  	"stack": "foo",
+//	 	  	"detail": "bar"
+//	 	  	}
+//	 	  ],
+//	 	  "whitelist": [
+//	 	  	{
+//	 	  	"account": "test",
+//	 	  	"stack": "*",
+//	 	  	"region": "*",
+//	 	  	"detail": "*"
+//	 	  	}
+//	 	  ]
+//		  }
 func fromJSON(js []byte) (*chaosmonkey.AppConfig, error) {
 	parsed := new(parsedJSON)
 	err := json.Unmarshal(js, parsed)

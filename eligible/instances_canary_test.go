@@ -17,9 +17,9 @@ package eligible
 import (
 	"testing"
 
-	D "github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/grp"
-	"github.com/Netflix/chaosmonkey/mock"
+	D "github.com/Netflix/chaosmonkey/v2/deploy"
+	"github.com/Netflix/chaosmonkey/v2/grp"
+	"github.com/Netflix/chaosmonkey/v2/mock"
 )
 
 // Test that canaries are not considered eligible instances
