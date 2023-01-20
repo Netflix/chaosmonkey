@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build docker
 // +build docker
 
 // The tests in this package use docker to test against a mysql:5.6 database
@@ -24,9 +25,9 @@ import (
 	"testing"
 	"time"
 
-	c "github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/mock"
-	"github.com/Netflix/chaosmonkey/mysql"
+	c "github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/mock"
+	"github.com/Netflix/chaosmonkey/v2/mysql"
 )
 
 var endHour = 15 // 3PM

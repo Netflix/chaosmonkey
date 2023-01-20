@@ -19,12 +19,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/clock"
-	"github.com/Netflix/chaosmonkey/config"
-	"github.com/Netflix/chaosmonkey/config/param"
-	"github.com/Netflix/chaosmonkey/deps"
-	"github.com/Netflix/chaosmonkey/mock"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/clock"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
+	"github.com/Netflix/chaosmonkey/v2/deps"
+	"github.com/Netflix/chaosmonkey/v2/mock"
 )
 
 func mockDeps() deps.Deps {

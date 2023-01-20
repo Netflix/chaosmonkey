@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/v2"
 )
 
 // Outage prints out "true" if an ongoing outage, else "false"

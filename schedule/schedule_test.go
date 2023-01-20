@@ -18,11 +18,11 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/config"
-	"github.com/Netflix/chaosmonkey/config/param"
-	"github.com/Netflix/chaosmonkey/mock"
-	"github.com/Netflix/chaosmonkey/schedule"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
+	"github.com/Netflix/chaosmonkey/v2/mock"
+	"github.com/Netflix/chaosmonkey/v2/schedule"
 )
 
 func TestPopulate(t *testing.T) {

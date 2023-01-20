@@ -16,9 +16,9 @@ package command
 
 import (
 	"fmt"
-	"github.com/Netflix/chaosmonkey/config"
-	"github.com/Netflix/chaosmonkey/config/param"
-	"github.com/Netflix/chaosmonkey/mock"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
+	"github.com/Netflix/chaosmonkey/v2/mock"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"testing"

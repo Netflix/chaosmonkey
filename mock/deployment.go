@@ -17,7 +17,7 @@ package mock
 import (
 	"github.com/pkg/errors"
 
-	D "github.com/Netflix/chaosmonkey/deploy"
+	D "github.com/Netflix/chaosmonkey/v2/deploy"
 )
 
 const cloudProvider = "aws"
@@ -25,8 +25,10 @@ const cloudProvider = "aws"
 // Dep returns a mock implementation of deploy.Deployment
 // Dep has 4 apps: foo, bar, baz, quux
 // Each app runs in 1 account:
-//    foo, bar, baz run in prod
-//    quux runs in test
+//
+//	foo, bar, baz run in prod
+//	quux runs in test
+//
 // Each app has one cluster: foo-prod, bar-prod, baz-prod
 // Each cluster runs in one region: us-east-1
 // Each cluster contains 1 AZ with two instances
@@ -45,12 +47,13 @@ func Dep() D.Deployment {
 
 // NewDeployment returns a mock implementation of deploy.Deployment
 // Pass in a deploy.AppMap, for example:
-//  map[string]deploy.AppMap{
-// 		"foo":  deploy.AppMap{"prod": {"foo-prod": {"us-east-1": {"foo-prod-v001": []string{"i-d3e3d611", "i-63f52e25"}}}}},
-// 		"bar":  deploy.AppMap{"prod": {"bar-prod": {"us-east-1": {"bar-prod-v011": []string{"i-d7f06d45", "i-ce433cf1"}}}}},
-// 		"baz":  deploy.AppMap{"prod": {"baz-prod": {"us-east-1": {"baz-prod-v004": []string{"i-25b86646", "i-573d46d5"}}}}},
-// 		"quux": deploy.AppMap{"test": {"quux-test": {"us-east-1": {"quux-test-v004": []string{"i-25b866ab", "i-892d46d5"}}}}},
-// 	}
+//
+//	 map[string]deploy.AppMap{
+//			"foo":  deploy.AppMap{"prod": {"foo-prod": {"us-east-1": {"foo-prod-v001": []string{"i-d3e3d611", "i-63f52e25"}}}}},
+//			"bar":  deploy.AppMap{"prod": {"bar-prod": {"us-east-1": {"bar-prod-v011": []string{"i-d7f06d45", "i-ce433cf1"}}}}},
+//			"baz":  deploy.AppMap{"prod": {"baz-prod": {"us-east-1": {"baz-prod-v004": []string{"i-25b86646", "i-573d46d5"}}}}},
+//			"quux": deploy.AppMap{"test": {"quux-test": {"us-east-1": {"quux-test-v004": []string{"i-25b866ab", "i-892d46d5"}}}}},
+//		}
 func NewDeployment(apps map[string]D.AppMap) D.Deployment {
 	return &Deployment{apps}
 }

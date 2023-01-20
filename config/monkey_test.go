@@ -16,7 +16,7 @@ package config
 
 import (
 	"fmt"
-	"github.com/Netflix/chaosmonkey/config/param"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
 	"testing"
 )
 

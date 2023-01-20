@@ -23,15 +23,15 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/pkg/errors"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/cal"
-	"github.com/Netflix/chaosmonkey/config"
-	"github.com/Netflix/chaosmonkey/config/param"
-	"github.com/Netflix/chaosmonkey/deps"
-	"github.com/Netflix/chaosmonkey/grp"
-	"github.com/Netflix/chaosmonkey/migration"
-	"github.com/Netflix/chaosmonkey/schedstore"
-	"github.com/Netflix/chaosmonkey/schedule"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/cal"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	"github.com/Netflix/chaosmonkey/v2/config/param"
+	"github.com/Netflix/chaosmonkey/v2/deps"
+	"github.com/Netflix/chaosmonkey/v2/grp"
+	"github.com/Netflix/chaosmonkey/v2/migration"
+	"github.com/Netflix/chaosmonkey/v2/schedstore"
+	"github.com/Netflix/chaosmonkey/v2/schedule"
 	"github.com/rubenv/sql-migrate"
 	"log"
 )
@@ -376,27 +376,26 @@ func respectsMinTimeBetweenKills(tx *sql.Tx, now time.Time, term chaosmonkey.Ter
 // workday ends at 5PM, this would be 17
 // loc is the location that corresponds to endHour, e.g. America/Los_Angeles for PST
 //
-// The returned time will be in UTC
+// # The returned time will be in UTC
 //
 // If days=1, then we allow
 // kills each day, so the most recent kill will be at the
 // end of the previous workday. For example:
 //
-//  days: 1
-//  endHour: 17 (i.e. work day ends at 5PM local time)
-//  loc:  America/Los_Angeles (PST)
-//  chrono.Now(): Wed, Dec. 16, 2015 2:30 PM PST
-//  Output: Tue, Dec. 15, 2015 5:00 PM PST
-//
+//	days: 1
+//	endHour: 17 (i.e. work day ends at 5PM local time)
+//	loc:  America/Los_Angeles (PST)
+//	chrono.Now(): Wed, Dec. 16, 2015 2:30 PM PST
+//	Output: Tue, Dec. 15, 2015 5:00 PM PST
 //
 // If days=0, returns the current date, with
 // the time set to endHour. For example:
 //
-//  days: 0
-//  endHour: 17 (i.e. work day ends at 5PM local time)
-//  loc:  America/Los_Angeles (PST)
-//  chrono.Now(): Wed, Dec. 16, 2015 2:30 PM PST
-//  Output: Wed, Dec. 16, 2015 5:00 PM PST
+//	days: 0
+//	endHour: 17 (i.e. work day ends at 5PM local time)
+//	loc:  America/Los_Angeles (PST)
+//	chrono.Now(): Wed, Dec. 16, 2015 2:30 PM PST
+//	Output: Wed, Dec. 16, 2015 5:00 PM PST
 //
 // noKillsSince returns the a datetime that is the last allowed time that a kill
 // is permitted to have happened.

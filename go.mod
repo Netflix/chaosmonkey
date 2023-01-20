@@ -1,4 +1,4 @@
-module github.com/Netflix/chaosmonkey
+module github.com/Netflix/chaosmonkey/v2
 
 go 1.19
 

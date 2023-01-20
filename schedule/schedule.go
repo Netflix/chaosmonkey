@@ -24,10 +24,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/config"
-	"github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/grp"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	"github.com/Netflix/chaosmonkey/v2/deploy"
+	"github.com/Netflix/chaosmonkey/v2/grp"
 )
 
 // Populate populates the termination schedule with the random
@@ -207,8 +207,9 @@ func (e *Entry) Equal(o *Entry) bool {
 
 // Crontab returns a termination command for the Entry, in crontab format.
 // It takes as arguments:
-//  - the path to the termination executable
-//  - the account that should execute the job
+//   - the path to the termination executable
+//   - the account that should execute the job
+//
 // The returned string is not terminated by a newline.
 func (e *Entry) Crontab(termPath, account string) string {
 	// From https://en.wikipedia.org/wiki/Cron
@@ -273,8 +274,8 @@ func (t ByTime) Less(i, j int) bool { return t[i].Time.Before(t[j].Time) }
 
 // Crontab returns a schedule of termination commands in crontab format
 // It takes as arguments:
-//  - the path to the executable that terminates an instance
-//  - the account that should execute the job
+//   - the path to the executable that terminates an instance
+//   - the account that should execute the job
 func (s Schedule) Crontab(exPath string, account string) []byte {
 	var result bytes.Buffer
 

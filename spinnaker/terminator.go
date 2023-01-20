@@ -24,7 +24,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Netflix/chaosmonkey"
+	"github.com/Netflix/chaosmonkey/v2"
 )
 
 const terminateType string = "terminateInstances"

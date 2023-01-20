@@ -29,10 +29,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Netflix/chaosmonkey"
-	"github.com/Netflix/chaosmonkey/config"
-	D "github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/deps"
+	"github.com/Netflix/chaosmonkey/v2"
+	"github.com/Netflix/chaosmonkey/v2/config"
+	D "github.com/Netflix/chaosmonkey/v2/deploy"
+	"github.com/Netflix/chaosmonkey/v2/deps"
 )
 
 // Spinnaker implements the deploy.Deployment interface by querying Spinnaker

@@ -14,7 +14,7 @@
 
 package mock
 
-import "github.com/Netflix/chaosmonkey"
+import "github.com/Netflix/chaosmonkey/v2"
 
 // Terminator implements term.terminator
 type Terminator struct {

@@ -17,10 +17,10 @@ package eligible
 import (
 	"testing"
 
-	"github.com/Netflix/chaosmonkey"
-	D "github.com/Netflix/chaosmonkey/deploy"
-	"github.com/Netflix/chaosmonkey/grp"
-	"github.com/Netflix/chaosmonkey/mock"
+	"github.com/Netflix/chaosmonkey/v2"
+	D "github.com/Netflix/chaosmonkey/v2/deploy"
+	"github.com/Netflix/chaosmonkey/v2/grp"
+	"github.com/Netflix/chaosmonkey/v2/mock"
 )
 
 // mockDeployment returns a deploy.Deployment object mock for testing
