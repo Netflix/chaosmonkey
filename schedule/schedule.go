@@ -150,7 +150,7 @@ type float64Rand interface {
 // ShouldKillInstance randomly determines whether an instance should
 // be terminated today by flipping a biased coin.
 //
-// It uses the meanTimeBetwenKillsInWorkDays to determine the probability
+// It uses the meanTimeBetweenKillsInWorkDays to determine the probability
 // of a kill
 func shouldKillInstance(meanTimeBetweenKillsInWorkDays int, r float64Rand) bool {
 
