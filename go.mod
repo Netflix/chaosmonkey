@@ -30,7 +30,7 @@ require (
 	github.com/spf13/jwalterweatherman v0.0.0-20160311093646-33c24e77fb80 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
-	golang.org/x/sys v0.0.0-20160916181909-8f0908ab3b24 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.0.0-20160922232553-a7c023693a94 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/gorp.v1 v1.7.1 // indirect
