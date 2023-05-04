@@ -8,7 +8,7 @@ locations:
  * `/etc`
  * `/etc/chaosmonkey`
 
-## Example
+## Exampleasus
 
 Here is an example configuration file:
 
