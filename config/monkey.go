@@ -235,7 +235,7 @@ func (m *Monkey) AccountEnabled(account string) (bool, error) {
 	return false, nil
 }
 
-// Accounts return a list of accounts where Choas Monkey is enabled
+// Accounts return a list of accounts where Chaos Monkey is enabled
 func (m *Monkey) Accounts() ([]string, error) {
 	err := m.readRemoteConfig()
 	if err != nil {
