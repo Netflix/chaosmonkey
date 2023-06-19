@@ -307,7 +307,7 @@ func (m *Monkey) Trackers() ([]string, error) {
 	return m.getStringSlice(param.Trackers)
 }
 
-// ErrorCounter returns the names of the backend implementions for
+// ErrorCounter returns the names of the backend implementations for
 // error counters. Intended for monitoring/alerting.
 func (m *Monkey) ErrorCounter() string {
 	return m.v.GetString(param.ErrorCounter)
