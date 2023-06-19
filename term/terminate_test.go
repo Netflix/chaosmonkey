@@ -134,7 +134,7 @@ func TestTerminateDoesntKillInLeashedMode(t *testing.T) {
 
 }
 
-// TestNeverTerminateInTestEnv checks that unleasshed terms are not allowed in
+// TestNeverTerminateInTestEnv checks that unleashed terms are not allowed in
 // test
 func TestNeverTerminateUnleashedInTestEnv(t *testing.T) {
 
