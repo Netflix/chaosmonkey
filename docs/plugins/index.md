@@ -41,7 +41,7 @@ See the [Constrainer](Constrainer) page for an example implementation.
 
 ### 3. Create the file that loads the plugins
 
-File:  `$GOPATH/src/example.com/chasmonkey/cmd/chaosmonkey/main.go`
+File:  `$GOPATH/src/example.com/chaosmonkey/cmd/chaosmonkey/main.go`
 
 It looks like this:
 
