@@ -48,7 +48,7 @@ var (
 	port     int    = 3306
 )
 
-// inUse returns true if port accepts connections on localhsot
+// inUse returns true if port accepts connections on localhost
 func inUse(port int) bool {
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
