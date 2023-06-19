@@ -1,4 +1,4 @@
-An outage checker is used to automatially disable Chaos Monkey during ongoing outages.
+An outage checker is used to automatically disable Chaos Monkey during ongoing outages.
 
 If you wish to have Chaos Monkey check if there is an ongoing outage and disable
 accordingly, you need to:
