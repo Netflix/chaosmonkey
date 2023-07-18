@@ -202,7 +202,7 @@ func TestConcurrentChecks(t *testing.T) {
 	}
 
 	if got, want := success, 1; got != want {
-		t.Errorf("got %d succeses, want: %d", got, want)
+		t.Errorf("got %d successes, want: %d", got, want)
 	}
 }
 

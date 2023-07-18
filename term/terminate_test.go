@@ -116,7 +116,7 @@ func TestTerminateDoesntKillInLeashedMode(t *testing.T) {
 	deps := mockDeps()
 	cfg := config.Defaults()
 	// Setting leashed explicitly for code clarity, default is leashed so
-	// this isn't strictly neededj
+	// this isn't strictly needed
 	cfg.Set(param.Leashed, true)
 
 	deps.MonkeyCfg = cfg
@@ -134,7 +134,7 @@ func TestTerminateDoesntKillInLeashedMode(t *testing.T) {
 
 }
 
-// TestNeverTerminateInTestEnv checks that unleasshed terms are not allowed in
+// TestNeverTerminateInTestEnv checks that unleashed terms are not allowed in
 // test
 func TestNeverTerminateUnleashedInTestEnv(t *testing.T) {
 

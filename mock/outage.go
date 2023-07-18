@@ -17,7 +17,7 @@ package mock
 // Outage is a mock implementation of outage.Outage
 type Outage struct{}
 
-// Outage implemnets outage.Outage.Outage
+// Outage implements outage.Outage.Outage
 func (o Outage) Outage() (bool, error) {
 	return false, nil
 }

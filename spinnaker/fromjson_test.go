@@ -58,7 +58,7 @@ func TestFromJSON(t *testing.T) {
 	}
 
 	if actual.MeanTimeBetweenKillsInWorkDays != 5 {
-		t.Errorf("Expected mean time: 5. acutal mean time: %d", actual.MeanTimeBetweenKillsInWorkDays)
+		t.Errorf("Expected mean time: 5. actual mean time: %d", actual.MeanTimeBetweenKillsInWorkDays)
 	}
 
 	if !actual.RegionsAreIndependent {

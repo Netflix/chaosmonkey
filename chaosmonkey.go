@@ -51,7 +51,7 @@ type (
 	// Exception describes clusters that have been opted out of chaos monkey
 	// If one of the members is a "*", it matches everything. That is the only
 	// wildcard value
-	// For example, this will opt-out all of the cluters in the test account:
+	// For example, this will opt-out all of the clusters in the test account:
 	// Exception{ Account:"test", Stack:"*", Cluster:"*", Region: "*"}
 	Exception struct {
 		Account string
