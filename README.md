@@ -35,7 +35,7 @@ AWS, [GCE][gce-blogpost], and Kubernetes.
 To install the Chaos Monkey binary on your local machine:
 
 ```
-go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
+go install github.com/Netflix/chaosmonkey/bin/chaosmonkey@latest
 ```
 
 ### How to deploy
