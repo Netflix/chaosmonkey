@@ -33,7 +33,8 @@ AWS, [GCE][gce-blogpost], and Kubernetes.
 ### Install locally
 
 To install the Chaos Monkey binary on your local machine:
-
+1. Set `GO111MODULE=off` so that the packages can be installed locally.
+2. Enter the following command
 ```
 go get github.com/netflix/chaosmonkey/cmd/chaosmonkey
 ```
