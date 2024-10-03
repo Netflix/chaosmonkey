@@ -4,13 +4,19 @@ sudo: required
 language: go
 
 go:
- - 1.19.x
+ - "1.19.x"
 
 env:
     - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
 
 services:
     - docker
+
+before_install:
+   - wget https://golang.org/dl/go1.19.8.linux-amd64.tar.gz  # Download the desired Go version
+   - sudo tar -C /usr/local -xzf go1.19.8.linux-amd64.tar.gz  # Extract Go to /usr/local
+   - export PATH=/usr/local/go/bin:$PATH  # Update the PATH
+   - go version  # Verify the installed version
 
 install:
     - docker pull mysql:8.0
