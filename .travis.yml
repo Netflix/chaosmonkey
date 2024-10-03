@@ -14,8 +14,8 @@ services:
 
 install:
     - docker pull mysql:5.6
-    - go get golang.org/x/lint/golint
-    - go get github.com/kisielk/errcheck
+    - go install golang.org/x/lint/golint
+    - go install github.com/kisielk/errcheck@latest
 
 # With the "docker" tag enabled on go test invocation (-tags docker)
 # the mysql:5.6 docker container will be started
