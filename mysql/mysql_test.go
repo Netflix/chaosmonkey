@@ -15,7 +15,7 @@
 //go:build docker
 // +build docker
 
-// The tests in this package use docker to test against a mysql:5.6 database
+// The tests in this package use docker to test against a mysql:8.0 database
 // By default, the tests are off unless you pass the "-tags docker" flag
 // when running the test.
 //
@@ -107,7 +107,7 @@ func TestMain(m *testing.M) {
 // startMySQLContainer starts a MySQL docker container
 // Returns the Cmd object associated with the process
 func startMySQLContainer() (*exec.Cmd, error) {
-	cmd := exec.Command("docker", "run", "-e", "MYSQL_ROOT_PASSWORD="+password, fmt.Sprintf("-p3306:%d", port), "mysql:5.6")
+	cmd := exec.Command("docker", "run", "-e", "MYSQL_ROOT_PASSWORD="+password, fmt.Sprintf("-p3306:%d", port), "mysql:8.0")
 	pipe, err := cmd.StderrPipe()
 	if err != nil {
 		return nil, err

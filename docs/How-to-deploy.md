@@ -6,12 +6,12 @@ for other users to get up and running quickly.
 ## Prerequisites
 
 * [Spinnaker]
-* MySQL (5.6 or later)
+* MySQL (8.0 or later)
 
 To use this version of Chaos Monkey, you must be using [Spinnaker] to manage your applications. Spinnaker is the
 continuous delivery platform that we use at Netflix.
 
-Chaos Monkey also requires a MySQL-compatible database, version 5.6 or later.
+Chaos Monkey also requires a MySQL-compatible database, version 8.0 or later.
 
 [Spinnaker]: http://www.spinnaker.io/
 
