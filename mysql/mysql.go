@@ -46,7 +46,7 @@ func TxDeadlock(err error) bool {
 	switch err := errors.Cause(err).(type) {
 	case *mysql.MySQLError:
 		// ER_LOCK_DEADLOCK
-		// See: https://dev.mysql.com/doc/refman/5.6/en/error-messages-server.html
+		// See: https://dev.mysql.com/doc/mysql-errors/8.0/en/server-error-reference.html#error_er_lock_deadlock
 		return err.Number == 1213
 	default:
 		return false
