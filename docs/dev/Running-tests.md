@@ -18,7 +18,7 @@ root:password@tcp(127.0.0.1:3306)/
 ### Testing with Docker
 
 The simplest way to run these tests is to install Docker on your local machine.
-These tests use the `mysql:5.6` container (version 5.6 is used to ensure
+These tests use the `mysql:8.0` container (version 8.0 is used to ensure
 compatibility with [Amazon Aurora][1]).
 
 Note that if you are on macOS, you must use [Docker for Mac][2], not Docker
@@ -26,10 +26,10 @@ Toolbox. Otherwise, the Docker containers will not be accessible at 127.0.0.1.
 
 
 If you want to run these tests, ensure you have Docker installed locally, and
-grab the mysql:5.6 container:
+grab the mysql:8.0 container:
 
 ```bash
-docker pull mysql:5.6
+docker pull mysql:8.0
 ```
 
 Then run the tests with the `docker` tag, like this:

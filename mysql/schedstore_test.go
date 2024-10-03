@@ -15,7 +15,7 @@
 //go:build docker
 // +build docker
 
-// The tests in this package use docker to test against a mysql:5.6 database
+// The tests in this package use docker to test against a mysql:8.0 database
 // By default, the tests are off unless you pass the "-tags docker" flag
 // when running the test.
 
