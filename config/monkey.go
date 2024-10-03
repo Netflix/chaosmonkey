@@ -235,7 +235,7 @@ func (m *Monkey) AccountEnabled(account string) (bool, error) {
 	return false, nil
 }
 
-// Accounts return a list of accounts where Choas Monkey is enabled
+// Accounts return a list of accounts where Chaos Monkey is enabled
 func (m *Monkey) Accounts() ([]string, error) {
 	err := m.readRemoteConfig()
 	if err != nil {
@@ -307,7 +307,7 @@ func (m *Monkey) Trackers() ([]string, error) {
 	return m.getStringSlice(param.Trackers)
 }
 
-// ErrorCounter returns the names of the backend implementions for
+// ErrorCounter returns the names of the backend implementations for
 // error counters. Intended for monitoring/alerting.
 func (m *Monkey) ErrorCounter() string {
 	return m.v.GetString(param.ErrorCounter)
@@ -341,7 +341,7 @@ func (m *Monkey) SpinnakerEndpoint() string {
 	return m.v.GetString(param.SpinnakerEndpoint)
 }
 
-// SpinnakerCertificate retunrs a path to a .p12 file that contains a TLS cert
+// SpinnakerCertificate returns a path to a .p12 file that contains a TLS cert
 // for authenticating against Spinnaker
 func (m *Monkey) SpinnakerCertificate() string {
 	return m.v.GetString(param.SpinnakerCertificate)
@@ -360,12 +360,12 @@ func (m *Monkey) SpinnakerUser() string {
 	return m.v.GetString(param.SpinnakerUser)
 }
 
-// SpinnakerX509Cert retunrs a path to a X509 cert file
+// SpinnakerX509Cert returns a path to a X509 cert file
 func (m *Monkey) SpinnakerX509Cert() string {
 	return m.v.GetString(param.SpinnakerX509Cert)
 }
 
-// SpinnakerX509Key retunrs a path to a X509 key file
+// SpinnakerX509Key returns a path to a X509 key file
 func (m *Monkey) SpinnakerX509Key() string {
 	return m.v.GetString(param.SpinnakerX509Key)
 }

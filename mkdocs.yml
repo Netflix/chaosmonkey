@@ -8,7 +8,7 @@ pages:
   - How to deploy: How-to-deploy.md
   - Configuration file format: Configuration-file-format.md
   - Configuring behavior via Spinnaker: Configuring-behavior-via-spinnaker.md
-  - Termination behaior: Termination-behavior.md
+  - Termination behavior: Termination-behavior.md
   - Running locally: Running-locally.md
   - Plugins:
       - Home: plugins/index.md
