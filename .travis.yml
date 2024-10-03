@@ -4,7 +4,7 @@ sudo: required
 language: go
 
 go:
- - "1.2"
+ - "1.20.x"
 
 env:
     - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
@@ -13,9 +13,9 @@ services:
     - docker
 
 install:
-    - docker pull mysql:5.6
-    - go get golang.org/x/lint/golint
-    - go get github.com/kisielk/errcheck
+    - docker pull mysql:8.0
+    - go install golang.org/x/lint/golint@latest
+    - go install github.com/kisielk/errcheck@latest
 
 # With the "docker" tag enabled on go test invocation (-tags docker)
 # the mysql:5.6 docker container will be started
