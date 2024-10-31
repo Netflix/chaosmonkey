@@ -48,7 +48,7 @@ var (
 	port     int    = 3306
 )
 
-// inUse returns true if port accepts connections on localhsot
+// inUse returns true if port accepts connections on localhost
 func inUse(port int) bool {
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
@@ -155,7 +155,7 @@ func startMySQLContainer() (*exec.Cmd, error) {
 }
 
 // initDB initializes the "chaosmonkey" database with the chaosmonkey schemas
-// It wipes out any existing database database with the same name
+// It wipes out any existing database with the same name
 func initDB() error {
 	db, err := sql.Open("mysql", fmt.Sprintf("root:%s@tcp(127.0.0.1:%d)/", password, port))
 	if err != nil {
