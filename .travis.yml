@@ -4,7 +4,7 @@ sudo: required
 language: go
 
 go:
- - "1.20.x"
+ - "1.22.x"
 
 env:
     - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
@@ -14,10 +14,8 @@ services:
 
 install:
     - docker pull mysql:8.0
-    - go install golang.org/x/lint/golint@latest
     - go install github.com/kisielk/errcheck@latest
-    - go get github.com/spf13/afero@v0.0.0-20160919210114-52e4a6cfac46
-    - go get github.com/fsnotify/fsnotify@v1.3.2-0.20160816051541-f12c6236fe7b
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.61.0
 
 # With the "docker" tag enabled on go test invocation (-tags docker)
 # the mysql:5.6 docker container will be started
@@ -26,10 +24,9 @@ install:
 script:
     - sudo service mysql stop
     - diff -u <(echo -n) <(gofmt -d `find . -name '*.go' | grep -Ev '/vendor/|/migration'`)
-    - go list ./... | grep -Ev '/vendor/|/migration' | xargs -L1 golint
     - go vet `go list ./... | grep -v /vendor/`
     - errcheck -ignore 'io:Close' -ignoretests `go list ./... | grep -v /vendor/`
-    - go test -v  ./...
+    - make clean test build lint
 
 after_success:
     - ./update-docs.sh

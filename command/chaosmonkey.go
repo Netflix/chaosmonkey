@@ -52,7 +52,7 @@ var (
 
 // Usage prints usage
 func Usage() {
-	usage := `
+	const usage = `
 Chaos Monkey
 
 Usage:
@@ -168,7 +168,7 @@ Example:
 
 	chaosmonkey regions chaosguineapig test
 `
-	fmt.Printf(usage)
+	fmt.Printf("%s", usage)
 }
 
 func init() {

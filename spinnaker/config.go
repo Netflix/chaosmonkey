@@ -15,7 +15,7 @@
 package spinnaker
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Netflix/chaosmonkey/v2"
@@ -43,7 +43,7 @@ func (s Spinnaker) Get(app string) (c *chaosmonkey.AppConfig, err error) {
 		return nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.Wrapf(err, "body read failed at %s", url)
 	}

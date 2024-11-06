@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"github.com/Netflix/chaosmonkey/v2/config"
 	"github.com/Netflix/chaosmonkey/v2/mysql"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -82,7 +81,7 @@ func setupCron(cfg *config.Monkey, executablePath string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(cfg.SchedulePath(), content, scriptPerms)
+	err = os.WriteFile(cfg.SchedulePath(), content, scriptPerms)
 	if err != nil {
 		return err
 	}
@@ -95,7 +94,7 @@ func setupCron(cfg *config.Monkey, executablePath string) error {
 	crontab := fmt.Sprintf("%s %s %s\n", cronExpr, cfg.TermAccount(), cfg.SchedulePath())
 	var cronPerms os.FileMode = 0644 // -rw-r--r-- : cron config file shouldn't have write perm
 	log.Printf("Creating %s\n", cfg.ScheduleCronPath())
-	err = ioutil.WriteFile(cfg.ScheduleCronPath(), []byte(crontab), cronPerms)
+	err = os.WriteFile(cfg.ScheduleCronPath(), []byte(crontab), cronPerms)
 	return err
 }
 
@@ -113,7 +112,7 @@ func setupTerminationScript(cfg *config.Monkey, executablePath string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(cfg.TermPath(), content, perms)
+	err = os.WriteFile(cfg.TermPath(), content, perms)
 	return err
 }
 

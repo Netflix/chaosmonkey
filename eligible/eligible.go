@@ -175,13 +175,6 @@ func contains(region string, regions []deploy.RegionName) bool {
 	return false
 }
 
-const whiteListErrorMessage = "whitelist is not supported"
-
-// isWhiteList returns true if an error is related to a whitelist
-func isWhitelist(err error) bool {
-	return err.Error() == whiteListErrorMessage
-}
-
 // Instances returns instances eligible for termination
 func Instances(group grp.InstanceGroup, exs []chaosmonkey.Exception, dep deploy.Deployment) ([]chaosmonkey.Instance, error) {
 	cloudProvider, err := dep.CloudProvider(group.Account())

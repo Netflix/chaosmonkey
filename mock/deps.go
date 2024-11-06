@@ -15,7 +15,7 @@
 package mock
 
 import (
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/Netflix/chaosmonkey/v2"
@@ -84,7 +84,7 @@ func Deps() deps.Deps {
 	cfg.Set(param.Leashed, false)
 	cfg.Set(param.Accounts, []string{"prod", "test"})
 
-	f, err := ioutil.TempFile("", "cm-test")
+	f, err := os.CreateTemp("", "cm-test")
 	if err != nil {
 		panic(err)
 	}

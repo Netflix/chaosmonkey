@@ -20,13 +20,13 @@ import (
 	"github.com/Netflix/chaosmonkey/v2/config/param"
 	"github.com/Netflix/chaosmonkey/v2/mock"
 	"github.com/pkg/errors"
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
 func assertHasSameContent(fileName string, expectedContent string) error {
 
-	cronContent, err := ioutil.ReadFile(fileName)
+	cronContent, err := os.ReadFile(fileName)
 	if err != nil {
 		return err
 	}

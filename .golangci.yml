@@ -1,0 +1,4 @@
+issues:
+  skip-dirs:
+    - vendor/*
+    - migration/*

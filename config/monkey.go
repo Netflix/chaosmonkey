@@ -426,6 +426,7 @@ type RemoteProvider viper.RemoteProvider
 type RemoteConfigFactory interface {
 	Get(rp RemoteProvider) (io.Reader, error)
 	Watch(rp RemoteProvider) (io.Reader, error)
+	WatchChannel(rp RemoteProvider) (<-chan *viper.RemoteResponse, chan bool)
 }
 
 type proxy struct {
@@ -438,6 +439,9 @@ func (p proxy) Get(rp viper.RemoteProvider) (io.Reader, error) {
 
 func (p proxy) Watch(rp viper.RemoteProvider) (io.Reader, error) {
 	return p.factory.Watch(rp)
+}
+func (p proxy) WatchChannel(rp viper.RemoteProvider) (<-chan *viper.RemoteResponse, chan bool) {
+	return p.factory.WatchChannel(rp)
 }
 
 // SetRemoteProvider sets viper's remote provider

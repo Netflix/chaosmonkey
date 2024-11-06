@@ -94,7 +94,7 @@ func (d Deployment) GetRegionNames(app string, account D.AccountName, cluster D.
 
 // AppNames implements deploy.Deployment.AppNames
 func (d Deployment) AppNames() ([]string, error) {
-	result := make([]string, len(d.AppMap), len(d.AppMap))
+	result := make([]string, len(d.AppMap))
 	i := 0
 	for app := range d.AppMap {
 		result[i] = app
@@ -145,9 +145,7 @@ func (d Deployment) GetInstanceIDs(app string, account D.AccountName, cloudProvi
 	var ids []D.InstanceID
 
 	for asg, ids = range asgs {
-		for _, id := range ids {
-			instances = append(instances, id)
-		}
+		instances = append(instances, ids...)
 	}
 
 	return asg, instances, nil

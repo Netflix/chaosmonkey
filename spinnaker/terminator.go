@@ -18,7 +18,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
@@ -92,7 +92,7 @@ func (s Spinnaker) Execute(trm chaosmonkey.Termination) (err error) {
 
 	if resp.StatusCode != http.StatusOK {
 		log.Printf("Unexpected response: %d", resp.StatusCode)
-		contents, err := ioutil.ReadAll(resp.Body)
+		contents, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return errors.Wrap(err, "failed to read response body")
 		}
@@ -153,7 +153,7 @@ func (s Spinnaker) OtherID(ins chaosmonkey.Instance) (otherID string, err error)
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
 	}

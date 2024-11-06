@@ -15,7 +15,7 @@
 package command
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -74,7 +74,7 @@ func TestRegisterWithCron(t *testing.T) {
 	}
 
 	// assertions
-	dat, err := ioutil.ReadFile(fname)
+	dat, err := os.ReadFile(fname)
 	if err != nil {
 		t.Error(err.Error())
 		return
@@ -123,7 +123,7 @@ func TestCronOutputInSortedOrder(t *testing.T) {
 	}
 
 	// assertions
-	dat, err := ioutil.ReadFile(fname)
+	dat, err := os.ReadFile(fname)
 	if err != nil {
 		t.Error(err.Error())
 		return

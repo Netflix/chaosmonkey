@@ -20,9 +20,10 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"golang.org/x/crypto/pkcs12"
@@ -146,7 +147,7 @@ func New(endpoint string, certPath string, password string, x509Cert string, x50
 	}
 
 	if certPath != "" {
-		pfxData, err := ioutil.ReadFile(certPath)
+		pfxData, err := os.ReadFile(certPath)
 		if err != nil {
 			return Spinnaker{}, errors.Wrapf(err, "failed to read file %s", certPath)
 		}
@@ -182,7 +183,7 @@ func (s Spinnaker) AccountID(name string) (id string, err error) {
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to read body from url %s", url)
 	}
@@ -269,7 +270,7 @@ func (s Spinnaker) GetInstanceIDs(app string, account D.AccountName, cloudProvid
 		return "", nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
 	}
@@ -356,7 +357,7 @@ func (s Spinnaker) AppNames() (appnames []string, err error) {
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read body when retrieving spinnaker app names from %s: %v", url, err)
 	}
@@ -396,7 +397,7 @@ func (s Spinnaker) clusters(appName string) spinnakerClusters {
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("Error retrieving spinnaker clusters for app", appName)
 		log.Println(url)
@@ -442,7 +443,7 @@ func (s Spinnaker) asgs(appName, account, clusterName string) (result []spinnake
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read body of server groups url (%s): body: '%s': %v", url, string(body), err)
 	}
@@ -517,7 +518,7 @@ func (s Spinnaker) account(name string) (account, error) {
 		}
 	}()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return ac, errors.Wrapf(err, "body read failed at %s", url)
 	}
@@ -566,7 +567,7 @@ func (s Spinnaker) GetClusterNames(app string, account D.AccountName) (clusters 
 		return nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
 	}
@@ -610,7 +611,7 @@ func (s Spinnaker) GetRegionNames(app string, account D.AccountName, cluster D.C
 		return nil, errors.Errorf("unexpected response code (%d) from %s", resp.StatusCode, url)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("body read failed at %s", url))
 	}

@@ -16,7 +16,7 @@ package command
 
 import (
 	"bytes"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -61,7 +61,7 @@ func TestScheduleCommand(t *testing.T) {
 	// Assertions
 	expectedCount := 4
 
-	cronFileContents, err := ioutil.ReadFile(cronFile)
+	cronFileContents, err := os.ReadFile(cronFile)
 	if err != nil {
 		t.Fatal(err)
 	}

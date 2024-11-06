@@ -1,0 +1,9 @@
+# Run the Chaos Monkey scheduler at 5AM PDT (4AM PST) every weekday
+# This corresponds to: 12:00 UTC
+# Because system clock runs UTC, time change affects when job runs
+
+# The scheduler must run as root because it needs root permissions to write
+# to the file /etc/cron.d/chaosmonkey-daily-terminations
+
+# min  hour  dom  month  day  user  command
+    0    12    *      *  1-5  root  /apps/chaosmonkey/chaosmonkey-schedule.sh

@@ -247,9 +247,6 @@ func terminateCommand(termPath string, group grp.InstanceGroup) string {
 // logRedirect returns a string to append to a shell command so it redirects
 // stdout and stderr to a logfile
 // Example output: ">> /path/to/log 2>&1"
-func logRedirect(logPath string) string {
-	return fmt.Sprintf(">> %s 2>&1", logPath)
-}
 
 // Schedule is a collection of termination entries.
 type Schedule struct {

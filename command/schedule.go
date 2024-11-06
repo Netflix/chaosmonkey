@@ -16,7 +16,6 @@ package command
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -102,6 +101,6 @@ func registerWithCron(s *schedule.Schedule, cfg *config.Monkey) error {
 	crontab := s.Crontab(cfg.TermPath(), cfg.TermAccount())
 	var perms os.FileMode = 0644 // -rw-r--r--
 	log.Printf("Writing %s\n", cfg.CronPath())
-	err := ioutil.WriteFile(cfg.CronPath(), crontab, perms)
+	err := os.WriteFile(cfg.CronPath(), crontab, perms)
 	return err
 }
