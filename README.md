@@ -3,7 +3,7 @@
 [![NetflixOSS Lifecycle](https://img.shields.io/osslifecycle/Netflix/chaosmonkey.svg)](OSSMETADATA) [![Build Status][travis-badge]][travis] [![GoDoc][godoc-badge]][godoc] [![GoReportCard][report-badge]][report]
 
 [travis-badge]: https://travis-ci.com/Netflix/chaosmonkey.svg?branch=master
-[travis]: https://travis-ci.com/Netflix/chaosmonkey
+[travis]: https://app.travis-ci.com/github/Netflix/chaosmonkey/builds
 [godoc-badge]: https://godoc.org/github.com/Netflix/chaosmonkey?status.svg
 [godoc]: https://godoc.org/github.com/Netflix/chaosmonkey
 [report-badge]: https://goreportcard.com/badge/github.com/Netflix/chaosmonkey
