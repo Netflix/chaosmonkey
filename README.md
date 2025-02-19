@@ -1,4 +1,7 @@
-![logo](docs/logo.png "logo")
+<p align="center">
+  <img src="docs/logo.png" alt="logo">
+</p>
+
 
 [![NetflixOSS Lifecycle](https://img.shields.io/osslifecycle/Netflix/chaosmonkey.svg)](OSSMETADATA) [![Build Status][travis-badge]][travis] [![GoDoc][godoc-badge]][godoc] [![GoReportCard][report-badge]][report]
 
