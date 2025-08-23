@@ -1,5 +1,4 @@
-# sudo is required for docker
-sudo: required
+# Docker service is used for MySQL testing
 
 language: go
 
