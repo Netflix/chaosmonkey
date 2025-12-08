@@ -1,0 +1,14 @@
+[spinnaker]
+endpoint = "http://localhost:8084"
+ignoreSSL = true
+
+[monkey]
+leashed = true    # So Chaos Monkey won’t actually terminate anything
+
+[logging]
+level = "debug"
+
+[schedule]
+enabled = true
+frequency = "daily"
+time = "09:00"
